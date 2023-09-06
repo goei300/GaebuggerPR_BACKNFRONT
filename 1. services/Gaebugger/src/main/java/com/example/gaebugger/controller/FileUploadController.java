@@ -1,8 +1,9 @@
-package com.example.gaebugger;
+package com.example.gaebugger.controller;
 
 import java.io.IOException;
 import java.util.stream.Collectors;
 
+import com.example.gaebugger.service.ReadFileService;
 import com.example.gaebugger.storage.StorageFileNotFoundException;
 import com.example.gaebugger.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class FileUploadController {
         this.storageService = storageService;
     }
 
+    @Autowired
+    private ReadFileService readFileService;
+
     @GetMapping("/")
     public String listUploadedFiles(Model model) throws IOException {
         model.addAttribute("files", storageService.loadAll().map(
@@ -54,9 +58,17 @@ public class FileUploadController {
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
         storageService.store(file);
+
+
+        /* 여기에 file text parsing 및 내용 출력하는거 넣기 */
+        String fileContent = readFileService.processFileContent(file);
+
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
+        redirectAttributes.addFlashAttribute("fileContent", fileContent);
+
+        System.out.println(fileContent);
         return "redirect:/";
     }
 
