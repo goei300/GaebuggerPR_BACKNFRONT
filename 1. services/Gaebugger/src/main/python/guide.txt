@@ -1,0 +1,9 @@
+venv폴더 안으로 들어감
+
+venv\Scripts\activate
+실행
+
+이 상태에서 코드 실행 하고 작업할 것
+java는 전혀 건들 필요 없음.
+
+
