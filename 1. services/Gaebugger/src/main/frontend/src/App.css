@@ -36,3 +36,65 @@
     transform: rotate(360deg);
   }
 }
+
+.HomeImageContainer {
+  width: auto;
+  height: 700px;
+  align-items: center;
+  text-align: center;
+}
+
+img {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+#ImageLetter {
+  margin-top: 140px;
+  left: 59%;
+  position: absolute;
+  font-family: "tway_sky";
+  color: rgb(255, 255, 255);
+  font-size: 70px;
+}
+
+
+@font-face {
+  font-family: "BlackhanSans";
+  font-weight: 50;
+  src: url("./assets/fonts/NotoSansKR-Black.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Yfont";
+  src: url("./assets/fonts/NotoSansKR-Bold.ttf");
+}
+
+@font-face {
+  font-family: "BMDOHYEON";
+  src: url("./assets/fonts/NotoSansKR-ExtraBold.ttf");
+}
+
+@font-face {
+  font-family: "tway_sky";
+  src: url("./assets/fonts/NotoSansKR-ExtraLight.ttf");
+}
+
+@font-face {
+  font-family: "SpoqaHanSansNeo";
+  src: url("./assets/fonts/NotoSansKR-Light.ttf");
+}
+
+@font-face {
+  font-family: "SEBANG";
+  src: url("./assets/fonts/NotoSansKR-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Gmarket";
+  src: url("./assets/fonts/NotoSansKR-Regular.ttf");
+}

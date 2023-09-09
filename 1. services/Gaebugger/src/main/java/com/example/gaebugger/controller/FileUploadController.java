@@ -36,7 +36,7 @@ public class FileUploadController {
     @Autowired
     private ReadFileService readFileService;
 
-    @GetMapping("/")
+    @GetMapping("/services/upload/")
     public String listUploadedFiles(Model model) throws IOException {
         model.addAttribute("files", storageService.loadAll().map(
                         path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
@@ -45,7 +45,7 @@ public class FileUploadController {
         return "uploadfile";
     }
 
-    @GetMapping("/files/{filename:.+}")
+    @GetMapping("/services/upload/files/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
@@ -54,7 +54,7 @@ public class FileUploadController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
-    @PostMapping("/")
+    @PostMapping("/services/upload/")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
         storageService.store(file);
