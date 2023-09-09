@@ -63,38 +63,3 @@ img {
 }
 
 
-@font-face {
-  font-family: "BlackhanSans";
-  font-weight: 50;
-  src: url("./assets/fonts/NotoSansKR-Black.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Yfont";
-  src: url("./assets/fonts/NotoSansKR-Bold.ttf");
-}
-
-@font-face {
-  font-family: "BMDOHYEON";
-  src: url("./assets/fonts/NotoSansKR-ExtraBold.ttf");
-}
-
-@font-face {
-  font-family: "tway_sky";
-  src: url("./assets/fonts/NotoSansKR-ExtraLight.ttf");
-}
-
-@font-face {
-  font-family: "SpoqaHanSansNeo";
-  src: url("./assets/fonts/NotoSansKR-Light.ttf");
-}
-
-@font-face {
-  font-family: "SEBANG";
-  src: url("./assets/fonts/NotoSansKR-Medium.ttf");
-}
-
-@font-face {
-  font-family: "Gmarket";
-  src: url("./assets/fonts/NotoSansKR-Regular.ttf");
-}

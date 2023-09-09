@@ -1,5 +1,6 @@
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
+import '../fonts.css';
 import './Home.css';
 
 function Section({ className, title, content }) {
@@ -22,9 +23,9 @@ function Home() {
             <header className="home-header">
                 <div className="logo">LOGO</div>
                 <nav className="nav-links">
-                    <a href="feature">우리 서비스</a>
-                    <a href="services">가이드</a>
-                    <a href="about">협약</a>
+                    <a href="services">시작하기</a>
+                    <a href="guides">가이드</a>
+                    <a href="about">더보기</a>
                 </nav>
                 <div className="user-actions">
                     <a href="login">로그인</a>

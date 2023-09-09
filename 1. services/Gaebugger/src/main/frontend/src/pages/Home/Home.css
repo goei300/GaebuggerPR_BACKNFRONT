@@ -24,6 +24,8 @@
     justify-content: space-between;  /* Space out the children (logo, nav, user-actions) */
     align-items: center;  /* Center align items vertically */
     border-bottom: 1px solid rgb(221, 221, 221);
+    font-family: 'tway_sky';
+    font-weight: bold;
 }
 
 .logo {
@@ -35,7 +37,7 @@
     flex-grow: 2; /* Allow the nav links section to grow larger than the other sections */
     display: flex;
     gap: 1rem; /* Space between the links */
-    justify-content: center; /* Center the links */
+
 }
 
 .nav-links a {
