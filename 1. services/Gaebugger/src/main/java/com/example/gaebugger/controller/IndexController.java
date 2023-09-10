@@ -9,6 +9,12 @@ public class IndexController {
 
     @GetMapping("/")
     public String indexPage(){
-        return "hello";
+        System.out.println("test2");
+        return "forward:/index.html";
+    }
+
+    @GetMapping("/about")
+    public String serviceToUsers(){
+        return "forward:/index.html";
     }
 }
