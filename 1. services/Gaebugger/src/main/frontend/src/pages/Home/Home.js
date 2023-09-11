@@ -1,7 +1,7 @@
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
-import '../fonts.css';
 import './Home.css';
+import Header from '../header';
 
 function Section({ className, title, content }) {
     const [ref, inView] = useInView({
@@ -20,18 +20,7 @@ function Section({ className, title, content }) {
 function Home() {
     return (
         <div className="home-container">
-            <header className="home-header">
-                <div className="logo">LOGO</div>
-                <nav className="nav-links">
-                    <a href="services">시작하기</a>
-                    <a href="guides">가이드</a>
-                    <a href="about">더보기</a>
-                </nav>
-                <div className="user-actions">
-                    <a href="login">로그인</a>
-                    <a href="mypage">마이페이지</a>
-                </div>
-            </header>
+            <Header />
 
             <main className="home-content">
                 <Section className="introduction" title="개인정보 뭐시기" content="으아아악!" />
