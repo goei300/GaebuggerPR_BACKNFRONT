@@ -1,8 +1,9 @@
 from flask import Flask, request, Response
 import json
+from config import API_KEY
 import openai
 
-openai.api_key = 'my_api'
+openai.api_key = API_KEY
 
 app = Flask(__name__)
 
@@ -12,13 +13,18 @@ def process_text():
         return jsonify({'error': 'Data must be in JSON format and contain a "text" field.'}), 400
 
     text = request.json.get('text')
-    ans = openai.Completion.create(prompt=text, model="ft:gpt-3.5-turbo-0613:personal::7wlc040J")
+    print(text)
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "user", "content": text}
+        ]
+    )
+    message_output = response.choices[0].message.content
+    print(message_output)
 
-    response_data = json.dumps({'result': ans}, ensure_ascii=False)
-    response = Response(response_data, content_type="application/json; charset=utf-8")
-    return response
+    response_data = json.dumps({'result': message_output}, ensure_ascii=False)
+    return Response(response_data, content_type="application/json; charset=utf-8")
 if __name__ == '__main__':
     app.run(port=5000)
 
-if __name__ == "__main__":
-    app.run(debug=True, port=5000)
