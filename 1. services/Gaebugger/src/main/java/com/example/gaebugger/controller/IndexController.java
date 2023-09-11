@@ -7,14 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController {
 
-    @GetMapping("/")
-    public String indexPage(){
-        System.out.println("test2");
+    @GetMapping({"/", "/services"})
+    public String forward() {
+        System.out.println("Forwarding request"); // Add this
         return "forward:/index.html";
     }
 
-    @GetMapping("/about")
-    public String serviceToUsers(){
-        return "forward:/index.html";
-    }
 }

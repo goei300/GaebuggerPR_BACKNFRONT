@@ -1,0 +1,26 @@
+.home-header, .home-footer {
+    background-color: rgb(51, 51, 51); /* Making header transparent */
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+.home-header {
+    background-color: white;
+    color: black;
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;  /* Enable flexbox */
+    justify-content: space-between;  /* Space out the children (logo, nav, user-actions) */
+    align-items: center;  /* Center align items vertically */
+    border-bottom: 1px solid rgb(221, 221, 221);
+    font-family: 'NotoSansKR-Bold';
+    font-weight: bold;
+}
+.active-link {
+    border-bottom: 2px solid #000; /* Change color and style as needed */
+}
