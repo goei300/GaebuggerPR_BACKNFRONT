@@ -1,8 +1,9 @@
 from flask import Flask, request, Response
 import json
+from config import API_KEY
 import openai
 
-openai.api_key = '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'
+openai.api_key = API_KEY
 
 app = Flask(__name__)
 
