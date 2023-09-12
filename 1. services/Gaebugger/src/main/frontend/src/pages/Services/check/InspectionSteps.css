@@ -1,3 +1,13 @@
+.inspection-layout {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: start;
+    flex-grow: 1;
+    position: relative;
+}
+
 .inspection-steps {
     flex-basis: auto;
     padding-right: 1rem;

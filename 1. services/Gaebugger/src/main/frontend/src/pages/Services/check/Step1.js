@@ -4,6 +4,7 @@ import axios from 'axios';
 import Header from "../../header";
 import InspectionSteps from "./InspectionSteps";
 import './Step1.css';
+import './compactContainer.css';
 import Service from "../Service";
 
 function Step1(props) {
@@ -52,7 +53,7 @@ function Step1(props) {
             </div>
 
             <button onClick={handleNext} className="next-button">
-                Next
+                기재사항 제출
             </button>
         </div>
     );

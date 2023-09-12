@@ -1,5 +1,4 @@
-/* Flex layout for InspectionSteps, File Upload and Next Button */
-.FileUpload-layout {
+.Validating-layout {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -8,8 +7,7 @@
     align-items: flex-start;
 }
 
-/* Styling for the file upload section */
-.file-upload-section {
+.processing-animation {
     flex: 1; /* take remaining space after .inspection-steps and .next-button-container */
     display: flex;
     flex-direction: column;
@@ -17,8 +15,3 @@
     align-items: center; /* horizontally center the file upload */
     padding-left: 1rem; /* spacing between this and the .inspection-steps */
 }
-
-.file-upload {
-    width: 80%; /* or any other width you see fit */
-}
-

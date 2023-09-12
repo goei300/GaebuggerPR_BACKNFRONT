@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import Header from "../../header";
 import InspectionSteps from "./InspectionSteps";
 import './Step2.css';
+import './compactContainer.css';
+import {useNavigate} from "react-router-dom";
 function Step2(props){
 
     const [file, setFile] = useState(null);
@@ -22,6 +24,22 @@ function Step2(props){
         // await axios.post('/upload-endpoint', formData);
     };
 
+    const handleNext = async () => {
+        /*        try {
+                    const response = await axios.post("http://localhost:8080/api/checklist/submit", checkedItems); // Assuming Spring runs on port 8080
+
+                    // If data was sent successfully, navigate to the next step
+                    if (response.status === 200) {
+                        navigate('/services/check/step2');
+                    } else {
+                        console.warn("Data sent, but received unexpected status:", response.status);
+                    }
+                } catch (error) {
+                    console.error("Error sending data", error);
+                }*/
+        props.nextStep();  // 여기에 nextStep 함수를 호출
+    };
+
     return (
         <div className="compact-container">
             <Header />
@@ -37,10 +55,10 @@ function Step2(props){
                     </div>
                 </div>
 
-                <div className="next-button-container">
-                    {/* Replace this with your actual next button and its function */}
-                    <button>Next Step</button>
-                </div>
+                {/* Replace this with your actual next button and its function */}
+                <button onClick={handleNext} className="next-button">
+                    점검 시작
+                </button>
             </div>
         </div>
     );
