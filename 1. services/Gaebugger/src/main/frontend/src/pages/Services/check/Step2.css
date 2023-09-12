@@ -22,3 +22,6 @@
     width: 80%; /* or any other width you see fit */
 }
 
+.next-button, .prev-button {
+    margin: 10px;
+}

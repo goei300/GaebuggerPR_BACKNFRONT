@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import InspectionSteps from "./InspectionSteps";
 import Header from "../../header";
 import './compactContainer.css';
-function Step3(props){
+import './Step3.css';
+function Step3({ nextStep, prevStep }){
     /* 여기는 점검 끝날때 까지 대기하는 단계임 */
 
     return(

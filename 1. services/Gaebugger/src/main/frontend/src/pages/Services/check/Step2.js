@@ -4,7 +4,7 @@ import InspectionSteps from "./InspectionSteps";
 import './Step2.css';
 import './compactContainer.css';
 import {useNavigate} from "react-router-dom";
-function Step2(props){
+function Step2({ nextStep, prevStep }){
 
     const [file, setFile] = useState(null);
 
@@ -24,8 +24,11 @@ function Step2(props){
         // await axios.post('/upload-endpoint', formData);
     };
 
-    const handleNext = async () => {
-        /*        try {
+    const handleNext =  () => {
+
+
+        /*          여기서는 파일 업로드 된거 하고 checklist 두개 다 보내려고함
+                try {
                     const response = await axios.post("http://localhost:8080/api/checklist/submit", checkedItems); // Assuming Spring runs on port 8080
 
                     // If data was sent successfully, navigate to the next step
@@ -37,30 +40,34 @@ function Step2(props){
                 } catch (error) {
                     console.error("Error sending data", error);
                 }*/
-        props.nextStep();  // 여기에 nextStep 함수를 호출
+        nextStep();  // 여기에 nextStep 함수를 호출
     };
 
+
     return (
-        <div className="compact-container">
-            <Header />
-            <div className="FileUpload-layout">
-                <InspectionSteps active="second" />
+            <div className="compact-container">
+                <Header />
+                <div className="FileUpload-layout">
+                    <InspectionSteps active="second" />
 
-                <div className="file-upload-section">
-                    <div className="file-upload">
-                        <h2>개인정보 처리방침 문서 파일 업로드를 하세요!</h2>
-                        <h3>파일 형식: .txt만 가능 (0.9v)</h3>
-                        <input type="file" onChange={handleFileChange} />
-                        <button onClick={handleSubmit}>Upload</button>
+                    <div className="file-upload-section">
+                        <div className="file-upload">
+                            <h2>개인정보 처리방침 문서 파일 업로드를 하세요!</h2>
+                            <h3>파일 형식: .txt만 가능 (0.9v)</h3>
+                            <input type="file" onChange={handleFileChange} />
+                            <button onClick={handleSubmit}>Upload</button>
+                        </div>
                     </div>
-                </div>
 
-                {/* Replace this with your actual next button and its function */}
-                <button onClick={handleNext} className="next-button">
-                    점검 시작
-                </button>
+                    <button onClick={prevStep} className="prev-button">  // props 제거
+                        이전 단계
+                    </button>
+
+                    <button onClick={handleNext} className="next-button">  // props 제거
+                        점검 시작
+                    </button>
+                </div>
             </div>
-        </div>
     );
 }
 

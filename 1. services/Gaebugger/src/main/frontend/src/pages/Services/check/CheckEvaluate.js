@@ -1,28 +1,44 @@
+// CheckEvaluate.js
 import React, { useState } from "react";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from './Step3';
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import './transitionStyles.css';  // 이 부분을 추가합니다.
+import './transitionStyles.css';
 
 function CheckEvaluate() {
     const [step, setStep] = useState(1);
+    const [slideDirection, setSlideDirection] = useState('left');
 
-    const nextStep = () => setStep(prevStep => prevStep + 1);
-    const prevStep = () => setStep(prevStep => prevStep - 1);
+    const nextStep = () => {
+        setSlideDirection('right');
+        setStep(prevStep => prevStep + 1);
+    }
 
-    const stepComponents = {
-        1: <Step1 nextStep={nextStep} />,
-        2: <Step2 nextStep={nextStep} />,
-        3: <Step3 nextStep={nextStep} />
-    };
+    const prevStep = () => {
+        setSlideDirection('left');
+        setStep(prevStep => prevStep - 1);
+    }
 
-    const currentStep = stepComponents[step];
+    let currentStep;
+    switch (step) {
+        case 1:
+            currentStep = <Step1 nextStep={nextStep} />;
+            break;
+        case 2:
+            currentStep = <Step2 nextStep={nextStep} prevStep={prevStep} />;
+            break;
+        case 3:
+            currentStep = <Step3 nextStep={nextStep} prevStep={prevStep} />;
+            break;
+        default:
+            break;
+    }
 
     return (
         <div className="jiji">
             <TransitionGroup>
-                <CSSTransition key={step} timeout={500} classNames="slide">
+                <CSSTransition key={step} timeout={500} classNames={`slide-${slideDirection}`}>
                     {currentStep}
                 </CSSTransition>
             </TransitionGroup>
