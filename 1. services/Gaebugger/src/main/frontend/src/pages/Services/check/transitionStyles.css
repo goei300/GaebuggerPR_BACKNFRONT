@@ -7,7 +7,6 @@
 /* 다음 버튼 클릭시 (오른쪽으로 슬라이드) */
 .slide-right-enter {
     transform: translateX(100%);
-
 }
 
 .slide-right-enter-active {
@@ -27,7 +26,6 @@
 /* 이전 버튼 클릭시 (왼쪽으로 슬라이드) */
 .slide-left-enter {
     transform: translateX(-100%);
-
 }
 
 .slide-left-enter-active {

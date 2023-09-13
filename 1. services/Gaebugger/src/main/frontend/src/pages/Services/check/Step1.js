@@ -8,31 +8,21 @@ import './compactContainer.css';
 
 import Service from "../Service";
 
-function Step1({ nextStep }) {
-    const [checkedItems, setCheckedItems] = useState([]);
+function Step1({ nextStep, setCheckedItems}) {
+    const [localCheckedItems, setLocalCheckedItems] = useState([]);
 
     const handleCheckboxChange = (event, item) => {
         if (event.target.checked) {
-            setCheckedItems(prevItems => [...prevItems, item]);
+            setLocalCheckedItems(prevItems => [...prevItems, item]);
         } else {
-            setCheckedItems(prevItems => prevItems.filter(i => i !== item));
+            setLocalCheckedItems(prevItems => prevItems.filter(i => i !== item));
         }
     };
 
-    const handleNext = /*async*/ () => {
-/*        try {
-            const response = await axios.post("http://localhost:8080/api/checklist/submit", checkedItems); // Assuming Spring runs on port 8080
 
-            // If data was sent successfully, navigate to the next step
-            if (response.status === 200) {
-                navigate('/services/check/step2');
-            } else {
-                console.warn("Data sent, but received unexpected status:", response.status);
-            }
-        } catch (error) {
-            console.error("Error sending data", error);
-        }*/
-        nextStep();  // 여기에 nextStep 함수를 호출
+    const handleNext = () => {
+        setCheckedItems(localCheckedItems);
+        nextStep();
     };
 
     return (
