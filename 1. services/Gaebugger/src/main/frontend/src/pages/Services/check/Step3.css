@@ -1,0 +1,15 @@
+.Validating-layout {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;  /* 중앙에 위치하도록 조정 */
+}
+
+.processing-animation {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 1rem;
+}

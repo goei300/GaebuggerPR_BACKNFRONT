@@ -1,9 +1,11 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import axios from 'axios';
 import Header from "../../header";
 import InspectionSteps from "./InspectionSteps";
 import './Step2.css';
-function Step2(props){
+import './compactContainer.css';
 
+function Step2({ nextStep, prevStep,checkedItems }) {
     const [file, setFile] = useState(null);
 
     const handleFileChange = (e) => {
@@ -12,14 +14,26 @@ function Step2(props){
         }
     };
 
-    const handleSubmit = async () => {
-        // You can send 'file' to the server here
-        // Using fetch, axios or any other method
+    const handleNext = async () => {
+        const formData = new FormData();
 
-        // Example:
-        // const formData = new FormData();
-        // formData.append('uploadedFile', file);
-        // await axios.post('/upload-endpoint', formData);
+        // 체크리스트와 파일을 함께 formData에 추가
+        formData.append('checkedItems', JSON.stringify(checkedItems));
+        if (file) {
+            formData.append('uploadedFile', file);
+        }
+
+        try {
+            const response = await axios.post("http://localhost:8080/api/checklist/submit", formData);
+
+            if (response.status === 200) {
+                nextStep();
+            } else {
+                console.warn("Data sent, but received unexpected status:", response.status);
+            }
+        } catch (error) {
+            console.error("Error sending data", error);
+        }
     };
 
     return (
@@ -30,17 +44,19 @@ function Step2(props){
 
                 <div className="file-upload-section">
                     <div className="file-upload">
-                        <h2>개인정보 처리방침 문서 파일 업로드를 하세요!</h2>
+                        <h2>개인정보 처리방침 문서 파일 업로드를 하세요! 테스트입니다!</h2>
                         <h3>파일 형식: .txt만 가능 (0.9v)</h3>
                         <input type="file" onChange={handleFileChange} />
-                        <button onClick={handleSubmit}>Upload</button>
                     </div>
                 </div>
 
-                <div className="next-button-container">
-                    {/* Replace this with your actual next button and its function */}
-                    <button>Next Step</button>
-                </div>
+                <button onClick={prevStep} className="prev-button">
+                    이전 단계
+                </button>
+
+                <button onClick={handleNext} className="next-button" disabled={!file}>
+                    점검 시작
+                </button>
             </div>
         </div>
     );
