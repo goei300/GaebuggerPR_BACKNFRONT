@@ -5,19 +5,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.gaebugger.service.DataProcessingService;
-import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
 public class ReceiveDataController {
-
-    private static boolean isProcessingComplete = false;
-    private static List<String> processedCheckedItems;
-    private static String processedFileContent;
 
     private final DataProcessingService dataProcessingService;
 
@@ -26,36 +22,60 @@ public class ReceiveDataController {
     }
 
     @PostMapping("/checklist/submit")
-    public ResponseEntity<String> submitData(@RequestParam("checkedItems") String checkedItemsString,
-                                             @RequestParam("uploadedFile") MultipartFile uploadedFile) {
+    public ResponseEntity<Map<String, Object>> submitData(@RequestParam("checkedItems") String checkedItemsString,
+                                                          @RequestParam("uploadedFile") MultipartFile uploadedFile) {
+
+        Map<String, Object> response = new HashMap<>();
 
         try {
-            // Deserialize checked items
             List<String> checkedItems = List.of(checkedItemsString.split(","));
 
-            // For demonstration purposes, just print received items and the file's original name.
-            System.out.println("Checked Items: " + checkedItems);
-            System.out.println("Uploaded File Original Name: " + uploadedFile.getOriginalFilename());
+            System.out.println("step2->step3 button on!!");
+            // 데이터 처리 시작
+            // 여기부터 너무 문제
+            UUID processId = dataProcessingService.initializeProcessingStatus();
+            dataProcessingService.processData(processId, checkedItems, uploadedFile);
 
-            // Simulate processing
-            dataProcessingService.processData(checkedItems, uploadedFile);
-
-            return ResponseEntity.ok("Data received and processing started.");
+            response.put("message", "Data received and processing started.");
+            response.put("processId", processId.toString());
+            System.out.println("okok we get");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing data.");
+            response.put("message", "Error processing data.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
-    @GetMapping("/check-response")
-    public ResponseEntity<Map<String, Object>> checkResponse() {
-        Map<String, Object> response = new HashMap<>();
+    @GetMapping("/check-response/{processId}")
+    public ResponseEntity<Map<String, Object>> checkResponse(@PathVariable String processId) {
 
-        if (isProcessingComplete) {
+        Map<String, Object> response = new HashMap<>();
+        UUID uuid;
+
+        try {
+            uuid = UUID.fromString(processId);
+        } catch (IllegalArgumentException e) {
+            response.put("message", "Invalid process ID format.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        DataProcessingService.ProcessingStatus status = dataProcessingService.getStatus(uuid);
+
+        if (status == null) {
+            response.put("message", "No such process or process ID is invalid.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        if (status.isProcessingComplete()) {
             response.put("message", "Data processing complete.");
-            response.put("checkedItems", processedCheckedItems);
-            response.put("fileContent", processedFileContent);
+            response.put("fileContent", status.getProcessedFileContent());
+            response.put("ans", status.getAns());
             System.out.println(response);
             return ResponseEntity.ok(response);
+        } else if (status.getError() != null) {
+            response.put("message", "Error during data processing.");
+            response.put("error", status.getError());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         } else {
             response.put("message", "Data processing in progress.");
             return ResponseEntity.status(HttpStatus.PROCESSING).body(response);

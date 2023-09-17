@@ -5,7 +5,7 @@ import InspectionSteps from "./InspectionSteps";
 import './Step2.css';
 import './compactContainer.css';
 
-function Step2({ nextStep, prevStep,checkedItems }) {
+function Step2({ nextStep, prevStep, checkedItems, onProcessIdReceived }) { // onProcessIdReceived prop 추가
     const [file, setFile] = useState(null);
 
     const handleFileChange = (e) => {
@@ -27,6 +27,9 @@ function Step2({ nextStep, prevStep,checkedItems }) {
             const response = await axios.post("http://localhost:8080/api/checklist/submit", formData);
 
             if (response.status === 200) {
+                if (response.data && response.data.processId) {  // 서버에서 processId를 전달 받았다면
+                    onProcessIdReceived(response.data.processId); // processId를 상위 컴포넌트에 전달
+                }
                 nextStep();
             } else {
                 console.warn("Data sent, but received unexpected status:", response.status);

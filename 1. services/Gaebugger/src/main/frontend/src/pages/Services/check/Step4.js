@@ -4,8 +4,16 @@ import './compactContainer.css';
 import InspectionSteps from "./InspectionSteps";
 
 function Step4({ serverData }) {
-    console.log("this step is good");
-    if(!serverData) return null;
+    if(!serverData) {
+        return (
+            <div className="compact-container">
+                <Header />
+                <div className="output-layout">
+                    <p>Error: No server data received.</p>
+                </div>
+            </div>
+        );
+    }
 
     const itemsArray = JSON.parse(serverData.checkedItems);
     return (
@@ -17,10 +25,12 @@ function Step4({ serverData }) {
                 <p>Message: {serverData.message}</p>
                 <p>Checked Items:</p>
                 <ul>
-                    {itemsArray && itemsArray.map((item, index) => <li key={index}>{item}</li>)}
+                    {itemsArray && itemsArray.map((item) => <li key={item}>{item}</li>)}
                 </ul>
                 <p>File Content:</p>
                 <pre>{serverData.fileContent}</pre>
+                <p>guidelines:</p>
+                <pre>{serverData.ans}</pre>
             </div>
         </div>
     );
