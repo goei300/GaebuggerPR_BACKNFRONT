@@ -7,3 +7,8 @@ venv\Scripts\activate
 java는 전혀 건들 필요 없음.
 
 
+2023.09.17
+1) bob.txt로 일단 테스트 해볼것
+2) api-key config하는 부분 지웠음
+
+
