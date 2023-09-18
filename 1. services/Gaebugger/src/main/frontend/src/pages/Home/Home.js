@@ -28,7 +28,6 @@ function Home() {
                 <Section className="why-use-name" title="새롭게 개정된 법" content="뭐시기 회사 1000 군데, 인당 100개의 위탁사 관리. 예상 시간 3일!" />
                 <Section className="some-content" title="뭐쓸까" content="깔깔" />
             </main>
-            {/* ... other content ... */}
         </div>
     );
 }

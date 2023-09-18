@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from 'axios';
-import Header from "../../header";
-import InspectionSteps from "./InspectionSteps";
+import Header from "../../../header";
+import InspectionSteps from "../InspectionSteps";
 import './Step2.css';
-import './compactContainer.css';
+import '../compactContainer.css';
 
 function Step2({ nextStep, prevStep, setProcessId, checkedItems }) { // onProcessIdReceived prop 추가
     const [file, setFile] = useState(null);
