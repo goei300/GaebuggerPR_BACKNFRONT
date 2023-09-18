@@ -1,42 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import InspectionSteps from "./InspectionSteps";
 import Header from "../../header";
 import './compactContainer.css';
 import './Step3.css';
 import axios from "axios";
 
-function Step3({ nextStep, setServerData, processId }) { // processId prop 추가
-    const [isLoading, setIsLoading] = useState(true);
-    const [serverResponseReceived, setServerResponseReceived] = useState(false);
-
+function Step3({ nextStep, processId }) {
     useEffect(() => {
-        let isRequestPending = false;
-
-        const checkResponse = async () => {
-            if(isRequestPending) return;
-
+        const checkResponseStatus = async () => {
             try {
-                isRequestPending = true;
-                // UUID를 엔드포인트에 포함
                 const response = await axios.get(`http://localhost:8080/api/check-response/${processId}`);
 
                 if (response.status === 200) {
-                    setServerData(response.data);
                     nextStep();
-                } else {
-                    setTimeout(checkResponse, 5000);
+                    return; // 처리가 완료되면 더 이상 요청을 보내지 않습니다.
                 }
+
+                // 상태 코드가 200이 아닐 경우, 5초 후에 다시 상태 확인 요청을 보냅니다.
+                setTimeout(checkResponseStatus, 5000);
             } catch (error) {
-                console.error("Error while polling for server response", error);
-                setTimeout(checkResponse, 5000);
-            } finally {
-                isRequestPending = false;
+                console.error("Error checking processing status", error);
+                // 에러 발생 시, 5초 후에 다시 상태 확인 요청을 보냅니다.
+                setTimeout(checkResponseStatus, 5000);
             }
         };
 
-        checkResponse();
+        checkResponseStatus(); // 처음 컴포넌트가 마운트될 때 요청 시작
 
-    }, [processId]); // processId를 의존성 배열에 추가
+        // 컴포넌트가 언마운트될 때 혹시 남아있는 setTimeout을 클리어합니다.
+        return () => {
+            clearTimeout(checkResponseStatus);
+        };
+    }, [processId, nextStep]);
 
     return (
         <div className="compact-container">
@@ -44,7 +39,8 @@ function Step3({ nextStep, setServerData, processId }) { // processId prop 추�
             <div className="Validating-layout">
                 <InspectionSteps active="third" />
                 <div className="processing-animation">
-                    진행 중!!testtest
+                    <p>{processId}</p>
+                    진행 중!!testtest 이것도 테스트44
                 </div>
             </div>
         </div>

@@ -26,31 +26,24 @@ public class ReceiveDataController {
                                                           @RequestParam("uploadedFile") MultipartFile uploadedFile) {
 
         Map<String, Object> response = new HashMap<>();
-
         try {
             List<String> checkedItems = List.of(checkedItemsString.split(","));
-
-            System.out.println("step2->step3 button on!!");
-            // 데이터 처리 시작
-            // 여기부터 너무 문제
-            UUID processId = dataProcessingService.initializeProcessingStatus();
-            dataProcessingService.processData(processId, checkedItems, uploadedFile);
-
-            response.put("message", "Data received and processing started.");
+            UUID processId = dataProcessingService.initializeProcessingStatus(checkedItems, uploadedFile); // Modifying to store data for later processing
+            System.out.println(processId);  //주석
+            response.put("message", "Data received. Processing will start shortly.");
             response.put("processId", processId.toString());
-            System.out.println("okok we get");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            response.put("message", "Error processing data.");
+            response.put("message", "Error receiving data.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
     @GetMapping("/check-response/{processId}")
-    public ResponseEntity<Map<String, Object>> checkResponse(@PathVariable String processId) {
-
+    public ResponseEntity<Map<String, Object>> checkResponse(@PathVariable("processId") String processId) {
         Map<String, Object> response = new HashMap<>();
         UUID uuid;
+        System.out.println("controller /check-response on");
 
         try {
             uuid = UUID.fromString(processId);
@@ -66,7 +59,11 @@ public class ReceiveDataController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
 
-        if (status.isProcessingComplete()) {
+        if (!status.hasProcessingStarted()) {
+            dataProcessingService.processData(uuid); // Start the processing
+            response.put("message", "Data processing started.");
+            return ResponseEntity.status(HttpStatus.PROCESSING).body(response);
+        } else if (status.isProcessingComplete()) {
             response.put("message", "Data processing complete.");
             response.put("fileContent", status.getProcessedFileContent());
             response.put("ans", status.getAns());

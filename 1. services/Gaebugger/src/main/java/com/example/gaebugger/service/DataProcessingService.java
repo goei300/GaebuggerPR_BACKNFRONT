@@ -1,5 +1,7 @@
 package com.example.gaebugger.service;
 
+// ... (import statements remain the same)
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpEntity;
@@ -26,47 +28,59 @@ public class DataProcessingService {
 
     private final ConcurrentHashMap<UUID, ProcessingStatus> statusMap = new ConcurrentHashMap<>();
 
-    public UUID initializeProcessingStatus() {
+    public UUID initializeProcessingStatus(List<String> checkedItems, MultipartFile file) {
         UUID uuid = UUID.randomUUID();
-        statusMap.put(uuid, new ProcessingStatus());
-        return uuid;
-    }
-
-    @Async
-    public CompletableFuture<Void> processData(UUID processId, List<String> checkedItems, MultipartFile file) {
-        ProcessingStatus status = statusMap.get(processId);
+        ProcessingStatus status = new ProcessingStatus();
         try {
             status.setProcessedFileContent(new String(file.getBytes()));
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Content-Type", "application/json");
-
-            Map<String, Object> requestBody = Map.of(
-                    "text", status.getProcessedFileContent(),
-                    "checkedItem", checkedItems
-            );
-
-            HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
-            ResponseEntity<String> response = restTemplate.exchange(
-                    "http://localhost:5000/process-text",
-                    HttpMethod.POST,
-                    requestEntity,
-                    String.class
-            );
-
-            JsonNode rootNode = objectMapper.readTree(response.getBody());
-            if (rootNode.has("result")) {
-                status.setAns(rootNode.get("result").asText());
-            } else {
-                throw new Exception("Result key not found in response.");
-            }
-            status.setProcessingComplete(true);
-        } catch (Exception e) {
+            status.setCheckedItems(checkedItems);
+            statusMap.put(uuid, status);
+        } catch (IOException e) {
             e.printStackTrace();
-            status.setError(e.getMessage());
+            status.setError("Error initializing processing status.");
         }
+        return uuid;
+    }
+    private final Object lock = new Object();
+    @Async
+    public CompletableFuture<Void> processData(UUID processId) {
+        synchronized (lock) {
+            ProcessingStatus status = statusMap.get(processId);
 
-        return CompletableFuture.completedFuture(null);
+            status.setProcessingStarted(true);
+            try {
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Content-Type", "application/json");
+
+                Map<String, Object> requestBody = Map.of(
+                        "text", status.getProcessedFileContent(),
+                        "checkedItem", status.getCheckedItems()
+                );
+
+                System.out.println("now start api calling");
+                HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
+                ResponseEntity<String> response = restTemplate.exchange(
+                        "http://localhost:5000/process-text",
+                        HttpMethod.POST,
+                        requestEntity,
+                        String.class
+                );
+
+                JsonNode rootNode = objectMapper.readTree(response.getBody());
+                if (rootNode.has("result")) {
+                    status.setAns(rootNode.get("result").asText());
+                } else {
+                    throw new Exception("Result key not found in response.");
+                }
+                status.setProcessingComplete(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                status.setError(e.getMessage());
+            }
+            System.out.println("process done!!");
+            status.setProcessingComplete(true);
+            return CompletableFuture.completedFuture(null);
+        }
     }
 
     public ProcessingStatus getStatus(UUID processId) {
@@ -75,14 +89,24 @@ public class DataProcessingService {
 
     public static class ProcessingStatus {
         private boolean isProcessingComplete = false;
+        private boolean processingStarted = false; // To track if the processing has been started
+
         private String processedFileContent;
         private String ans;
         private String error;
+        private List<String> checkedItems;  // Store checked items
 
         public boolean isProcessingComplete() {
             return isProcessingComplete;
         }
 
+        public boolean hasProcessingStarted() {
+            return processingStarted;
+        }
+
+        public void setProcessingStarted(boolean processingStarted) {
+            this.processingStarted = processingStarted;
+        }
         public void setProcessingComplete(boolean processingComplete) {
             isProcessingComplete = processingComplete;
         }
@@ -109,6 +133,14 @@ public class DataProcessingService {
 
         public void setError(String error) {
             this.error = error;
+        }
+
+        public List<String> getCheckedItems() {
+            return checkedItems;
+        }
+
+        public void setCheckedItems(List<String> checkedItems) {
+            this.checkedItems = checkedItems;
         }
     }
 }
