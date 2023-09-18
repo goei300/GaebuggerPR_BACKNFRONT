@@ -1,17 +1,18 @@
 from flask import Flask, request, Response
 import json
 import openai
+from config import API_KEY
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
 from CoreLogicModule import Matching_ALGO
 import functools
 
-openai.api_key = 'my_api'
+
+openai.api_key = API_KEY
+
 
 app = Flask(__name__)
-
 @app.route('/process-text', methods=['POST'])
-
 def process_text():
     answer_text = ""
 
@@ -26,6 +27,7 @@ def process_text():
         func = functools.partial(get_response, df=df)
         answer_text = list(executor.map(func, range(len(df))))
 
+
     answer_text = "------------------------------------------------------------------------------------\n".join([ans for ans in answer_text if ans is not None])
     response_data = json.dumps({'result': answer_text}, ensure_ascii=False)
     return Response(response_data, content_type="application/json; charset=utf-8")
@@ -37,6 +39,7 @@ def create_prompt(i, df):
     else:
         target="No Question"
     return target
+
 
 def get_response(i, df):
     gpt_prompt = create_prompt(i,df)
