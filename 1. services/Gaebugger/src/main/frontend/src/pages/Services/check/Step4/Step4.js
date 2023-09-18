@@ -1,8 +1,8 @@
 import React from 'react';
-import Header from "../../header";
-import './compactContainer.css';
+import Header from "../../../header";
+import '../compactContainer.css';
 import './Step4.css';
-import InspectionSteps from "./InspectionSteps";
+import InspectionSteps from "../InspectionSteps";
 import axios from "axios";
 import {useEffect, useState} from "react";
 

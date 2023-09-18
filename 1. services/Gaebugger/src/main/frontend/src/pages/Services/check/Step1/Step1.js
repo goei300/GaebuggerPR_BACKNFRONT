@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Header from "../../header";
-import InspectionSteps from "./InspectionSteps";
+import Header from "../../../header";
+import InspectionSteps from "../InspectionSteps";
 import './Step1.css';
-import './compactContainer.css';
-
-import Service from "../Service";
+import '../compactContainer.css';
 
 function Step1({ nextStep, setCheckedItems}) {
     const [localCheckedItems, setLocalCheckedItems] = useState([]);

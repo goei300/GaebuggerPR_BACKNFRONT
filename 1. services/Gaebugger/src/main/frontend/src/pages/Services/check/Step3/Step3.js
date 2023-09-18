@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import InspectionSteps from "./InspectionSteps";
-import Header from "../../header";
-import './compactContainer.css';
+import InspectionSteps from "../InspectionSteps";
+import Header from "../../../header";
+import '../compactContainer.css';
 import './Step3.css';
 import axios from "axios";
 
