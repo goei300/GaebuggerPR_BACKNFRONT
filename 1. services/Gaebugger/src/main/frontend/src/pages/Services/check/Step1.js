@@ -10,7 +10,7 @@ import Service from "../Service";
 
 function Step1({ nextStep, setCheckedItems}) {
     const [localCheckedItems, setLocalCheckedItems] = useState([]);
-
+    console.log("hihi");
     const handleCheckboxChange = (event, item) => {
         if (event.target.checked) {
             setLocalCheckedItems(prevItems => [...prevItems, item]);

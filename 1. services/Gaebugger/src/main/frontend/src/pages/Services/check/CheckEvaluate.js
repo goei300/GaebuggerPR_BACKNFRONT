@@ -1,4 +1,3 @@
-// CheckEvaluate.js
 import React, { useState } from "react";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
@@ -11,7 +10,7 @@ function CheckEvaluate() {
     const [step, setStep] = useState(1);
     const [slideDirection, setSlideDirection] = useState('left');
     const [checkedItems, setCheckedItems] = useState([]);
-    const [serverData, setServerData] = useState(null);
+    const [processId, setProcessId] = useState(null);
 
     const nextStep = () => {
         setSlideDirection('right');
@@ -26,16 +25,28 @@ function CheckEvaluate() {
     let currentStep;
     switch (step) {
         case 1:
-            currentStep = <Step1 nextStep={nextStep} setCheckedItems={setCheckedItems}  />;
+            currentStep = <Step1 nextStep={nextStep} setCheckedItems={setCheckedItems} />;
             break;
         case 2:
-            currentStep = <Step2 nextStep={nextStep} prevStep={prevStep} checkedItems={checkedItems} />;
+            currentStep = (
+                <Step2
+                    nextStep={nextStep}
+                    prevStep={prevStep}
+                    setProcessId={setProcessId} // Step2에서 processId를 설정하기 위한 함수를 prop으로 전달
+                    checkedItems={checkedItems}
+                />
+            );
             break;
         case 3:
-            currentStep = <Step3 nextStep={nextStep} setServerData={setServerData} />;
+            currentStep = (
+                <Step3
+                    nextStep={nextStep}
+                    processId={processId} // processId를 Step3로 전달
+                />
+            );
             break;
         case 4:
-            currentStep = <Step4 serverData={serverData} />;
+            currentStep = <Step4 processId={processId} />;
             break;
         default:
             break;
@@ -53,4 +64,3 @@ function CheckEvaluate() {
 }
 
 export default CheckEvaluate;
-

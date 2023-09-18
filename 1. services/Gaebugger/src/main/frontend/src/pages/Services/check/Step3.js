@@ -1,44 +1,47 @@
-import React, { useState,useEffect } from 'react';
+import React, { useEffect } from 'react';
 import InspectionSteps from "./InspectionSteps";
 import Header from "../../header";
 import './compactContainer.css';
 import './Step3.css';
 import axios from "axios";
 
-
-function Step3({ nextStep, setServerData }){
-    /* 여기는 점검 끝날때 까지 대기하는 단계임 */
-    const [isLoading, setIsLoading] = useState(true);
-    const [serverResponseReceived, setServerResponseReceived] = useState(false);
-
+function Step3({ nextStep, processId }) {
     useEffect(() => {
-        const interval = setInterval(async () => {
+        const checkResponseStatus = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/api/check-response");
+                const response = await axios.get(`http://localhost:8080/api/check-response/${processId}`);
 
                 if (response.status === 200) {
-                    setServerData(response.data);  // 이 부분 추가
-                    console.log(response.data);
                     nextStep();
-                    clearInterval(interval);
+                    return; // 처리가 완료되면 더 이상 요청을 보내지 않습니다.
                 }
-            } catch (error) {
-                console.error("Error while polling for server response", error);
-            }
-        }, 5000); // 5초마다 확인합니다.
 
-        return () => clearInterval(interval); // 컴포넌트가 unmount될 때 interval을 정리합니다.
-    }, []);
-    return(
+                // 상태 코드가 200이 아닐 경우, 5초 후에 다시 상태 확인 요청을 보냅니다.
+                setTimeout(checkResponseStatus, 5000);
+            } catch (error) {
+                console.error("Error checking processing status", error);
+                // 에러 발생 시, 5초 후에 다시 상태 확인 요청을 보냅니다.
+                setTimeout(checkResponseStatus, 5000);
+            }
+        };
+
+        checkResponseStatus(); // 처음 컴포넌트가 마운트될 때 요청 시작
+
+        // 컴포넌트가 언마운트될 때 혹시 남아있는 setTimeout을 클리어합니다.
+        return () => {
+            clearTimeout(checkResponseStatus);
+        };
+    }, [processId, nextStep]);
+
+    return (
         <div className="compact-container">
             <Header />
             <div className="Validating-layout">
                 <InspectionSteps active="third" />
-
                 <div className="processing-animation">
-                    진행 중!!testtest
+                    <p>{processId}</p>
+                    진행 중!!testtest 이것도 테스트44
                 </div>
-
             </div>
         </div>
     );
