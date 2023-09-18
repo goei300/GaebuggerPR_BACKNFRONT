@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from "../../header";
 import './compactContainer.css';
+import './Step4.css';
 import InspectionSteps from "./InspectionSteps";
 import axios from "axios";
 import {useEffect, useState} from "react";
@@ -30,29 +31,30 @@ function Step4({ processId }) {
     return (
         <div className="compact-container">
             <Header />
-            <div className= "output-layout">
+            <div className="output-layout">
                 <InspectionSteps active="fourth" />
-                <div>
-                    <p>안뇽 이건 테스트</p>
-                    <p>Message: {serverData.message}</p>
+                <div className="message-section">
+                    <p>Message</p>
+                    <div>{serverData.message}</div>
                 </div>
-                <div>
+                <div className="checked_Items-section">
                     <p>Checked Items:</p>
                     <ul>
                         {itemsArray && itemsArray.map((item) => <li key={item}>{item}</li>)}
                     </ul>
                 </div>
-                <div>
+                <div className="FileContent-section">
                     <p>File Content:</p>
                     <pre>{serverData.fileContent}</pre>
                 </div>
-                <div>    
-                    <p>guidelines:</p>
+                <div className="GuideLines-section">
+                    <p>Guidelines:</p>
                     <pre>{serverData.ans}</pre>
                 </div>
             </div>
         </div>
     );
+
 }
 
 export default Step4;
