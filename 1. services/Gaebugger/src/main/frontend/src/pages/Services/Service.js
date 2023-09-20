@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link, Routes, Route, Outlet,useLocation } from 'react-router-dom';
-import CheckEvaluate from "./check/CheckEvaluate";
-import Step1 from './check/Step1';
-import Step2 from './check/Step2';
-import Header from '../header';
+import CheckEvaluate from "../Start/check/CheckEvaluate";
+import CheckInfo from './check/checkInfo';
+import Header from '../../components/header/header';
+import Footer from "../../components/footer/Footer";
 import { useInView } from 'react-intersection-observer';
 import './Service.css';
-import '../fonts.css';
+import '../../assets/fonts/fonts.css';
 
-function Section({ className, title, content, button }) {
+function Section({ className, title, content, button,button2 }) {
     const [ref, inView] = useInView({
         triggerOnce: true,  // Only trigger this effect once
         threshold: 0.1,     // Percentage of the element that's visible before triggering
@@ -19,6 +19,7 @@ function Section({ className, title, content, button }) {
             <h2>{title}</h2>
             <p>{content}</p>
             {button && <div className="section-button-container">{button}</div>}
+            {button2 && <div className="section-button-container2">{button2}</div>}
         </section>
     );
 }
@@ -31,22 +32,23 @@ function Service() {
             <Header active="services" />
 
             <main className="Service-content">
-                {location.pathname.startsWith('/services') && !location.pathname.includes('check') && (
-                    <Section
+                <Routes>
+                    {/* /services 경로에 대한 내용 */}
+                    <Route path="/" element={<Section
                         className="introduction_service"
                         title="개인정보 처리방침 점검을 쉽고 간편하게"
                         content="점검하고자 하는 처리방침 자료들을 한 번에 평가 결과를 확인해보세요!"
-                        button={<Link to="/services/check" className="start-button">개인정보 처리방침 평가 시작</Link>}
-                    />
-                )}
-
-                <Routes>
-                    <Route path="check" element={<CheckEvaluate />} />
-
-                    {/* Include routes for other steps as required */}
-                    <Route path="*" element={<Outlet />} />  // This acts as the placeholder for nested routes
+                        button={<Link to="/services/checkInfo" className="start-button">자세히 보기</Link>}
+                        button2={<Link to="/start/check" className="start-button2">바로 시작하기</Link>}
+                    
+                    />} />
+                    {/* /services/checkInfo 경로에 대한 내용 */}
+                    <Route path="/checkInfo" element={<CheckInfo />} />
+                    {/* 다른 경로에 대한 내용 */}
+    
                 </Routes>
             </main>
+            <Footer />
         </div>
     );
 }

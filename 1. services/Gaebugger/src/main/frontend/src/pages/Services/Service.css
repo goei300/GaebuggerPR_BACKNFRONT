@@ -4,36 +4,7 @@
     min-height: 100vh;
 }
 
-.logo {
-    flex-grow: 1;
-    /* If you have a logo image, you can use it as a background here or replace the div content. */
-}
 
-.nav-links {
-    flex-grow: 2; /* Allow the nav links section to grow larger than the other sections */
-    display: flex;
-    gap: 1rem; /* Space between the links */
-
-}
-
-.nav-links a {
-    margin: 0 0.5rem; /* Some spacing around each link */
-    text-decoration: none; /* Remove underlines from links */
-    color: black; /* Set link color */
-}
-
-.user-actions {
-    flex-grow: 1;
-    display: flex;
-    gap: 1rem; /* Space between the links */
-    justify-content: flex-end; /* Align links to the right */
-}
-
-.user-actions a {
-    margin: 0 0.5rem; /* Some spacing around each link */
-    text-decoration: none; /* Remove underlines from links */
-    color: black; /* Set link color */
-}
 .Service-content {
     padding-top: 60px; /* Adjust this value based on the actual height of your header */
     width: 100vw;
@@ -50,11 +21,7 @@
     /* Other styles like padding, margin, etc. as needed */
 }
 
-.Service-footer {
-    background-color: #222;
-    padding: 1rem;
-    text-align: center;
-}
+
 .feature {
     margin: 20px 0;
 }
@@ -81,19 +48,7 @@
     background-color: #1e90ff; /* A slightly brighter shade of the original royalblue */
 }
 
-.active-link {
-    position: relative; /* Establish a stacking context for pseudo-elements */
-}
 
-.active-link:after {
-    content: ''; /* This is necessary for the pseudo-element to be generated */
-    position: absolute; /* Positioning context established by the relative position of .active-link */
-    bottom: -15px; /* Place at the bottom of the link */
-    left: 0; /* Start from the left of the link */
-    width: 100%; /* Make it span the entire width of the link */
-    height: 2px; /* Adjust the thickness as needed */
-    background-color: royalblue; /* Color of the underline */
-}
 
 @keyframes fadeInSlide {
     from {
@@ -139,7 +94,4 @@
     opacity: 0;  /* set initial opacity so the animation can fade it in */
 }
 
-.active{
-    font-weight: bold;
-}
 
