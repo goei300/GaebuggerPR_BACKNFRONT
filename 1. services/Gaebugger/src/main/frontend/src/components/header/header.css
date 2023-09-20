@@ -1,0 +1,95 @@
+.header-container {
+    background-color: white;
+    color: black;
+    height: 64px;  /* 헤더의 높이를 64px로 설정 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    box-sizing: border-box;  
+    justify-content: space-between;  
+    align-items: center;  /* 중앙 정렬 유지 */
+    border-bottom: 1px solid rgb(221, 221, 221);
+    font-family: 'NotoSansKR-Regular';
+}
+.header-container .logo > Link, .logo a {
+    display: block; 
+    width: 100px;
+    height: 38.4px;
+}
+.header-container .logo img {
+    display: block; 
+    width: 100%; 
+    height: auto; 
+}
+
+
+
+.header-container .menu-structure a:not(:last-child),
+.header-container .authentication a:not(:last-child) {
+    padding-right: 24px;
+}
+
+.menu-structure a, .authentication a {
+    margin: 0 0.5rem; 
+    text-decoration: none; 
+    color: black; 
+}
+
+.logo, .authentication {
+    flex: 1;  
+    display: flex;
+}
+
+.logo {
+    justify-content: flex-start;
+    padding-left: 8rem;
+}
+.logo > Link, .logo a { 
+    display: inline-block; 
+}
+
+
+.menu-structure {
+    flex: 2; 
+    display: flex;
+    justify-content: center; 
+    gap: 1rem; 
+    margin-left: -30rem;
+}
+
+.authentication {
+    justify-content: flex-end; 
+    padding-right: 8rem;
+}
+
+
+.active-link{
+    font-weight: bold;
+    position: relative; /* Establish a stacking context for pseudo-elements */
+
+}
+
+
+.active-link:after {
+    content: ''; /* This is necessary for the pseudo-element to be generated */
+    position: absolute; /* Positioning context established by the relative position of .active-link */
+    bottom: -20px; /* Place at the bottom of the link */
+    left: -10px; /* Start from the left of the link */
+    width: 100%; /* Make it span the entire width of the link */
+    height: 2px; /* Adjust the thickness as needed */
+    background-color: royalblue; /* Color of the underline */
+}
+
+.startIndex-container .active-link:after {
+    content: ''; /* This is necessary for the pseudo-element to be generated */
+    position: absolute; /* Positioning context established by the relative position of .active-link */
+    bottom: -20px; /* Place at the bottom of the link */
+    left: -5px; /* Start from the left of the link */
+    width: 120%; /* Make it span the entire width of the link */
+    height: 2px; /* Adjust the thickness as needed */
+    background-color: royalblue; /* Color of the underline */
+}
+

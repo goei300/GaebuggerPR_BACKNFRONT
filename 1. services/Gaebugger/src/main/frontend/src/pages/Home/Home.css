@@ -4,60 +4,6 @@
     min-height: 100vh;
 }
 
-.home-header, .home-footer {
-    background-color: rgb(51, 51, 51); /* Making header transparent */
-    color: white;
-    padding: 1rem;
-    text-align: center;
-}
-
-.home-header {
-    background-color: white;
-    color: black;
-    padding: 1rem;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    display: flex;  /* Enable flexbox */
-    justify-content: space-between;  /* Space out the children (logo, nav, user-actions) */
-    align-items: center;  /* Center align items vertically */
-    border-bottom: 1px solid rgb(221, 221, 221);
-    font-family: 'tway_sky';
-    font-weight: bold;
-}
-
-.logo {
-    flex-grow: 1;
-    /* If you have a logo image, you can use it as a background here or replace the div content. */
-}
-
-.nav-links {
-    flex-grow: 2; /* Allow the nav links section to grow larger than the other sections */
-    display: flex;
-    gap: 1rem; /* Space between the links */
-
-}
-
-.nav-links a {
-    margin: 0 0.5rem; /* Some spacing around each link */
-    text-decoration: none; /* Remove underlines from links */
-    color: black; /* Set link color */
-}
-
-.user-actions {
-    flex-grow: 1;
-    display: flex;
-    gap: 1rem; /* Space between the links */
-    justify-content: flex-end; /* Align links to the right */
-}
-
-.user-actions a {
-    margin: 0 0.5rem; /* Some spacing around each link */
-    text-decoration: none; /* Remove underlines from links */
-    color: black; /* Set link color */
-}
 .home-content {
     width: 100vw;  /* viewport width */
     overflow-y: scroll;  /* allow vertical scrolling */
@@ -71,11 +17,7 @@
     /* Other styles like padding, margin, etc. as needed */
 }
 
-.home-footer {
-    background-color: #222;
-    padding: 1rem;
-    text-align: center;
-}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
