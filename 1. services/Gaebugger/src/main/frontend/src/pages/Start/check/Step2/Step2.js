@@ -4,7 +4,8 @@ import Header from "../../../../components/header/header";
 import InspectionSteps from "../InspectionSteps";
 import './Step2.css';
 import '../compactContainer.css';
-
+import SimpleContainer from '../../../../components/Container/Container';
+import CustomizedSteppers from "../../../../components/StepIndicator/StepIndicator";
 function Step2({ nextStep, prevStep, setProcessId, checkedItems }) { // onProcessIdReceived prop 추가
     const [file, setFile] = useState(null);
 
@@ -36,9 +37,8 @@ function Step2({ nextStep, prevStep, setProcessId, checkedItems }) { // onProces
 
     return (
         <div className="compact-container">
-            <Header />
+            <CustomizedSteppers activeStep={1} />
             <div className="FileUpload-layout">
-                <InspectionSteps active="second" />
 
                 <div className="file-upload-section">
                     <div className="file-upload">

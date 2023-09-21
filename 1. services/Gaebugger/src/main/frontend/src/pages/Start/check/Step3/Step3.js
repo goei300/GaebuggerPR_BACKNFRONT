@@ -35,7 +35,6 @@ function Step3({ nextStep, processId }) {
 
     return (
         <div className="compact-container">
-            <Header />
             <div className="Validating-layout">
                 <InspectionSteps active="third" />
                 <div className="processing-animation">

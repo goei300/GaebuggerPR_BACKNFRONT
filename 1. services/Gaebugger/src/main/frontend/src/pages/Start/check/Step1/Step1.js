@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import Header from "../../../../components/header/header";
-import Footer from "../../../../components/footer/Footer";
 import InspectionSteps from "../InspectionSteps";
 import './Step1.css';
 import '../compactContainer.css';
-
+import CustomizedSteppers from '../../../../components/StepIndicator/StepIndicator';
+import SimpleContainer from '../../../../components/Container/Container';
 function Step1({ nextStep, setCheckedItems}) {
     const [localCheckedItems, setLocalCheckedItems] = useState([]);
     console.log("hihi");
@@ -25,10 +24,9 @@ function Step1({ nextStep, setCheckedItems}) {
     return (
             <div className="compact-container">
                 <div className="inspection-layout">
-                    <InspectionSteps active="first" />
-
+                    <CustomizedSteppers activeStep={0} />
                     <div className="priority-items">
-                        <h2>Priority Items</h2>
+                        <h2 className="content-title">Priority Items</h2>
                         {Array.from({ length: 50 }).map((_, index) => (
                             <label key={index}>
                                 <input type="checkbox" onChange={(e) => handleCheckboxChange(e, `Item ${index + 1}`)} />

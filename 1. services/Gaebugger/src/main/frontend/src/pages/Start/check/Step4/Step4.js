@@ -30,7 +30,6 @@ function Step4({ processId }) {
 
     return (
         <div className="compact-container">
-            <Header />
             <div className="output-layout">
                 <InspectionSteps active="fourth" />
                 <div className="message-section">

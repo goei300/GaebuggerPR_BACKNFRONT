@@ -4,7 +4,7 @@ import Step2 from "./Step2/Step2";
 import Step3 from './Step3/Step3';
 import Step4 from './Step4/Step4';
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import './transitionStyles.css';
+
 
 function CheckEvaluate() {
     const [step, setStep] = useState(1);
