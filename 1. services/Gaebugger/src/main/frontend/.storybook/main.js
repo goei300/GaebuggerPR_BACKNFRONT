@@ -37,7 +37,7 @@ module.exports = {
     // CSS 로더 추가
     config.module.rules.push({
       test: /\.css$/,
-      use: ['style-loader', 'css-loader','postcss-loader'],
+      use: ['style-loader', 'css-loader'],
       include: path.resolve(__dirname, '../src'), // CSS 파일 경로를 정확하게 지정
     });
 

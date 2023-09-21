@@ -93,5 +93,3 @@
     animation: fadeIn 1.5s forwards;  /* apply the fadeIn animation */
     opacity: 0;  /* set initial opacity so the animation can fade it in */
 }
-
-

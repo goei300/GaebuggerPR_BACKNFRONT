@@ -2,7 +2,7 @@
 /* Horizontal layout for inspection-steps and priority-items */
 .inspection-layout {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
     justify-content: space-between;
     align-items: start;
@@ -11,12 +11,12 @@
 }
 
 .priority-items {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    overflow: visible;
-    margin-left: 2rem;
+    align-items: center; /* 가로 중앙 정렬 */
+    justify-content: center; /* 세로 중앙 정렬 */
+    margin : 50px auto;
+    /* 기타 스타일 ... */
 }
 
 .priority-items label {

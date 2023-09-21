@@ -2,12 +2,12 @@
     background-color: white;
     color: black;
     height: 64px;  /* 헤더의 높이를 64px로 설정 */
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    display: flex;
+    display: flex;  
     box-sizing: border-box;  
     justify-content: space-between;  
     align-items: center;  /* 중앙 정렬 유지 */
