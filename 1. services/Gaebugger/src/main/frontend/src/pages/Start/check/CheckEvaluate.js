@@ -11,7 +11,7 @@ function CheckEvaluate() {
     const [slideDirection, setSlideDirection] = useState('left');
     const [checkedItems, setCheckedItems] = useState([]);
     const [processId, setProcessId] = useState(null);
-
+    const [selectedItemIds, setSelectedItemIds] = useState([]);
     const nextStep = () => {
         setSlideDirection('right');
         setStep(prevStep => prevStep + 1);
@@ -25,7 +25,7 @@ function CheckEvaluate() {
     let currentStep;
     switch (step) {
         case 1:
-            currentStep = <Step1 nextStep={nextStep} setCheckedItems={setCheckedItems} />;
+            currentStep = <Step1 nextStep={nextStep} setCheckedItems={setCheckedItems} checkedItems={checkedItems}/>;
             break;
         case 2:
             currentStep = (
@@ -54,11 +54,7 @@ function CheckEvaluate() {
 
     return (
         <div className="jiji">
-            <TransitionGroup>
-                <CSSTransition key={step} timeout={500} classNames={`slide-${slideDirection}`}>
-                    {currentStep}
-                </CSSTransition>
-            </TransitionGroup>
+            {currentStep}
         </div>
     );
 }

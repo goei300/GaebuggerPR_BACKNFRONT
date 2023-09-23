@@ -24,3 +24,11 @@
     margin-bottom: 0.5rem;
 }
 
+.instruction{
+    font-family: "NotoSansKR-SemiBold";
+    height: 150px;
+    font-size: xx-large;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
