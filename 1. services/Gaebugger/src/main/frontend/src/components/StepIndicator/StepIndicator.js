@@ -36,7 +36,7 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.completed}`]: {
     [`& .${stepConnectorClasses.line}`]: {
       backgroundImage:
-        'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
+      'linear-gradient( 136deg, rgb(204, 229, 255) 0%, rgb(183, 216, 250) 50%, rgb(163, 204, 245) 100%)',
     },
   },
   [`& .${stepConnectorClasses.line}`]: {

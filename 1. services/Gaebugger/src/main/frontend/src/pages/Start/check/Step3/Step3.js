@@ -1,48 +1,67 @@
-import React, { useEffect } from 'react';
-import InspectionSteps from "../InspectionSteps";
-import Header from "../../../../components/header/header";
+import React, { useEffect, useState } from 'react';
+import { Box, Typography, Container, Divider, Paper, Button } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import '../compactContainer.css';
+import CustomizedSteppers from "../../../../components/StepIndicator/StepIndicator";
 import './Step3.css';
 import axios from "axios";
+import Loading from '../../../../components/animation/Loading';
+
+const StyledPaper = styled(Paper)({
+    padding: '30px',
+    borderRadius: '10px',
+});
 
 function Step3({ nextStep, processId }) {
+    const [loadingComplete, setLoadingComplete] = useState(false);
+
     useEffect(() => {
-        const checkResponseStatus = async () => {
+/*         const checkResponseStatus = async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/api/check-response/${processId}`);
-
                 if (response.status === 200) {
-                    nextStep();
-                    return; // 처리가 완료되면 더 이상 요청을 보내지 않습니다.
+                    setLoadingComplete(true);
+                    return;
                 }
-
-                // 상태 코드가 200이 아닐 경우, 5초 후에 다시 상태 확인 요청을 보냅니다.
                 setTimeout(checkResponseStatus, 5000);
             } catch (error) {
                 console.error("Error checking processing status", error);
-                // 에러 발생 시, 5초 후에 다시 상태 확인 요청을 보냅니다.
                 setTimeout(checkResponseStatus, 5000);
             }
         };
 
-        checkResponseStatus(); // 처음 컴포넌트가 마운트될 때 요청 시작
+        checkResponseStatus(); */
 
-        // 컴포넌트가 언마운트될 때 혹시 남아있는 setTimeout을 클리어합니다.
+        const timeout = setTimeout(() => {
+            setLoadingComplete(true);
+        },5000);
+
         return () => {
-            clearTimeout(checkResponseStatus);
+            clearTimeout(timeout);/* checkResponseStatus */
         };
     }, [processId, nextStep]);
 
     return (
-        <div className="compact-container">
-            <div className="Validating-layout">
-                <InspectionSteps active="third" />
-                <div className="processing-animation">
-                    <p>{processId}</p>
-                    진행 중!!testtest 이것도 테스트44
-                </div>
-            </div>
-        </div>
+        <Container className="compact-container">
+            <CustomizedSteppers activeStep={2} />
+            <Divider style={{ margin: '20px 0' }} />
+            <StyledPaper elevation={3}>
+                <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="200px">
+                    {!loadingComplete ? (
+                        <>
+                            <Loading />
+                            <Typography variant="h6" style={{ height:'150px' , position: 'absolute', marginTop: '1px', color: '#333', fontFamily: 'NotoSansKR-Black', animation: 'blink 3s infinite' }}>
+                                진단 중입니다. 평균적으로 3~5분정도 소모되니 잠시만 기다려주세요.
+                            </Typography>
+                        </>
+                    ) : (
+                        <Button variant="contained" color="primary" onClick={nextStep}>
+                            결과 확인
+                        </Button>
+                    )}
+                </Box>
+            </StyledPaper>
+        </Container>
     );
 }
 

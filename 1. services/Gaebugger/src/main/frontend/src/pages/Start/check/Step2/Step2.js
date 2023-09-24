@@ -11,16 +11,23 @@ function Step2({ nextStep, prevStep, setProcessId, checkedItems }) {
     
     const StyledPaper = styled(Paper)({
         padding: '30px',
-        backgroundColor: '#f9f9f9',
         boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)',
         borderRadius: '10px',
         margin: '100px'
     });
     
-    const handleFileChange = (e) => {
-        if (e.target.files[0]) {
-            setFile(e.target.files[0]);
+    const handleFileChange = (event) => {
+        const chosenFile = event.target.files[0];
+    
+        // 파일 확장자 검사
+        if (chosenFile && !chosenFile.name.endsWith('.txt')) {
+            alert("오직 .txt 파일만 허용됩니다.");
+            event.target.value = '';  // 파일 입력을 초기화
+            return;
         }
+    
+        // 원래의 로직 (파일 상태 업데이트 등)을 계속 실행
+        setFile(chosenFile);
     };
 
     const handleNext = async () => {
@@ -28,7 +35,7 @@ function Step2({ nextStep, prevStep, setProcessId, checkedItems }) {
         formData.append('checkedItems', JSON.stringify(checkedItems));
         formData.append('uploadedFile', file);
 
-        try {
+/*         try {
             const response = await axios.post("http://localhost:8080/api/checklist/submit", formData);
             if (response.data && response.data.processId) {
                 setProcessId(response.data.processId);
@@ -39,7 +46,8 @@ function Step2({ nextStep, prevStep, setProcessId, checkedItems }) {
             }
         } catch (error) {
             console.error("Error sending data", error);
-        }
+        } */
+        nextStep();
     };
 
     return (
@@ -60,7 +68,8 @@ function Step2({ nextStep, prevStep, setProcessId, checkedItems }) {
                         startIcon={<UploadFile />}
                     >
                         파일 선택
-                        <Input type="file" onChange={handleFileChange} style={{ display: 'none' }} /> 
+                        <Input type="file" accept=".txt" onChange={handleFileChange} style={{ display: 'none' }} />
+
                         {/* inline 스타일로 'display: none'을 추가하여 숨김 처리 */}
                     </Button>
                     {file && (
