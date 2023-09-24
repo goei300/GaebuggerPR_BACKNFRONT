@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Helmet } from "react-helmet";
 import Step1 from "./Step1/Step1";
 import Step2 from "./Step2/Step2";
 import Step3 from './Step3/Step3';
@@ -54,6 +55,10 @@ function CheckEvaluate() {
 
     return (
         <div className="jiji">
+            
+            <Helmet>
+                <title>개인정보 처리방침 진단</title>
+            </Helmet>
             {currentStep}
         </div>
     );

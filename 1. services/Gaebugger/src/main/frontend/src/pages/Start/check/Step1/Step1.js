@@ -9,7 +9,6 @@ function Step1({ nextStep, setCheckedItems, checkedItems  }) {
 
     const StyledPaper = styled(Paper)({
         padding: '30px',
-        backgroundColor: '#f9f9f9', // 밝은 회색 배경
         boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)', // 부드러운 그림자
         borderRadius: '10px', // 둥근 모서리
     });
@@ -73,7 +72,7 @@ function Step1({ nextStep, setCheckedItems, checkedItems  }) {
     return (
         <Container className="compact-container" >
             <CustomizedSteppers activeStep={0} />
-            <div className="instruction" style={{ height: '200px' }}>해당하는 기재사항을 체크해주세요!</div> {/* 20 px 여백을 실제로 추가 */}
+            <div className="instruction" style={{ height: '200px' }}>해당하는 기재사항을 체크해주세요</div> {/* 20 px 여백을 실제로 추가 */}
             <StyledPaper elevation={3}>
                 <Box display="flex" alignItems="center" my={3} >
                     <Box width={60} marginRight={4}>
