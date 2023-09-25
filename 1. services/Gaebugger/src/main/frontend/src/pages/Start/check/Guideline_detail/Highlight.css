@@ -1,0 +1,23 @@
+.highlight {
+    padding: 2px 4px;
+    border-radius: 3px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    background-color: transparent; /* 박스 안을 투명하게 합니다. */
+}
+
+.type1 {
+    border: 2px solid red;
+}
+
+.type2 {
+    border: 2px solid orange;
+}
+
+.type3 {
+    border: 2px solid green;
+}
+
+.MuiToggleButton-root {
+    margin: 5px;  /* 간격 조정 */
+    padding: 5px 10px;  /* 크기 조정 (상하 패딩 5px, 좌우 패딩 10px) */
+}

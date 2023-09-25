@@ -8,6 +8,8 @@ import { CloudUpload as UploadFile } from '@mui/icons-material';
 
 function Step2({ nextStep, prevStep, setProcessId, checkedItems }) {
     const [file, setFile] = useState(null);
+
+    console.log(checkedItems);
     
     const StyledPaper = styled(Paper)({
         padding: '30px',
