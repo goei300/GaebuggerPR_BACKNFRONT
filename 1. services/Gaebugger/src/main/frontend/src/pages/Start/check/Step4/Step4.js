@@ -35,7 +35,7 @@ const getCommentByScore = (score) => {
     if (score >= 60) return "개선이 필요해보이는 상황입니다. 가이드라인을 통해 바로 수정해보세요!";
     return "Needs Improvement";
 }
-function Step4({ processId }) {
+function Step4({ processId, nextStep }) {
     const [open, setOpen] = useState(false);
     const [detailType, setDetailType] = useState("");
 
@@ -139,7 +139,7 @@ function Step4({ processId }) {
             {/* 점수 표시 */}
             <Box display="flex" flexDirection="column" alignItems="center" my={4} position="relative">
                 <Typography variant="h3" style={{ fontFamily: "NotoSansKR-ExtraLight" }}>
-                    Score
+                    개인정보 처리방침 진단 점수
                 </Typography>
                 <Typography variant="h2" style={{ margin:"20px", fontFamily: "NotoSansKR-Bold", fontWeight: 'bold' }}>
                     {displayedScore}
@@ -164,7 +164,7 @@ function Step4({ processId }) {
             </Box>
 
             <Box display="flex" justifyContent="flex-end" mt={4}>
-                <Button variant="outlined" color="primary" style={{fontFamily: "NotoSansKR-Bold"}}>상세 가이드라인</Button>
+                <Button onClick={nextStep} variant="outlined" color="primary" style={{fontFamily: "NotoSansKR-Bold"}}>상세 가이드라인</Button>
             </Box>
 
             {/* 자세히 보기 팝업 */}
