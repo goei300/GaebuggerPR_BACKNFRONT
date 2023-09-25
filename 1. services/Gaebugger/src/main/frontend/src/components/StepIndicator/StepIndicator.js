@@ -21,7 +21,11 @@ const theme = createTheme({
     fontFamily: '"NotoSansKR-Bold", NotoSansKR-Bold',
   },
 });
-
+const StyledStepLabel = styled(StepLabel)(({ theme, ownerState }) => ({
+  ...(ownerState.active && {
+    animation: 'blink 2s infinite',
+  }),
+}));
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
     top: 22,
@@ -59,7 +63,7 @@ const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   ...(ownerState.active && {
-    animation: 'blink 1.5s infinite',
+    animation: 'blink 2s infinite',
     backgroundImage:
       'linear-gradient( 136deg, rgb(204, 229, 255) 0%, rgb(183, 216, 250) 50%, rgb(163, 204, 245) 100%)',
     boxShadow: '0 4px 10px 0 rgba(163, 204, 245, .25)',
@@ -118,7 +122,9 @@ export default function CustomizedSteppers({ activeStep }) {
         <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
           {steps.map((label) => (
             <Step key={label}>
-              <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+              <StyledStepLabel ownerState={{ active: activeStep === steps.indexOf(label) }} StepIconComponent={ColorlibStepIcon}>
+                {label}
+              </StyledStepLabel>
             </Step>
           ))}
         </Stepper>
