@@ -5,6 +5,7 @@ import './Home.css';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/Footer';
 
+
 function Section({ className, title, content }) {
     const [ref, inView] = useInView({
         triggerOnce: true,  // Only trigger this effect once

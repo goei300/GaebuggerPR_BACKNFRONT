@@ -4,6 +4,8 @@ import Step1 from "./Step1/Step1";
 import Step2 from "./Step2/Step2";
 import Step3 from './Step3/Step3';
 import Step4 from './Step4/Step4';
+import { CircularProgress } from '@mui/material';
+import Guideline_detail from "./Guideline_detail/Guideline_detail";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 
@@ -47,10 +49,14 @@ function CheckEvaluate() {
             );
             break;
         case 4:
-            currentStep = <Step4 processId={processId} />;
+            currentStep = <Step4 processId={processId} nextStep={nextStep} />;
             break;
+        case 5:
+            currentStep = <Guideline_detail processId={processId} prevStep={prevStep} />;
+    
         default:
             break;
+        
     }
 
     return (
