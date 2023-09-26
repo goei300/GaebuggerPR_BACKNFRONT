@@ -8,21 +8,36 @@
     right: 0;
     z-index: 1000;
     display: flex;  
-    box-sizing: border-box;  
-    justify-content: space-between;  
+    box-sizing: border-box;   
     align-items: center;  /* 중앙 정렬 유지 */
     border-bottom: 1px solid rgb(221, 221, 221);
-    font-family: 'NotoSansKR-Regular';
+    font-family: 'NotoSansKR-Medium';
+
 }
+.header-container .logo {
+    flex-shrink: 0;
+}
+
 .header-container .logo > Link, .logo a {
     display: block; 
     width: 100px;
     height: 38.4px;
 }
 .header-container .logo img {
-    display: block; 
+    display: flex; 
     width: 100%; 
     height: auto; 
+}
+.logo_menu{
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    height: 100%;
+
+    margin-left: -28px;
+    margin-right: -28px;
+    height: 100%;
+
 }
 
 
@@ -33,33 +48,42 @@
 }
 
 .menu-structure a, .authentication a {
-    margin: 0 0.5rem; 
     text-decoration: none; 
     color: black; 
 }
 
 .logo, .authentication {
-    flex: 1;  
     display: flex;
 }
 
+
 .logo {
     justify-content: flex-start;
-    padding-left: 8rem;
+    padding-left: 10vw;
+    padding-right: 28px;
 }
 .logo > Link, .logo a { 
     display: inline-block; 
 }
 
+.Big-Menu{
+    padding-left: 28px;
+    padding-right: 28px;
+    flex: 1 1 auto;
+    height: 100%;
+  }
 
 .menu-structure {
-    flex: 2; 
     display: flex;
-    justify-content: center; 
-    gap: 1rem; 
-    margin-left: -30rem;
+    height: 100%;
+    position: relative;
+    align-items: center;
 }
-
+.menu-structure > * {
+    padding-left: 24px;
+    padding-right: 24px;
+    font-size: 14px;
+}
 .authentication {
     justify-content: flex-end; 
     padding-right: 8rem;
@@ -76,9 +100,9 @@
 .active-link:after {
     content: ''; /* This is necessary for the pseudo-element to be generated */
     position: absolute; /* Positioning context established by the relative position of .active-link */
-    bottom: -20px; /* Place at the bottom of the link */
-    left: -10px; /* Start from the left of the link */
-    width: 100%; /* Make it span the entire width of the link */
+    bottom: -22px; /* Place at the bottom of the link */
+    left: 10px; /* Start from the left of the link */
+    width: 80%; /* Make it span the entire width of the link */
     height: 2px; /* Adjust the thickness as needed */
     background-color: royalblue; /* Color of the underline */
 }
@@ -86,10 +110,24 @@
 .startIndex-container .active-link:after {
     content: ''; /* This is necessary for the pseudo-element to be generated */
     position: absolute; /* Positioning context established by the relative position of .active-link */
-    bottom: -20px; /* Place at the bottom of the link */
-    left: -5px; /* Start from the left of the link */
-    width: 120%; /* Make it span the entire width of the link */
+    bottom: -22px; /* Place at the bottom of the link */
+    left: 10px; /* Start from the left of the link */
+    width: 80%; /* Make it span the entire width of the link */
     height: 2px; /* Adjust the thickness as needed */
     background-color: royalblue; /* Color of the underline */
 }
 
+@media (max-width: 1072px) {
+    .header-container {
+        padding: 1%;
+    }
+    .menu-structure {
+        display: none;  /* 메뉴 숨기기 */
+    }
+}
+@media (max-width: 768px) {
+    .header-container .logo {
+        padding-left: 3vw; /* 화면 너비의 3%로 로고의 왼쪽 패딩 조절 */
+    }
+}
+/* 작은 화면 (예: 모바일) 크기에 대한 스타일 */
