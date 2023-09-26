@@ -1,4 +1,5 @@
 .highlight {
+    font-size: 15px;
     padding: 1px 2px;
     border-radius: 3px;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
@@ -18,6 +19,7 @@
 }
 .type1 .idCircle {
     border: 2px solid red;
+    font-size: 10px;
     color: red;
 
 }
@@ -26,6 +28,7 @@
 }
 .type2 .idCircle {
     border: 2px solid orange;
+    font-size: 10px;
     color: orange;
 }
 .type3 {
@@ -33,6 +36,7 @@
 }
 .type3 .idCircle{
     border: 2px solid green;
+    font-size: 10px;
     color: green;
 }
 .idCircle {
@@ -48,7 +52,7 @@
     transform: translateY(-50%);  /* 수직 중앙 정렬 */
     font-family: "NotoSansKR-Bold";
     text-align: center;
-    font-size: 10px;
+    font-size: 14px;
     z-index: 1;
     display: inline-block;  /* 박스와 동일 라인에 배치하기 위해 */
     vertical-align: middle;  /* 중앙 정렬을 위해 */
