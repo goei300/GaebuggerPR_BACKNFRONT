@@ -51,17 +51,34 @@ function Guideline_detail({processId, prevStep}){
     };
   
     // wrong_type 별로 텍스트 강조
+    // const filteredHighlight = (txt, templates) => {
+    //     let highlightedText = txt;
+    //     templates.forEach(template => {
+    //         if (filteredTypes.includes(template.wrong_type)) {
+    //             const regex = new RegExp(template.wrong_content, "g");
+    //             const className = `highlight type${template.wrong_type}`;
+    //             highlightedText = highlightedText.replace(regex, `<span class="${className}">${template.wrong_content}</span>`);
+    //         }
+    //     });
+    //     return highlightedText;
+    // };
+
+
     const filteredHighlight = (txt, templates) => {
         let highlightedText = txt;
         templates.forEach(template => {
             if (filteredTypes.includes(template.wrong_type)) {
                 const regex = new RegExp(template.wrong_content, "g");
                 const className = `highlight type${template.wrong_type}`;
-                highlightedText = highlightedText.replace(regex, `<span class="${className}">${template.wrong_content}</span>`);
+                highlightedText = highlightedText.replace(
+                    regex, 
+                    `<span class="${className}"><span class="idCircle">${template.wrong_id}</span>${template.wrong_content}</span>`
+                );
             }
         });
         return highlightedText;
     };
+    
 
     const originalTxt = guidelineDetail.originalContent;
 

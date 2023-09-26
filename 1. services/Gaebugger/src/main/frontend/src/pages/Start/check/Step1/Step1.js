@@ -104,7 +104,7 @@ function Step1({ nextStep, setCheckedItems, checkedItems  }) {
                             </Box>
                         </Box>
                     ) : (
-                        <Box key={item.id} display="flex" alignItems="center" my={4}>
+                        <Box key={item.id} display="flex" justifyContent="center" alignItems="center" my={4}>
                             <Box width={60} marginRight={4}>
                                 <Typography variant="h6" style={{ fontFamily: 'NotoSansKR-Bold, sans-serif' }}>{item.id}</Typography>
                             </Box>
