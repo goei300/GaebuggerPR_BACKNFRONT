@@ -3,6 +3,7 @@ import CustomizedSteppers from "../../../../components/StepIndicator/StepIndicat
 import {  ToggleButton, ToggleButtonGroup, Typography, Paper, Box, Divider, Grid, List, ListItem, Container, Button, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import DescriptionIcon from '@mui/icons-material/Description';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import wrongtemplete from './test.json';
 import guidelineDetail from './test_process.json';
 import './Highlight.css';
@@ -272,6 +273,13 @@ function Guideline_detail({processId, prevStep}){
 
                     </Grid>
                 </Grid>
+
+                <Box mt={4} display="flex" flexDirection="column" alignItems="center">
+                <ArrowDownwardIcon style={{ 
+                    fontSize: 150, 
+                    color: "#3f51b5", 
+                }} />
+                </Box>
 
                 {/* 수정된 txt파일 내용 */}
                 <Box mt={4}>

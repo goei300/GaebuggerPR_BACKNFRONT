@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {  Typography, Paper, Box, Divider, List, ListItem, Container, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { ResponsiveBar } from '@nivo/bar';
+import { ResponsivePie } from '@nivo/pie';
 import '../compactContainer.css';
 import './Step4.css';
 import '../../../../assets/fonts/fonts.css';    
@@ -15,6 +17,9 @@ const StyledPaper = styled(Paper)({
     marginTop: '20px',
     marginBottom: '20px',
 });
+
+
+
 
 function getDialogTitle(type) {
     switch(type) {
@@ -106,6 +111,42 @@ function Step4({ processId, nextStep }) {
 
     const itemsArray = serverData.checkedItems; */
 
+
+    const graphData = [
+        {
+            name: '법률 위반',
+            사용자: serverData['lawViolate'],
+            평균: 2,
+        },
+        {
+            name: '법률 위반 위험',
+            사용자: serverData['lawDanger'],
+            평균: 1,
+        },
+        {
+            name: '작성지침 미준수',
+            사용자: serverData['guideViolate'],
+            평균: 1,
+        },
+    ];
+    
+    const pieData = [
+        {
+            "id": "법률 위반",
+            "label": "법률 위반",
+            "value": 3
+        },
+        {
+            "id": "법률 위반 위험",
+            "label": "법률 위반 위험",
+            "value": 2
+        },
+        {
+            "id": "작성지침 미준수",
+            "label": "작성지침 미준수",
+            "value": 1
+        }
+    ];
     return (
         <Container className="compact-container">
             <CustomizedSteppers activeStep={3} />
@@ -133,12 +174,144 @@ function Step4({ processId, nextStep }) {
                 ))}
             </Box>
         
+        <br/>
+        <br/>
+        <Typography variant='h3' style={{ fontFamily: "NotoSansKR-Bold", textAlign: "center"}}>
+            평균 처리방침 진단 결과 비교
+        </Typography>
+        <Divider style={{margin: "50px", opacity:0}} />
+        
+        <div style={{ height: '400px' }}>
+                <ResponsiveBar
+                    data={graphData}
+                    keys={['사용자', '평균']}
+                    indexBy="name"
+                    margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+                    layout="vertical"
+                    borderRadius={4}
+                    padding={0.6}
+                    enableGridX={false}
+                    enableGridY={false}
+                    fontFamily="NotoSansKR-SemiBold"
+                    groupMode="grouped"
+                    colors={['#0000FF', '#B0E0E6']}
+                    theme={{
+                        fontFamily:"NotoSansKR-SemiBold",
+                        fontSize: 14,
+                        axis: {
+                            domain: {
+                                line: {
+                                    stroke: "#D9D9D9",
+                                    strokeWidth: 1
+                                }
+                            },
+                            ticks: {
+                                line: {
+                                    stroke: "#D9D9D9",
+                                    strokeWidth: 0.5
+                                }
+                            },
+                            
+                        },
+                        grid: {
+                            line: {
+                                stroke: "#ddd",
+                                strokeWidth: 0.5
+                            }
+                        },
+                        labels: {
+                            text: {
+                                fill: "#FF0000"
+                            }
+                        }
+                    }}
 
+
+                    borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+                    axisTop={null}
+                    axisRight={null}
+                    axisBottom={{
+                        tickSize: 5,
+                        tickPadding: 5,
+                        tickRotation: 0,
+                        legend: '항목',
+                        legendPosition: 'middle',
+                        legendOffset: 32
+                    }}
+                    axisLeft={{
+                        tickSize: 5,
+                        tickPadding: 5,
+                        tickRotation: 0,
+                        legend: '건수',
+                        legendPosition: 'middle',
+                        legendOffset: -40,
+                        tickValues:[0,2,4,6,8,10],
+                    }}
+                    labelSkipWidth={12}
+                    labelSkipHeight={12}
+                    
+                    labelTextColor="#FFFFFF"
+                    legends={[
+                        {
+                            dataFrom: 'keys',
+                            anchor: 'bottom-right',
+                            direction: 'column',
+                            justify: false, 
+                            translateX: 120,
+                            translateY: 0,
+                            itemsSpacing: 2,
+                            itemWidth: 100,
+                            itemHeight: 20,
+                            itemDirection: 'left-to-right',
+                            itemOpacity: 0.85,
+                            symbolSize: 20,
+                            effects: [
+                                {
+                                    on: 'hover',
+                                    style: {
+                                        itemOpacity: 1  
+                                    }
+                                }
+                            ]
+                        }
+                    ]}
+                    animate={true}
+                    motionStiffness={90}
+                    motionDamping={15}
+                />
+            </div>
             <Divider style={{margin: "50px", opacity:0}} />
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '450px', width: '450px', margin: '0 auto' }}>
+                <ResponsivePie
+                    data={pieData}
+                    margin={{ top: 40, right: 120, bottom: 80, left: 120 }}
+                    innerRadius={0.5}
+                    padAngle={0.7}
+                    cornerRadius={3}
+                    colors={['#007BFF', '#4CAF50', '#2E8B57']}
+                    borderColor={{ from: 'color', modifiers: [['darker', 0.6]] }}
+                    animate={true}
+                    motionStiffness={90}
+                    motionDamping={15}
+                />
+                <Typography variant='h5' style={{ 
+                    fontFamily: "NotoSansKR-SemiBold",
+                    textAlign: 'center',
+                    marginTop: '0px',
+                    color: '#333'
+                }}>
+                    사용자님의 위험도 그래프
+                </Typography>
+            </div>
+
+
+
+
+            <Divider style={{margin: "100px", opacity:0}} />
 
             {/* 점수 표시 */}
             <Box display="flex" flexDirection="column" alignItems="center" my={4} position="relative">
-                <Typography variant="h3" style={{ fontFamily: "NotoSansKR-ExtraLight" }}>
+                <Typography variant="h3" style={{ fontFamily: "NotoSansKR-Medium" }}>
                     개인정보 처리방침 진단 점수
                 </Typography>
                 <Typography variant="h2" style={{ margin:"20px", fontFamily: "NotoSansKR-Bold", fontWeight: 'bold' }}>
