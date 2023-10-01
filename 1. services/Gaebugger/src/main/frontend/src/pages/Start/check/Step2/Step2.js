@@ -58,8 +58,8 @@ function Step2({ nextStep, prevStep, setProcessId, checkedItems }) {
             <div className="instruction" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>개인정보 처리방침 파일을 업로드 해주세요!</div>
             <StyledPaper elevation={3}>
                 <Box my={3}>
-                    <Typography variant="h5" gutterBottom>개인정보 처리방침 문서 파일 업로드를 하세요! 테스트입니다!</Typography>
-                    <Typography variant="subtitle1">파일 형식: .txt만 가능 (0.9v)</Typography>
+                    <Typography variant="h5" style={{textAlign:"center"}} gutterBottom>개인정보 처리방침 문서 파일 업로드를 하세요! 테스트입니다!</Typography>
+                    <Typography variant="subtitle1" style={{textAlign:"center"}} >파일 형식: .txt만 가능 (0.9v)</Typography>
                 </Box>
                 <Divider style={{ margin: '20px 0' }} />
                 <Box display="flex" flexDirection="column" alignItems="center" my={4}>
