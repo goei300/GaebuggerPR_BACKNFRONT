@@ -1,14 +1,14 @@
 import React, { useEffect, useState,useRef } from 'react';
 import {  Typography, Paper, Box, Divider, List, ListItem, Container, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useSpring, animated } from 'react-spring';
-import { ResponsiveBar } from '@nivo/bar';
-import { ResponsivePie } from '@nivo/pie';
+import { animated } from 'react-spring';
+import BarChartComponent from '../../../../components/bargraph/BarChartComponent';
+import PieChartComponent from '../../../../components/piechart/PieChartComponent';
+import ResultBoxSection from '../../../../components/ResultBox/ResultBoxSection';
+import ScoreDisplay from '../../../../components/scoredisplay/ScoreDisplay';
 import '../compactContainer.css';
 import './Step4.css';
 import '../../../../assets/fonts/fonts.css';    
-import IconButton from '@mui/material/IconButton';
-import WarningIcon from '@mui/icons-material/Warning';
 import CustomizedSteppers from '../../../../components/StepIndicator/StepIndicator';
 import axios from "axios";
 
@@ -18,9 +18,6 @@ const StyledPaper = styled(Paper)({
     marginTop: '20px',
     marginBottom: '20px',
 });
-
-
-
 
 function getDialogTitle(type) {
     switch(type) {
@@ -70,33 +67,6 @@ function Step4({ processId, nextStep }) {
     const handleClose = () => {
         setOpen(false);
     };
-    const [displayedScore, setDisplayedScore] = useState(0);
-    const [showComment, setShowComment] = useState(false); // 추가 커멘트 표시 여부 상태
-    
-    
-
-    
-    useEffect(() => {
-    
-        const maxScore = serverData.score;
-        const intervalTime = 10;
-        const incrementValue = maxScore / (500 / intervalTime);
-    
-        const interval = setInterval(() => {
-            setDisplayedScore(prevScore => {
-                const newScore = prevScore + incrementValue;
-                if (newScore >= maxScore) {
-                    clearInterval(interval);
-                    setShowComment(true);
-                    return maxScore;
-                }
-                return Math.floor(newScore);
-            });
-            
-        }, intervalTime);
-    
-        return () => clearInterval(interval);
-    }, [serverData.score]);  // 의존성 배열에 visible을 추가
     
 /*     const [serverData, setServerData] = useState(null);
 
@@ -155,195 +125,31 @@ function Step4({ processId, nextStep }) {
             "value": 1
         }
     ];
-    const AnimatedContainer = animated(Container);
+    const total = pieData.reduce((acc, data) => acc + data.value, 0);
     return (
         <Container className="compact-container">
             <CustomizedSteppers activeStep={3} />
             <Divider style={{margin: "50px", opacity:0}} />
             {/* 다양한 항목들 */}
-            <Box display="flex" justifyContent="space-between" my={4}>
-                {[
-                    { key: 'lawViolate', label: '법률 위반', color: '#007BFF' },   // 바다 색상
-                    { key: 'lawDanger', label: '법률 위반 위험', color: '#4CAF50' }, // 에메랄드 색상
-                    { key: 'guideViolate', label: '작성지침 미준수', color: '#2E8B57' }, // 에메랄드 조금 더 진한 색상
-                ].map(({ key, label, color }) => (
-                    <Box key={key} p={2} border={`2px solid ${color}`} borderRadius={16} textAlign="center" flexGrow={1} mx={2} width="200px"  height="200px" >
-                        <Typography variant="h6" style={{ fontFamily: "NotoSansKR-SemiBold", color: color }}>
-                            {label}
-                        </Typography>
-                        <br/>
-                        <Typography variant="h4" style={{ color: color, fontWeight: 'bold',fontFamily: "NotoSansKR-Bold", margin: '12px 0' }}>
-                            {serverData[key]}건
-                        </Typography>
-                        <br/>
-                        <Button onClick={() => handleOpen(key)} variant="outlined" size="small" style={{ borderColor: color, color: color,fontFamily: "NotoSansKR-Regular" }}>
-                            자세히보기
-                        </Button>
-                    </Box>
-                ))}
-            </Box>
-        
-        <br/>
-        <br/>
-        <Typography variant='h3' style={{ fontFamily: "NotoSansKR-Bold", textAlign: "center"}}>
-            평균 처리방침 진단 결과 비교
-        </Typography>
-        <Divider style={{margin: "50px", opacity:0}} />
-        
-        <div style={{ height: '400px' }}>
-                <ResponsiveBar
-                    data={graphData}
-                    keys={['사용자', '평균']}
-                    indexBy="name"
-                    margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
-                    layout="vertical"
-                    borderRadius={4}
-                    padding={0.6}
-                    enableGridX={false}
-                    enableGridY={false}
-                    fontFamily="NotoSansKR-SemiBold"
-                    groupMode="grouped"
-                    colors={['#0000FF', '#B0E0E6']}
-                    theme={{
-                        fontFamily:"NotoSansKR-SemiBold",
-                        fontSize: 14,
-                        axis: {
-                            domain: {
-                                line: {
-                                    stroke: "#D9D9D9",
-                                    strokeWidth: 1
-                                }
-                            },
-                            ticks: {
-                                line: {
-                                    stroke: "#D9D9D9",
-                                    strokeWidth: 0.5
-                                }
-                            },
-                            
-                        },
-                        grid: {
-                            line: {
-                                stroke: "#ddd",
-                                strokeWidth: 0.5
-                            }
-                        },
-                        labels: {
-                            text: {
-                                fill: "#FF0000"
-                            }
-                        }
-                    }}
+            <div className="estimate_userFile" style={{marginBottom: "200px"}}>
+                <ResultBoxSection serverData={serverData} handleOpen={handleOpen} />
+                <Divider style={{margin: "70px", opacity:0}} />
+                <PieChartComponent pieData={pieData} total={total} />   
 
-
-                    borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-                    axisTop={null}
-                    axisRight={null}
-                    axisBottom={{
-                        tickSize: 5,
-                        tickPadding: 5,
-                        tickRotation: 0,
-                        legend: '항목',
-                        legendPosition: 'middle',
-                        legendOffset: 32
-                    }}
-                    axisLeft={{
-                        tickSize: 5,
-                        tickPadding: 5,
-                        tickRotation: 0,
-                        legend: '건수',
-                        legendPosition: 'middle',
-                        legendOffset: -40,
-                        tickValues:[0,2,4,6,8,10],
-                    }}
-                    labelSkipWidth={12}
-                    labelSkipHeight={12}
-                    
-                    labelTextColor="#FFFFFF"
-                    legends={[
-                        {
-                            dataFrom: 'keys',
-                            anchor: 'bottom-right',
-                            direction: 'column',
-                            justify: false, 
-                            translateX: 120,
-                            translateY: 0,
-                            itemsSpacing: 2,
-                            itemWidth: 100,
-                            itemHeight: 20,
-                            itemDirection: 'left-to-right',
-                            itemOpacity: 0.85,
-                            symbolSize: 20,
-                            effects: [
-                                {
-                                    on: 'hover',
-                                    style: {
-                                        itemOpacity: 1  
-                                    }
-                                }
-                            ]
-                        }
-                    ]}
-                    animate={true}
-                    motionStiffness={90}
-                    motionDamping={15}
-                />
             </div>
+
+            <br/>
+            <br/>
+            <Typography variant='h3' style={{ fontFamily: "NotoSansKR-Bold", textAlign: "center"}}>
+                평균 처리방침 진단 결과 비교
+            </Typography>
             <Divider style={{margin: "50px", opacity:0}} />
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '450px', width: '450px', margin: '0 auto' }}>
-                <ResponsivePie
-                    data={pieData}
-                    margin={{ top: 40, right: 120, bottom: 80, left: 120 }}
-                    innerRadius={0.5}
-                    padAngle={0.7}
-                    cornerRadius={3}
-                    colors={['#007BFF', '#4CAF50', '#2E8B57']}
-                    borderColor={{ from: 'color', modifiers: [['darker', 0.6]] }}
-                    animate={true}
-                    motionStiffness={90}
-                    motionDamping={15}
-                />
-                <Typography variant='h5' style={{ 
-                    fontFamily: "NotoSansKR-SemiBold",
-                    textAlign: 'center',
-                    marginTop: '0px',
-                    color: '#333'
-                }}>
-                    사용자님의 위험도 그래프
-                </Typography>
-            </div>
-
-
-
+        
+            <BarChartComponent data={graphData} />      
 
             <Divider style={{margin: "100px", opacity:0}} />
 
-            {/* 점수 표시 */}
-            <Box display="flex" flexDirection="column" alignItems="center" my={4} position="relative">
-                <Typography variant="h3" style={{ fontFamily: "NotoSansKR-Medium" }}>
-                    개인정보 처리방침 진단 점수
-                </Typography>
-                <Typography variant="h2" style={{ margin:"20px", fontFamily: "NotoSansKR-Bold", fontWeight: 'bold' }}>
-                    {displayedScore}
-                </Typography>
-                <br/>
-                {showComment && (
-                    <React.Fragment>
-                        <Typography variant="h6" style={{ marginTop: '10px', fontFamily: "NotoSansKR-Medium" }}>
-                            {getCommentByScore(displayedScore)}
-                        </Typography>
-
-                        <Button 
-                            variant="outlined" 
-                            size="small"
-                            style={{ marginTop: '30px', fontFamily: "NotoSansKR-Regular" }} 
-                            onClick={() => handleOpen('score')}
-                        >
-                            자세히보기
-                        </Button>
-                    </React.Fragment>
-                )}
-            </Box>
+            <ScoreDisplay data={serverData} handleOpen={handleOpen} getCommentByScore={getCommentByScore} />
 
             <Box display="flex" justifyContent="flex-end" mt={4}>
                 <Button onClick={nextStep} variant="outlined" color="primary" style={{fontFamily: "NotoSansKR-Bold"}}>상세 가이드라인</Button>
