@@ -92,7 +92,7 @@ nav.menu-structure ul {
 
 nav.menu-structure li {
     margin-left: 15px;   /* 각 메뉴 항목 간의 간격 */
-    margin-right: 22px;
+    margin-right: 30px;
     height: 100%;
     display: flex;
     position: relative;
@@ -115,20 +115,20 @@ nav.menu-structure li {
 
 
 .active-link{
-
     position: relative; /* Establish a stacking context for pseudo-elements */
-
 }
-
+nav.menu-structure .active-link {
+    color: #4287f5;
+}
 
 .active-link:after {
     content: ''; /* This is necessary for the pseudo-element to be generated */
     position: absolute; /* Positioning context established by the relative position of .active-link */
-    bottom: -22px; /* Place at the bottom of the link */
-    left: 15px; /* Start from the left of the link */
-    width: 80%; /* Make it span the entire width of the link */
+    bottom: -23px; /* Place at the bottom of the link */
+    left: -3px; /* Start from the left of the link */
+    width: 110%; /* Make it span the entire width of the link */
     height: 2px; /* Adjust the thickness as needed */
-    background-color: royalblue; /* Color of the underline */
+    background-color: #4287f5;/* Color of the underline */
 }
 
 .startIndex-container .active-link:after {
@@ -138,7 +138,7 @@ nav.menu-structure li {
     left: 10px; /* Start from the left of the link */
     width: 80%; /* Make it span the entire width of the link */
     height: 2px; /* Adjust the thickness as needed */
-    background-color: royalblue; /* Color of the underline */
+    background-color: #4287f5;/* Color of the underline */
 }
 
 
