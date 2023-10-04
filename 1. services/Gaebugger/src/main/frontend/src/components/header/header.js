@@ -1,23 +1,29 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../assets/fonts/fonts.css';
 import './header.css';
 import logoImage from '../../assets/images/pado_font+icon.png';
-import { Button, Menu, MenuItem} from '@mui/material';
-
-
+import { Button } from '@mui/material';
 
 const Header = ({ active }) => {
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [showContactDropdown, setShowContactDropdown] = useState(false);
+    const [showServicesDropdown, setShowServicesDropdown] = useState(false);
 
-    const handleOpen = (event) => {
-        setAnchorEl(event.currentTarget);
+    const CustomDropdown = ({ isOpen, items, onClose }) => {
+        if (!isOpen) return null;
+
+        return (
+            <div className="dropdown-menu" onMouseLeave={onClose}>
+                {items.map((item, idx) => (
+                    <Link key={idx} to={item.link} className="dropdown-item">
+                        {item.label}
+                    </Link>
+                ))}
+            </div>
+        );
     };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    return (   
+    return (
         <header className="header-container">
             <div className="logo_menu">
                 <div className="logo">
@@ -25,66 +31,65 @@ const Header = ({ active }) => {
                         <img src={logoImage} alt="LOGO" />
                     </Link>
                 </div>
-                <div className="Big-Menu">
-                    <nav className="menu-structure">
-                            <Link to="/contact" className={active === "contact" ? "active-link" : ""}>플랫폼 소개</Link>
-                            <Link 
-                                to="/services"
-                                onMouseEnter={handleOpen}
-                                onMouseLeave={handleClose}
-                                className={active === "services" ? "active-link" : ""}
-                            >
-                                기능 소개
-                                <Menu
-                                    id="sub-menu"
-                                    anchorEl={anchorEl}
-                                    keepMounted
-                                    open={Boolean(anchorEl)}
-                                    onClose={handleClose}
-                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                                    transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-                                    sx={{
-                                        '& .MuiMenu-list': {
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            justifyContent: 'space-between',
-                                            width: '100px 100%',  // 박스 크기 조절
-                                            padding: '5px',  // 내부 패딩 조절
-                                        },
-                                        marginTop: '15px' // 상위 메뉴와의 간격 조절
-                                    }}
-                                >
-                                    <MenuItem 
-                                        sx={{ 
-                                            fontFamily: 'NotoSansKR-Light',
-                                            flex: 1, 
-                                            padding: '0 15px', 
-                                            borderRight: '1px solid lightgray', 
-                                            fontSize: '0.9rem'  // 글씨 크기 조절
-                                        }}
-                                    >
-                                        <Link to="/services/checkinfo" style={{ textDecoration: 'none', color: 'inherit' }} onClick={handleClose}>
-                                            개인정보 처리방침 진단
-                                        </Link>
-                                    </MenuItem>
-                                    <MenuItem 
-                                        onClick={handleClose} 
-                                        sx={{ 
-                                            fontFamily: 'NotoSansKR-Light',
-                                            flex: 1, 
-                                            padding: '0 15px', 
-                                            fontSize: '0.9rem'  // 글씨 크기 조절
-                                        }}
-                                    >
-                                        추후 개발.
-                                    </MenuItem>
-                                </Menu>
-                            </Link>
-                        <Link to="/guidelines" className={active === "guidelines" ? "active-link" : ""}>이용 방법</Link>
-                        <Link to="/start" className={active === "start" ? "active-link" : ""}>시작하기</Link>
-                    </nav>
-                </div>
             </div>
+            <nav className="menu-structure">
+                <ul className='menu-Container'>
+                    <li 
+                        className='platform'
+                        onMouseEnter={() => setShowContactDropdown(true)}
+                        onMouseLeave={() => setShowContactDropdown(false)}
+                    >
+                        <Link to="/contact" className={active === "contact" ? "active-link" : ""}>플랫폼 소개</Link>
+                        <CustomDropdown 
+                            isOpen={showContactDropdown}
+                            items={[
+                                { label: '파도는', link: '/contact/subpage1' },
+                                { label: 'contact us', link: '/contact/subpage2' }
+                            ]}
+                        />
+                    </li>
+                    <li 
+                        onMouseEnter={() => setShowServicesDropdown(true)}
+                        onMouseLeave={() => setShowServicesDropdown(false)}
+                    >
+                        <Link to="/services" className={active === "services" ? "active-link" : ""}>기능 소개</Link>
+                        <CustomDropdown 
+                            isOpen={showServicesDropdown}
+                            items={[
+                                { label: '개인정보 처리방침 진단', link: '/services/check' },
+                                { label: '하위 페이지 2', link: '/contact/subpage2' }
+                            ]}
+                        />
+                    </li>
+                    <li>
+                        <Link to="/guidelines" className={active === "guidelines" ? "active-link" : ""}>이용 방법</Link>
+                    </li>
+                    <li>
+                        <Button 
+                            variant="outlined" 
+                            component={Link} 
+                            to="/start" 
+                            className={active === "start" ? "active-link-button" : ""}
+                            style={{
+                                marginLeft: '5px',
+                                marginTop:'3px',
+                                fontFamily: 'NotoSansKR-SemiBold',
+                                textDecoration: 'none',
+                                fontSize: 'initial',
+                                borderColor: '#4287f5',
+                                color: '#4287f5',
+                                background: 'transparent',
+                                transition: 'background-color 0.3s ease',
+                                '&:hover': {
+                                    background: 'rgba(66, 135, 245, 0.1)',
+                                }
+                            }}
+                        >
+                            시작하기
+                        </Button>
+                    </li>
+                </ul>
+            </nav>
             <div className="authentication">
                 <Link to="/login">로그인</Link>
                 <Link to="/mypage">마이 페이지</Link>
