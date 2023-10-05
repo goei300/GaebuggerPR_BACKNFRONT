@@ -1,44 +1,34 @@
-.compact-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* 중앙 정렬 */
-    width: 100%;
-}
-
-.FileUpload-layout {
+/* Parent container: vertical layout for the header, content, and button */
+/* Horizontal layout for inspection-steps and priority-items */
+.inspection-layout {
     display: flex;
     flex-direction: column;
     width: 100%;
+    justify-content: space-between;
+    align-items: start;
+    flex-grow: 1;
+    position: relative;
 }
 
-.file-upload-section {
-    width: 100%; /* 풀로 설정 */
+.priority-items {
     display: flex;
     flex-direction: column;
+    align-items: center; /* 가로 중앙 정렬 */
+    justify-content: center; /* 세로 중앙 정렬 */
+    margin : 50px auto;
+    /* 기타 스타일 ... */
+}
+
+.priority-items label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.instruction{
+    font-family: "NotoSansKR-SemiBold";
+    height: 150px;
+    font-size: xx-large;
     justify-content: center;
-    align-items: center;
-}
-
-.file-upload-section .file-upload {
-    /* 여기에 필요한 스타일 추가 */
-    margin: 50px;
-    align-self: center;
-    align-content: center;
-    align-items: center;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-  
-}
-
-.buttons-container {
-    display: flex;
-    justify-content: space-between; /* 양쪽 버튼의 간격을 최대로 설정 */
-    width: 100%; /* 필요시 조절 */
-    padding: 10px 0; /* 필요하면 상하 여백 조절 */
-}
-
-button.prev-button, 
-button.next-button {
-    margin: 10px; /* 마진은 원하는대로 조절하세요. */
+    align-items: center;
 }
