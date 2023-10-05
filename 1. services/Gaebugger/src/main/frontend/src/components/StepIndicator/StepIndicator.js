@@ -113,7 +113,7 @@ ColorlibStepIcon.propTypes = {
   icon: PropTypes.node,
 };
 
-const steps = ['해당시 기재사항 작성', '파일 업로드', '진단 중', '진단 결과 확인'];
+const steps = ['프로파일 작성', '기재사항 체크', '진단 중', '진단 결과 확인'];
 
 export default function CustomizedSteppers({ activeStep }) {
   return (
