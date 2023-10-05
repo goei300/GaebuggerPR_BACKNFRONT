@@ -72,10 +72,10 @@ const Header = ({ active }) => {
                             className={active === "start" ? "active-link-button" : ""}
                             style={{
                                 marginLeft: '5px',
-                                marginTop:'3px',
+                                marginTop:'0px',
                                 fontFamily: 'NotoSansKR-SemiBold',
                                 textDecoration: 'none',
-                                fontSize: 'initial',
+
                                 borderColor: '#4287f5',
                                 color: '#4287f5',
                                 background: 'transparent',

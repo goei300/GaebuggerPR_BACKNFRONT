@@ -5,7 +5,7 @@ body {
     background-color: white;
     color: black;
     height: 64px;  /* 헤더의 높이를 64px로 설정 */
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     right: 0;
@@ -19,7 +19,7 @@ body {
     opacity: 1;
     overflow: visible;
     visibility: inherit;
-
+    box-sizing: inherit;
 }
 .header-container .logo {
     flex-shrink: 0;
@@ -124,7 +124,7 @@ nav.menu-structure .active-link {
 .active-link:after {
     content: ''; /* This is necessary for the pseudo-element to be generated */
     position: absolute; /* Positioning context established by the relative position of .active-link */
-    bottom: -23px; /* Place at the bottom of the link */
+    bottom: -24px; /* Place at the bottom of the link */
     left: -3px; /* Start from the left of the link */
     width: 110%; /* Make it span the entire width of the link */
     height: 2px; /* Adjust the thickness as needed */
@@ -153,7 +153,6 @@ nav.menu-structure .active-link {
     min-width: 160px;
     box-sizing: border-box;
     padding: 10px 0;
-    margin: 2px 0 0;
     list-style: none;
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.15);
