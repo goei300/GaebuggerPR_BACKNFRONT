@@ -6,10 +6,9 @@ import CustomizedSteppers from "../../../../components/StepIndicator/StepIndicat
 import './Step1.css';
 import { CloudUpload as UploadFile } from '@mui/icons-material';
 
-function Step1({ nextStep, checkedItems }) {
+function Step1({ nextStep }) {
     const [file, setFile] = useState(null);
 
-    console.log(checkedItems);
     
     const StyledPaper = styled(Paper)({
         padding: '30px',
@@ -33,9 +32,9 @@ function Step1({ nextStep, checkedItems }) {
     };
 
     const handleNext = async () => {
-        const formData = new FormData();
+/*         const formData = new FormData();
         formData.append('checkedItems', JSON.stringify(checkedItems));
-        formData.append('uploadedFile', file);
+        formData.append('uploadedFile', file); */
 
 /*         try {
             const response = await axios.post("http://localhost:8080/api/checklist/submit", formData);
@@ -55,7 +54,7 @@ function Step1({ nextStep, checkedItems }) {
     return (
         <Container className="compact-container">
             <CustomizedSteppers activeStep={0} />
-            <Divider style={{marginTop:'24px'}}/>
+            <Divider style={{marginTop:'24px', opacity: 0}}/>
             <div className="instruction" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>개인정보 처리방침 파일을 업로드 해주세요!</div>
             <StyledPaper elevation={3}>
                 <Box my={3}>

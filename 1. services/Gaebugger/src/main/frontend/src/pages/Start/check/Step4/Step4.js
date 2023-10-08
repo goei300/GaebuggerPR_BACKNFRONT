@@ -6,7 +6,10 @@ import BarChartComponent from '../../../../components/bargraph/BarChartComponent
 import PieChartComponent from '../../../../components/piechart/PieChartComponent';
 import ResultBoxSection from '../../../../components/ResultBox/ResultBoxSection';
 import ScoreDisplay from '../../../../components/scoredisplay/ScoreDisplay';
+import NonConformityCheck from '../../../../components/NonConformityCheck/NonConformityCheck';
+import testData from './fromback.json';
 import '../compactContainer.css';
+
 import './Step4.css';
 import '../../../../assets/fonts/fonts.css';    
 import CustomizedSteppers from '../../../../components/StepIndicator/StepIndicator';
@@ -136,7 +139,7 @@ function Step4({ processId, nextStep }) {
     return (
         <Container className="compact-container">
             <CustomizedSteppers activeStep={3} />
-            <Divider style={{margin: "50px", opacity:0}} />
+            <Divider style={{marginTop: "50px", border: '10px solid #8AD6FC'}} />
             {/* 다양한 항목들 */}
             <div className="estimate_userFile" style={{marginBottom: "200px"}}>
                 <h1 style={{marginLeft:'10px'}}>대시보드</h1>
@@ -152,19 +155,27 @@ function Step4({ processId, nextStep }) {
 
             <br/>
             <br/>
-            <Typography variant='h3' style={{ fontFamily: "NotoSansKR-Bold", textAlign: "center"}}>
-                분야별 평균 비교 그래프
-            </Typography>
-            <Divider style={{margin: "50px", opacity:0}} />
-        
-            <BarChartComponent data={graphData} />      
+            <div className="average-bargraph">
+{/*                 <Typography variant='h3' style={{ fontFamily: "NotoSansKR-Bold", textAlign: "center"}}>
+                    분야별 평균 비교 그래프
+                </Typography> */}
+                <h1 style={{marginLeft:'10px'}}>분야별 평균 비교 그래프</h1>
+                <Divider style={{marginBottom:'20px',opacity:0}} />
+                <BarChartComponent data={graphData} />      
 
+            </div>
+            <Divider style={{margin: "100px", opacity:0}} />
+
+            {/* 여기 부적합요소 확인 스크롤 보여주기. */}
+            <div className="nonconformity">
+                <h1 style={{marginLeft:'10px'}}>부적합 요소 확인</h1>
+                <NonConformityCheck data={testData} />
+            </div>
             <Divider style={{margin: "100px", opacity:0}} />
 
             <Box display="flex" justifyContent="flex-end" mt={4}>
                 <Button onClick={nextStep} variant="outlined" color="primary" style={{fontFamily: "NotoSansKR-Bold"}}>상세 가이드라인</Button>
             </Box>
-
             {/* 자세히 보기 팝업 */}
 {/*             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{getDialogTitle(detailType)}</DialogTitle>
