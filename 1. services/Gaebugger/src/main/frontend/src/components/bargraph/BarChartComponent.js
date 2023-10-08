@@ -61,10 +61,10 @@ const BarChartComponent = ({ data }) => {
 
     
     return (
-        <div ref={chartRef} style={{ height: '400px' }}>
+        <div ref={chartRef} style={{ height: '400px' ,border:'3px solid #f0f0f0'}}>
 
             {/* 라디오 버튼 추가 */}
-            <FormControl component="fieldset">
+            <FormControl component="fieldset" style={{display: 'flex'}}>
                 <RadioGroup style={{position:'absolute', right:'0'}} row aria-label="data" name="row-radio-buttons-group" value={selectedValue} onChange={handleRadioChange}>
                     <FormControlLabel value="all" control={<Radio />} label="전체평균" />
                     <FormControlLabel value="common" control={<Radio />} label="일반" />
