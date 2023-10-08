@@ -34,7 +34,17 @@ const PieChartComponent = ({ pieData, total }) => {
     }, []);
 
     return (
-        <div ref={containerRef} style={{ display: 'flex', position: 'relative', flexDirection: 'column', alignItems: 'center', height: '600px', width: '600px', margin: '0 auto', opacity: isVisible ? 1 : 0, transition: 'opacity 1s' }}>
+        <div ref={containerRef} style={{ display: 'flex', position: 'relative', flexDirection: 'column', alignItems: 'center', height: '450px', width: '450px', opacity: isVisible ? 1 : 0, transition: 'opacity 1s' }}>
+            <Typography variant='h5' style={{ 
+                        fontFamily: "NotoSansKR-SemiBold",
+                        textAlign: 'center',
+                        marginTop: '60px',
+                        color: '#333',
+                        position: 'absolute',
+
+                    }}>
+                        감점 요인
+            </Typography>
             <ResponsivePie
                 data={pieData}
                 margin={{ top: 40, right: 120, bottom: 0, left: 120 }}
@@ -69,14 +79,7 @@ const PieChartComponent = ({ pieData, total }) => {
             }}>
                 {total}건
             </div>
-            <Typography variant='h5' style={{ 
-                        fontFamily: "NotoSansKR-SemiBold",
-                        textAlign: 'center',
-                        marginTop: '0px',
-                        color: '#333'
-                    }}>
-                        사용자님의 위험도 그래프
-            </Typography>
+
         </div>
     );
 };

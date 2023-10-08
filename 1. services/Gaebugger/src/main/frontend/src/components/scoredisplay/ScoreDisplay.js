@@ -1,7 +1,7 @@
 import React,{useState, useEffect,useRef} from 'react';
 import { Box, Typography, Button } from '@mui/material';
 
-const ScoreDisplay = ({ data, handleOpen,  getCommentByScore }) => {
+const ScoreDisplay = ({ data, handleOpen}) => {
     const [displayedScore, setDisplayedScore] = useState(0);
     const [showComment, setShowComment] = useState(false); // 추가 커멘트 표시 여부 상태
     const [isVisible, setIsVisible] = useState(false);
@@ -60,7 +60,7 @@ const ScoreDisplay = ({ data, handleOpen,  getCommentByScore }) => {
     return (
         <Box ref={containerRef} display="flex" flexDirection="column" alignItems="center" my={4} position="relative">
             <Typography variant="h3" style={{ fontFamily: "NotoSansKR-Medium" }}>
-                개인정보 처리방침 진단 점수
+                진단 점수
             </Typography>
             <Typography variant="h2" style={{ margin:"20px", fontFamily: "NotoSansKR-Bold", fontWeight: 'bold' }}>
                 {displayedScore}
@@ -68,18 +68,18 @@ const ScoreDisplay = ({ data, handleOpen,  getCommentByScore }) => {
             <br/>
             {showComment && (
                 <React.Fragment>
-                    <Typography variant="h6" style={{ marginTop: '10px', fontFamily: "NotoSansKR-Medium" }}>
+{/*                     <Typography variant="h6" style={{ marginTop: '10px', fontFamily: "NotoSansKR-Medium" }}>
                         {getCommentByScore(displayedScore)}
-                    </Typography>
+                    </Typography> */}
 
-                    <Button 
+{/*                     <Button 
                         variant="outlined" 
                         size="small"
                         style={{ marginTop: '30px', fontFamily: "NotoSansKR-Regular" }} 
                         onClick={() => handleOpen('score')}
                     >
                         자세히보기
-                    </Button>
+                    </Button> */}
                 </React.Fragment>
             )}
         </Box>

@@ -94,17 +94,24 @@ function Step4({ processId, nextStep }) {
         {
             name: '법률 위반',
             사용자: serverData['lawViolate'],
-            평균: 2,
+            전체평균:3,
+            일반: 2,
+            법률: 1,
         },
         {
             name: '법률 위반 위험',
             사용자: serverData['lawDanger'],
-            평균: 1,
+            전체평균:2,
+            일반: 2,
+            법률: 2,
         },
         {
             name: '작성지침 미준수',
             사용자: serverData['guideViolate'],
-            평균: 1,
+            전체평균:1,
+            일반: 1,
+            법률: 2,
+
         },
     ];
     
@@ -132,16 +139,21 @@ function Step4({ processId, nextStep }) {
             <Divider style={{margin: "50px", opacity:0}} />
             {/* 다양한 항목들 */}
             <div className="estimate_userFile" style={{marginBottom: "200px"}}>
+                <h1 style={{marginLeft:'10px'}}>대시보드</h1>
+                <Divider style={{marginBottom:'10px'}} />
                 <ResultBoxSection serverData={serverData} handleOpen={handleOpen} />
-                <Divider style={{margin: "70px", opacity:0}} />
-                <PieChartComponent pieData={pieData} total={total} />   
-
+                <Divider style={{margin: "30px", opacity:0}} />
+                <h3 style={{marginLeft:'30px'}}>점수 결과</h3>
+                <div className="score-whyscore" style={{borderRadius: '10px',backgroundColor: "#ffffff", border: '3px solid #F2F2F2'}}>
+                    <ScoreDisplay data={serverData} handleOpen={handleOpen} getCommentByScore={getCommentByScore} />
+                    <PieChartComponent pieData={pieData} total={total} />   
+                </div>
             </div>
 
             <br/>
             <br/>
             <Typography variant='h3' style={{ fontFamily: "NotoSansKR-Bold", textAlign: "center"}}>
-                평균 처리방침 진단 결과 비교
+                분야별 평균 비교 그래프
             </Typography>
             <Divider style={{margin: "50px", opacity:0}} />
         
@@ -149,14 +161,12 @@ function Step4({ processId, nextStep }) {
 
             <Divider style={{margin: "100px", opacity:0}} />
 
-            <ScoreDisplay data={serverData} handleOpen={handleOpen} getCommentByScore={getCommentByScore} />
-
             <Box display="flex" justifyContent="flex-end" mt={4}>
                 <Button onClick={nextStep} variant="outlined" color="primary" style={{fontFamily: "NotoSansKR-Bold"}}>상세 가이드라인</Button>
             </Box>
 
             {/* 자세히 보기 팝업 */}
-            <Dialog open={open} onClose={handleClose}>
+{/*             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{getDialogTitle(detailType)}</DialogTitle>
                 <DialogContent>
                     <List>
@@ -172,7 +182,7 @@ function Step4({ processId, nextStep }) {
                         닫기
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </Dialog> */}
         </Container>
     );
     

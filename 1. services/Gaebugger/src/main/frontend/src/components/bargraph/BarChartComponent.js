@@ -1,9 +1,36 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-
+import { RadioGroup, FormControlLabel, Radio, FormControl } from '@mui/material';
 const BarChartComponent = ({ data }) => {
     const [isVisible, setIsVisible] = useState(false); // 기본적으로는 보이지 않게 설정
     const chartRef = useRef(null);
+    const [selectedValue, setSelectedValue] = useState('all');
+    const [currentKeys, setCurrentKeys] = useState(['사용자', '전체평균']);
+
+    const handleRadioChange = (event) => {
+        const value = event.target.value;
+        if (value === "all") {
+            // 평균 데이터로 변경하는 로직
+            setSelectedValue(event.target.value);
+
+        } else if(value ==="common") {
+            // 원래 데이터로 복귀하는 로직
+            setSelectedValue(event.target.value);
+        }
+        else if(value==="finance"){
+            setSelectedValue(event.target.value);
+        }
+    };
+
+    useEffect(() => {
+        if (selectedValue === "all") {
+            setCurrentKeys(['사용자', '전체평균']);
+        } else if (selectedValue === "common") {
+            setCurrentKeys(['사용자', '일반']);
+        } else if (selectedValue === "finance") {
+            setCurrentKeys(['사용자', '법률']);
+        }
+    }, [selectedValue]);
 
     useEffect(() => {
         const observer = new IntersectionObserver(entries => {
@@ -30,13 +57,26 @@ const BarChartComponent = ({ data }) => {
         };
     }, []);
 
+
+
+    
     return (
         <div ref={chartRef} style={{ height: '400px' }}>
+
+            {/* 라디오 버튼 추가 */}
+            <FormControl component="fieldset">
+                <RadioGroup style={{position:'absolute', right:'0'}} row aria-label="data" name="row-radio-buttons-group" value={selectedValue} onChange={handleRadioChange}>
+                    <FormControlLabel value="all" control={<Radio />} label="전체평균" />
+                    <FormControlLabel value="common" control={<Radio />} label="일반" />
+                    <FormControlLabel value="finance" control={<Radio />} label="금융" />
+                </RadioGroup>
+            </FormControl>
+
             {isVisible && (
 
             <ResponsiveBar
                 data={data}
-                keys={['사용자', '평균']}
+                keys={currentKeys}
                 indexBy="name"
                 margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
                 layout="vertical"
