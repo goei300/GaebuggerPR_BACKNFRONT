@@ -159,7 +159,7 @@ function Step4({ processId, nextStep }) {
 {/*                 <Typography variant='h3' style={{ fontFamily: "NotoSansKR-Bold", textAlign: "center"}}>
                     분야별 평균 비교 그래프
                 </Typography> */}
-                <h1 style={{marginLeft:'10px'}}>분야별 평균 비교 그래프</h1>
+                <h1 style={{marginLeft:'10px'}}>업종별 평균 비교 그래프</h1>
                 <Divider style={{marginBottom:'20px',opacity:0}} />
                 <BarChartComponent data={graphData} />      
 
