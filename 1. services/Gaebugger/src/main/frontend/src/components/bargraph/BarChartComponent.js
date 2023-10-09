@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-import { RadioGroup, FormControlLabel, Radio, FormControl } from '@mui/material';
+import { RadioGroup, FormControlLabel, Radio, FormControl, Typography } from '@mui/material';
+import '../../assets/fonts/fonts.css';
 const BarChartComponent = ({ data }) => {
     const [isVisible, setIsVisible] = useState(false); // 기본적으로는 보이지 않게 설정
     const chartRef = useRef(null);
@@ -64,11 +65,23 @@ const BarChartComponent = ({ data }) => {
         <div ref={chartRef} style={{ height: '400px' ,border:'3px solid #f0f0f0'}}>
 
             {/* 라디오 버튼 추가 */}
-            <FormControl component="fieldset" style={{display: 'flex'}}>
-                <RadioGroup style={{position:'absolute', right:'0'}} row aria-label="data" name="row-radio-buttons-group" value={selectedValue} onChange={handleRadioChange}>
-                    <FormControlLabel value="all" control={<Radio />} label="전체평균" />
-                    <FormControlLabel value="common" control={<Radio />} label="일반" />
-                    <FormControlLabel value="finance" control={<Radio />} label="금융" />
+            <FormControl component="fieldset" style={{ display: 'flex' }}>
+                <RadioGroup style={{ position: 'absolute', right: '0' }} row aria-label="data" name="row-radio-buttons-group" value={selectedValue} onChange={handleRadioChange}>
+                    <FormControlLabel 
+                        value="all" 
+                        control={<Radio />} 
+                        label={<Typography style={{ fontFamily: 'NotoSansKR-Regular', fontSize: '14px', color: 'black' }}>전체평균</Typography>} 
+                    />
+                    <FormControlLabel 
+                        value="common" 
+                        control={<Radio />} 
+                        label={<Typography style={{ fontFamily: 'NotoSansKR-Regular', fontSize: '14px', color: 'black' }}>일반</Typography>} 
+                    />
+                    <FormControlLabel 
+                        value="finance" 
+                        control={<Radio />} 
+                        label={<Typography style={{ fontFamily: 'NotoSansKR-Regular', fontSize: '14px', color: 'black' }}>금융</Typography>} 
+                    />
                 </RadioGroup>
             </FormControl>
 

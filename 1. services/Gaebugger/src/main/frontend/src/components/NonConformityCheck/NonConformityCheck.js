@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Typography, Box, ToggleButtonGroup, ToggleButton, Paper } from '@mui/material';
 
+
 const NonConformityCheck = ({ data }) => {
   const [selectedViolations, setSelectedViolations] = useState([]);
 
@@ -49,15 +50,16 @@ const NonConformityCheck = ({ data }) => {
     ));
 };
   return (
-    <Box mt={4}>
+    <Box mt={4} style={{display: "flex", flexDirection: "column"}}>
       <ToggleButtonGroup
         value={selectedViolations}
         onChange={(event, newValues) => setSelectedViolations(newValues)}
         aria-label="violations"
+        style={{justifyContent:"flex-end"}}
       >
-        <ToggleButton value="법률 위반" aria-label="법률 위반">법률 위반</ToggleButton>
-        <ToggleButton value="법률 위반 위험" aria-label="법률 위반 위험">법률 위반 위험</ToggleButton>
-        <ToggleButton value="작성지침 미준수" aria-label="작성지침 미준수">작성지침 미준수</ToggleButton>
+        <ToggleButton value="법률 위반" aria-label="법률 위반" style={{ '&.Mui-selected': { backgroundColor: '#707070' } }}>법률 위반</ToggleButton>
+        <ToggleButton value="법률 위반 위험" aria-label="법률 위반 위험" style={{ '&.Mui-selected': { backgroundColor: '#707070' } }}>법률 위반 위험</ToggleButton>
+        <ToggleButton value="작성지침 미준수" aria-label="작성지침 미준수" style={{ '&.Mui-selected': { backgroundColor: "#ffffff" } }}>작성지침 미준수</ToggleButton>
       </ToggleButtonGroup>
       <Paper style={{maxHeight: '300px', overflowY: 'scroll', padding: '16px'}}>
         {getHighlightedContent().map((item, index) => (

@@ -46,18 +46,20 @@ function Step3({ nextStep, processId }) {
             <CustomizedSteppers activeStep={2} />
             <Divider style={{ margin: '20px 0' }} />
             <StyledPaper elevation={3}>
-                <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="200px">
+                <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="400px">
                     {!loadingComplete ? (
                         <>
                             <Loading />
-                            <Typography variant="h6" style={{ height:'150px' , position: 'absolute', marginTop: '1px', color: '#333', fontFamily: 'NotoSansKR-Black', animation: 'blink 3s infinite' }}>
+                            <Typography variant="h6" style={{ height:'250px' , position: 'absolute', marginTop: '1px', color: '#333', fontFamily: 'NotoSansKR-Black', animation: 'blink 3s infinite' }}>
                                 진단 중입니다. 평균적으로 3~5분정도 소모되니 잠시만 기다려주세요.
                             </Typography>
                         </>
                     ) : (
-                        <Button variant="contained" color="primary" onClick={nextStep}>
-                            결과 확인
-                        </Button>
+                        <div className="after-acting" style={{display:"flex", justifyContent:"center", alignContent: "center"}}>
+                            <Button variant="contained" color="primary" onClick={nextStep}>
+                                결과 확인
+                            </Button>
+                        </div>
                     )}
                 </Box>
             </StyledPaper>
