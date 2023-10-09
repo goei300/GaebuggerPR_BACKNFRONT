@@ -5,6 +5,35 @@ import {  Typography } from '@mui/material';
 const PieChartComponent = ({ pieData, total }) => {
     const [isVisible, setIsVisible] = useState(false);
     const containerRef = useRef(null);
+    const totalValue = pieData.reduce((sum, data) => {
+        let additionalValue = data.value;
+        if (data.label === "법률 위반") {
+          additionalValue = data.value * 10;
+        } else if (data.label === "법률 위반 위험") {
+          additionalValue = data.value * 5;
+        } else if (data.label === "작성지침 미준수") {
+          additionalValue = data.value * 3;
+        }
+        return sum + additionalValue;
+      }, 0);
+      
+      const remainingValue = 100 - totalValue;
+      
+      // 변환된 pieData 생성
+      const transformedPieData = [
+        ...pieData.map(data => {
+          let newValue = data.value;
+          if (data.label === "법률 위반") {
+            newValue = data.value * 10;
+          } else if (data.label === "법률 위반 위험") {
+            newValue = data.value * 5;
+          } else if (data.label === "작성지침 미준수") {
+            newValue = data.value * 3;
+          }
+          return { ...data, value: newValue };
+        }),
+        { id:"점수", label: "나머지", value: remainingValue } // 남은 값을 추가 항목으로 추가
+      ];
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -46,12 +75,12 @@ const PieChartComponent = ({ pieData, total }) => {
                         감점 요인
             </Typography>
             <ResponsivePie
-                data={pieData}
+                data={transformedPieData}
                 margin={{ top: 40, right: 120, bottom: 0, left: 120 }}
                 innerRadius={0.8}
                 padAngle={0.7}
                 cornerRadius={3}
-                colors={['#007BFF', '#4CAF50', '#2E8B57']}
+                colors={['#d32f2f','#ff9800', '#ffeb3b', '#D9D9D9']}
                 borderColor={{ from: 'color', modifiers: [['darker', 0.6]] }}
                 animate={true}
                 motionStiffness={90}    
@@ -63,10 +92,23 @@ const PieChartComponent = ({ pieData, total }) => {
                         fontFamily: 'NotoSansKR-SemiBold'
                     }
                 }}
-                label={data => `${data.label}: ${data.value}`}
                 labelSkipWidth={16}
                 labelSkipHeight={16}
-                labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+                labelTextColor={data => {
+                    if (data.id === "전체") {
+                        return '#FF0000'; // "전체"에 대한 텍스트 색상 변경
+                    } else {
+                        return data.color; // 나머지는 원래의 데이터 색상을 사용
+                    }
+                }}
+                label={data => {
+                    if (data.id === "전체") {
+                        // "전체" 레이블에 대한 개별적 스타일 조정 (예: 폰트 크기 변경)
+                        return <text style={{ fontSize: '20px' }}>{`${data.label}: ${data.value}`}</text>;
+                    } else {
+                        return `${data.label}: ${data.value}`;
+                    }
+                }}
             />
             <div style={{
                 position: 'absolute',

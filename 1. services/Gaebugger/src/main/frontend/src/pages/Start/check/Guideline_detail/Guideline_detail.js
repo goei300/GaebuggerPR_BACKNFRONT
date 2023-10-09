@@ -1,133 +1,26 @@
 import React, {useState} from "react";
 import CustomizedSteppers from "../../../../components/StepIndicator/StepIndicator";
-import {  ToggleButton, ToggleButtonGroup, Typography, Paper, Box, Divider, Grid, List, ListItem, Container, Button, IconButton } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import {   Paper, Typography,  Box, Divider, Container, Button, IconButton,Table, TableBody, TableCell, TableHead, TableRow,TablePagination  } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import wrongtemplete from './test.json';
+import testIssue from './issues.json';
+import ResultSlide from "../../../../components/ResultSlide/ResultSlide";
 import guidelineDetail from './test_process.json';
 import './Highlight.css';
 import '../../../../assets/fonts/fonts.css';
-const StyledPaper = styled(Paper)({
-    padding: '30px',
-    borderRadius: '10px',
-    marginTop: '20px',
-    marginBottom: '20px',
-});
-const customStyles = {
-    color: '#007BFF',  
-    textShadow: '3px 3px 10px rgba(0, 0, 0, 0.2)',  // 강조된 그림자 효과
-    fontWeight: 'bold',  
-    letterSpacing: '1.5px',  
-    marginBottom: '25px', 
-    fontFamily: 'NotoSansKR-Bold',  // NotoSansKR의 미디움 스타일 사용
-    background: '-webkit-linear-gradient(45deg, #007BFF, #33CCFF)',  // 그라데이션 효과
-    WebkitBackgroundClip: 'text',  // 배경의 그라데이션 효과를 텍스트에만 적용
-    WebkitTextFillColor: 'transparent'  // 텍스트 색상을 투명하게 하여 그라데이션 효과만 보이게 함
-};
-const customStyles_title = {
-    color: '#454545',  
-    textShadow: '1px 1px 5px rgba(100, 100, 100, 0.1)',  
-    letterSpacing: '0.5px',  
-    marginBottom: '15px', 
-    fontFamily: 'NotoSansKR-Regular',
-    borderBottom: '2px solid #007BFF',  // 하단의 강조선
-    paddingBottom: '5px',
-    display: 'inline-block'  // borderBottom이 텍스트 너비만큼만 표시되도록
-};
-
-const StyledToggleButton = styled(ToggleButton)({
-    height: '20px',
-    fontSize: '10px',
-    fontFamily: 'NotoSansKR-Regular',
-    color:'black',
-    width: '90px',  // 너비 설정
-    border: '2px solid rgba(0,0,0,0.12)',
-    borderRadius: '30px',  // 동그란 형태로 만들기
-    marginRight: '10px',
-    '&.Mui-selected': {
-        backgroundColor: 'rgba(0, 150, 225, 0.15)', 
-        '&:hover': {
-            backgroundColor: 'rgba(0, 128, 192, 0.5)',
-        }
-    },
-    '&:hover': {
-        backgroundColor: 'rgba(0,0,0,0.04)'
-    }
-});
-
-
-
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)({
-    '& .MuiToggleButton-root': {
-        padding: '2px 5px',
-    }
-});
-
+import { 
+    StyledPaper, 
+    customStyles, 
+    customStyles_title, 
+    StyledToggleButton, 
+    StyledToggleButtonGroup 
+} from './styles/ComponentStyles';
 function Guideline_detail({processId, prevStep}){
-
     // 임의의 데이터
-
-    const [filteredTypes, setFilteredTypes] = useState([1, 2, 3]); // 기본적으로 모든 타입 활성화
-    const [guidelineTypes, setGuidelineTypes] = useState([1,2,3]); // 가이드라인 필터링을 위한 상태 변수
     const [solutionTypes,setSolutionTypes] = useState([1,2,3]);
-
-    // 특정 wrong_type 필터링 토글 함수
-    const toggleFilterType = (type) => {
-      setFilteredTypes((prevTypes) => 
-        prevTypes.includes(type) ? prevTypes.filter(t => t !== type) : [...prevTypes, type]
-      );
-    };
-  
-    // wrong_type 별로 텍스트 강조
-    // const filteredHighlight = (txt, templates) => {
-    //     let highlightedText = txt;
-    //     templates.forEach(template => {
-    //         if (filteredTypes.includes(template.wrong_type)) {
-    //             const regex = new RegExp(template.wrong_content, "g");
-    //             const className = `highlight type${template.wrong_type}`;
-    //             highlightedText = highlightedText.replace(regex, `<span class="${className}">${template.wrong_content}</span>`);
-    //         }
-    //     });
-    //     return highlightedText;
-    // };
-
-
-    const originalTxt = guidelineDetail.originalContent;
-
-    const guideline = guidelineDetail.guideline;
-
     const modifiedTxt = guidelineDetail.modifiedText;
-
     const modifiedText_component = guidelineDetail.modifiedText_component;
-
-    const filteredHighlight = (txt, templates) => {
-        let highlightedText = txt;
-        templates.forEach(template => {
-            if (filteredTypes.includes(template.wrong_type)) {
-                const regex = new RegExp(template.wrong_content, "g");
-                const className = `highlight type${template.wrong_type}`;
-                highlightedText = highlightedText.replace(
-                    regex, 
-                    `<span class="${className}"><span class="idCircle">${template.wrong_id}</span>${template.wrong_content}</span>`
-                );
-            }
-        });
-        return highlightedText;
-    };
-    
-    // 가이드라인 부분에 대한 핸들러
-    const handleGuidelineTypesChange = (event, newTypes) => {
-        if (newTypes.includes("all")) {
-            if (guidelineTypes.length === 3) {
-                setGuidelineTypes([]);
-            } else {
-                setGuidelineTypes([1, 2, 3]);
-            }
-        } else {
-            setGuidelineTypes(newTypes.filter(type => type !== "all"));
-        }
-    };
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const handleModifiedText = (event, newTypes) => {
         // 전체 버튼이 선택된 경우
@@ -144,7 +37,14 @@ function Guideline_detail({processId, prevStep}){
             setSolutionTypes(newTypes.filter(type => type !== "all"));
         }
     };
-
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+      };
+    
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 5));
+        setPage(0); // 페이지 수를 변경할 때 첫 페이지로 돌아갑니다.
+    };
     const highlightModifiedText = () => {
         let highlightedText = modifiedTxt;
         modifiedText_component.forEach(component => {
@@ -169,10 +69,6 @@ function Guideline_detail({processId, prevStep}){
         document.body.appendChild(element); // 이 부분이 필요하므로 Firefox에서 잘 동작하도록
         element.click();
     }
-    
-    
-    // 서버에서 guideline_detail 과 txt원문을 가져옴.
-    // 
 
     return (
         <Container className="compact-container">
@@ -180,109 +76,64 @@ function Guideline_detail({processId, prevStep}){
             <Divider style={{ margin: "50px", opacity: 0 }} />
 
             <StyledPaper>
-                <br />
-                <Typography variant="h3" align="flex-start" gutterBottom style={customStyles}>
-                    상세 가이드라인
-                </Typography>
-                <Divider style={{margin: '50px', opacity: 0}}/>
-                <Grid container spacing={3}>
-                    {/* 원본 txt파일 내용 */}
-                    <Grid item xs={6}>
-                        <Typography variant="h6" gutterBottom style={customStyles_title}>원본 파일</Typography>
+                <div className="eachIssue">
+                    <h1 style={{ marginLeft: '10px', fontFamily: "NotoSansKR-SemiBold" }}>이슈 개별 분석</h1>
+                    <Divider style={{ marginBottom: '50px' }} />
 
-                        <Box border={1} p={2} borderColor="grey.300" position="relative">
-                            <Box position="absolute" top={5} right={5}>
-                            <StyledToggleButtonGroup 
-                                value={filteredTypes} 
-                                onChange={(event, newTypes) => {
-                                    // 전체 버튼이 선택된 경우
-                                    if (newTypes.includes("all")) {
-                                        // 이미 모든 버튼이 선택된 상태인 경우 선택을 모두 해제
-                                        if (filteredTypes.length === 3) {
-                                            setFilteredTypes([]);
-                                        } else {
-                                            // 그렇지 않은 경우 모든 버튼을 선택
-                                            setFilteredTypes([1, 2, 3]);
-                                        }
-                                    } else {
-                                        // 전체 버튼을 선택 해제하고 다른 버튼 중 하나를 선택할 경우
-                                        setFilteredTypes(newTypes.filter(type => type !== "all"));
-                                    }
-                                }}
-                            >
-                                <StyledToggleButton value="all" aria-label="전체">
-                                    전체
-                                </StyledToggleButton>
-                                <StyledToggleButton value={1} aria-label="Type 1">
-                                    법률 위반
-                                </StyledToggleButton>
-                                <StyledToggleButton value={2} aria-label="Type 2">
-                                    법률 위반 위험
-                                </StyledToggleButton>
-                                <StyledToggleButton value={3} aria-label="Type 3">
-                                    작성지침 미준수
-                                </StyledToggleButton>
-                            </StyledToggleButtonGroup>
-                            </Box>
-                            <Divider style={{margin: "20px" ,  opacity:0}} />
-                            <pre dangerouslySetInnerHTML={{ __html: filteredHighlight(originalTxt, wrongtemplete) }} />
-                        </Box>
-                    </Grid>
+                    {/* 이슈 테이블 */}
+                    <div className="issueTable">
+                        <h3 style={{fontFamily:"NotoSansKR-SemiBold", marginLeft: "20px"}}>이슈 테이블</h3>
+                        <StyledPaper elevation={3} style={{ margin: '10px', padding: '20px' }}>
+                            <Table style={{ width: "100%"}}>
+                                <TableHead >
+                                    <TableRow style={{}}>
+                                        <TableCell style={{fontFamily:"NotoSansKR-Bold", width:"10%"}}>이슈 번호</TableCell>
+                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"10%"}}> 이슈 유형</TableCell>
+                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"40%"}}>이슈 내용</TableCell>
+                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"30%"}}>이슈 근거</TableCell>
+                                        <TableCell style={{fontFamily:"NotoSansKR-Bold"}}>확인해보기</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {testIssue.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(issue => (
+                                        <TableRow key={issue.issue_id}>
+                                            <TableCell style={{width:"10%"}}>{issue.issue_id}</TableCell>
+                                            <TableCell style={{width:"10%"}}>{issue.issue_type}</TableCell>
+                                            <TableCell style={{width:"40%"}}>{issue.issue_content}</TableCell>
+                                            <TableCell style={{width:"30%"}}>{issue.issue_reason}</TableCell>
+                                            <TableCell>
+                                            <Button variant="contained" color="primary" size="small">확인</Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                            <TablePagination
+                                component="div"
+                                count={testIssue.length}  // 전체 행의 수
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                rowsPerPageOptions={[]}  // 페이지 당 행 수 선택 옵션을 숨김
+                                labelDisplayedRows={({ from, to, count }) => `${from}-${to} of ${count}`}  // "페이지 당 행" 라벨을 숨기기 위한 추가 설정
+                            />
+                        </StyledPaper>
+                    </div>
 
-                    {/* 가이드라인 */}
-                    <Grid item xs={6}>
-                        <Typography variant="h6" gutterBottom style={customStyles_title}>가이드라인</Typography>
-                        <Box border={1} p={2} borderColor="grey.300" position="relative">
-                            <Box position="absolute" top={5} right={5}>
-                            <StyledToggleButtonGroup 
-                                    value={guidelineTypes} 
-                                    onChange={handleGuidelineTypesChange}
-                                >
-                                <StyledToggleButton value="all" aria-label="전체">
-                                    전체
-                                </StyledToggleButton>
-                                <StyledToggleButton value={1} aria-label="Type 1">
-                                    법률 위반
-                                </StyledToggleButton>
-                                <StyledToggleButton value={2} aria-label="Type 2">
-                                    법률 위반 위험
-                                </StyledToggleButton>
-                                <StyledToggleButton value={3} aria-label="Type 3">
-                                    작성지침 미준수
-                                </StyledToggleButton>
-                            </StyledToggleButtonGroup>
-                            </Box>
-                            <Divider style={{margin: "20px" ,  opacity:0}} />
-                            <List>
-                                {guideline.map((item, index) => (
-                                    (guidelineTypes.includes(item.type) && guidelineTypes.length > 0) ? (
-                                        <ListItem key={index}>
-                                            <Grid container alignItems="center">
-                                                <Grid item xs={1}> {/* idCircle */}
-                                                    <div className="idCircle">{item.wrong_id}</div>
-                                                </Grid>
-                                                <Grid item xs={11}> {/* 본문 텍스트 */}
-                                                    <Typography variant="body2" fontSize="14px">{item.text}</Typography>
-                                                </Grid>
-                                            </Grid>
-                                        </ListItem>
-                                    ) : null
-                                ))}
-                            </List>
-                        </Box>
+                    <Divider style={{marginBottom:"50px", opacity:0}} />
+                    {/* 이슈사항 상세 검토 */}
+                    <div className="issueDetail">
+                        <h3 style={{fontFamily:"NotoSansKR-SemiBold", marginLeft: "20px"}}>이슈 상세검토</h3>
+                        
+                        <ResultSlide />
+                        { /* 각 이슈별로 슬라이드 형식의 상세 글 paper안에서 보여주면 좋을 듯*/}
 
-                    </Grid>
-                </Grid>
+                    </div>
+                </div>
 
-                <Box mt={4} display="flex" flexDirection="column" alignItems="center">
-                <ArrowDownwardIcon style={{ 
-                    fontSize: 150, 
-                    color: "#3f51b5", 
-                }} />
-                </Box>
 
                 {/* 수정된 txt파일 내용 */}
-                <Box mt={4}>
+                <Box mt={4}> 
                     <Typography variant="h6" gutterBottom style={customStyles_title}>솔루션 적용 후</Typography>
                     <Box border={1} p={2} borderColor="grey.300" mt={2} position="relative">
                         <Box position="absolute" top={5} right={5}>
@@ -305,6 +156,7 @@ function Guideline_detail({processId, prevStep}){
                             </StyledToggleButtonGroup>
                         </Box>
                         <Divider style={{ margin: "20px", opacity: 0 }} />
+
                         <pre dangerouslySetInnerHTML={{ __html: highlightModifiedText() }} />
                     </Box>
 

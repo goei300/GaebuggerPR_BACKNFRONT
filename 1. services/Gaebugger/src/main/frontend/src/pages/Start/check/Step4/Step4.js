@@ -1,7 +1,5 @@
 import React, { useEffect, useState,useRef } from 'react';
 import {  Typography, Paper, Box, Divider, List, ListItem, Container, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { animated } from 'react-spring';
 import BarChartComponent from '../../../../components/bargraph/BarChartComponent';
 import PieChartComponent from '../../../../components/piechart/PieChartComponent';
 import ResultBoxSection from '../../../../components/ResultBox/ResultBoxSection';
@@ -15,32 +13,6 @@ import '../../../../assets/fonts/fonts.css';
 import CustomizedSteppers from '../../../../components/StepIndicator/StepIndicator';
 import axios from "axios";
 
-const StyledPaper = styled(Paper)({
-    padding: '30px',
-    borderRadius: '10px',
-    marginTop: '20px',
-    marginBottom: '20px',
-});
-
-function getDialogTitle(type) {
-    switch(type) {
-        case 'lawViolate':
-            return '법률 위반 세부사항';
-        case 'lawDanger':
-            return '법률 위반 위험 세부사항';
-        case 'guideViolate':
-            return '작성지침 미준수 세부사항';
-        case 'score':
-            return '점수 산정 세부사항'
-        default:
-            return type;
-    }
-}
-const getCommentByScore = (score) => {
-    if (score >= 80) return "좋은 점수입니다. 몇 가지만 개선하면 안전한 작성지침을 작성하실수 있겠습니다.";
-    if (score >= 60) return "개선이 필요해보이는 상황입니다. 가이드라인을 통해 바로 수정해보세요!";
-    return "Needs Improvement";
-}
 function Step4({ processId, nextStep }) {
     const [open, setOpen] = useState(false);
     const [detailType, setDetailType] = useState("");
@@ -49,27 +21,14 @@ function Step4({ processId, nextStep }) {
 
     // 임의의 테스트 데이터
     const mockServerData = {
+        processId: "abcde",
         lawViolate: "3",
         lawDanger: "2",
         guideViolate: "1",
-        score: 80,
-        lawViolate_detail: ["Detail 1", "Detail 2", "Detail 3"],
-        lawDanger_detail: ["Detail A", "Detail B", "Detail C"],
-        guideViolate_detail: ["Detail X", "Detail Y", "Detail Z"],
-        score_detail: ["Detail α", "Detail β", "Detail γ"],
+        score: 57,
     };
 
     const [serverData] = useState(mockServerData);
-
-    const handleOpen = (type) => {
-        console.log('Opening dialog for:', type);  // 이 부분을 추가
-        setDetailType(type);
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
     
 /*     const [serverData, setServerData] = useState(null);
 
@@ -114,7 +73,6 @@ function Step4({ processId, nextStep }) {
             전체평균:1,
             일반: 1,
             법률: 2,
-
         },
     ];
     
@@ -142,24 +100,19 @@ function Step4({ processId, nextStep }) {
             <Divider style={{marginTop: "50px", border: '10px solid #8AD6FC'}} />
             {/* 다양한 항목들 */}
             <div className="estimate_userFile" style={{marginBottom: "200px"}}>
-                <h1 style={{marginLeft:'10px'}}>대시보드</h1>
-                <Divider style={{marginBottom:'10px'}} />
-                <ResultBoxSection serverData={serverData} handleOpen={handleOpen} />
+                <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>대시보드</h1>
+                <Divider style={{marginBottom:'30px'}} />
+                <ResultBoxSection serverData={serverData} />
                 <Divider style={{margin: "30px", opacity:0}} />
-                <h3 style={{marginLeft:'30px'}}>점수 결과</h3>
-                <div className="score-whyscore" style={{borderRadius: '10px',backgroundColor: "#ffffff", border: '3px solid #F2F2F2'}}>
-                    <ScoreDisplay data={serverData} handleOpen={handleOpen} getCommentByScore={getCommentByScore} />
+                <h2 style={{marginLeft:'20px', fontFamily: "NotoSansKR-Medium"}}>점수 결과</h2>
+                <div className="score-whyscore" style={{borderRadius: '10px',backgroundColor: "#ffffff", border: '3px solid #F2F2F2',marginLeft:"20px",marginRight:"20px"}}>
+                    <ScoreDisplay data={serverData} />
                     <PieChartComponent pieData={pieData} total={total} />   
                 </div>
             </div>
 
-            <br/>
-            <br/>
             <div className="average-bargraph">
-{/*                 <Typography variant='h3' style={{ fontFamily: "NotoSansKR-Bold", textAlign: "center"}}>
-                    분야별 평균 비교 그래프
-                </Typography> */}
-                <h1 style={{marginLeft:'10px'}}>업종별 평균 비교 그래프</h1>
+                <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>업종별 평균 비교 그래프</h1>
                 <Divider style={{marginBottom:'20px',opacity:0}} />
                 <BarChartComponent data={graphData} />      
 
@@ -168,7 +121,8 @@ function Step4({ processId, nextStep }) {
 
             {/* 여기 부적합요소 확인 스크롤 보여주기. */}
             <div className="nonconformity">
-                <h1 style={{marginLeft:'10px'}}>부적합 요소 확인</h1>
+                <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>부적합 요소 확인</h1>
+                <Divider style={{marginBottom:'10px'}} />
                 <NonConformityCheck data={testData} />
             </div>
             <Divider style={{margin: "100px", opacity:0}} />
@@ -176,24 +130,6 @@ function Step4({ processId, nextStep }) {
             <Box display="flex" justifyContent="flex-end" mt={4}>
                 <Button onClick={nextStep} variant="outlined" color="primary" style={{fontFamily: "NotoSansKR-Bold"}}>상세 가이드라인</Button>
             </Box>
-            {/* 자세히 보기 팝업 */}
-{/*             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>{getDialogTitle(detailType)}</DialogTitle>
-                <DialogContent>
-                    <List>
-                        {detailType && serverData[`${detailType}_detail`] && serverData[`${detailType}_detail`].map((detail, index) => (
-                            <ListItem key={index}>
-                                <Typography>{detail}</Typography>
-                            </ListItem>
-                        ))}
-                    </List>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        닫기
-                    </Button>
-                </DialogActions>
-            </Dialog> */}
         </Container>
     );
     
