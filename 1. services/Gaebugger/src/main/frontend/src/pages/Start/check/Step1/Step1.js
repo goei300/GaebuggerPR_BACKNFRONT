@@ -72,12 +72,19 @@ function Step1({ nextStep }) {
                                 <h4 style={{ fontWeight: "bold", fontFamily: "NotoSansKR-Regular" }}>회사 정보</h4>
                                 <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom="15px">
                                     <p style={{fontSize: "12px", paddingRight:"50px"}}>회사 명</p>
+                                    
                                     <TextField
                                         variant="outlined"
                                         label="회사명"
                                         size="small"
                                         InputLabelProps={{ shrink: true }}
-                                        style={{ flex: 1 }}
+                                        InputProps={{
+                                            sx: {
+                                              fontSize: 12,
+                                            },
+                                          }}
+                                        style={{ width: '200px',fontSize: "small" }}
+                        
                                     />
                                 </Box>
                                 <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom="15px">
@@ -88,11 +95,12 @@ function Step1({ nextStep }) {
                                         value={industryType} // state 값을 사용하여 현재 선택된 값을 관리해야 합니다.
                                         onChange={handleIndustryTypeChange} // 선택된 항목을 변경할 때 호출될 핸들러 함수
                                         label="업종유형"
-                                        style={{ flex: 1 }}
+                                        style={{ width: '200px', fontSize:"small" }}
+                                        
                                     >
-                                        <MenuItem value={"type1"}>유형1</MenuItem>
-                                        <MenuItem value={"type2"}>유형2</MenuItem>
-                                        <MenuItem value={"type3"}>유형3</MenuItem>
+                                        <MenuItem value={"type1"} style={{fontSize: "small"}}>유형1</MenuItem>
+                                        <MenuItem value={"type2"} style={{fontSize: "small"}}>유형2</MenuItem>
+                                        <MenuItem value={"type3"} style={{fontSize: "small"}}>유형3</MenuItem>
                                         {/* 추가적인 유형들... */}
                                     </Select>
                                 </Box>
@@ -105,7 +113,11 @@ function Step1({ nextStep }) {
                                     <p style={{fontSize: "12px", paddingRight:"50px"}}>직책/직위</p>
                                     <TextField
                                         variant="outlined"
-
+                                        InputProps={{
+                                            sx: {
+                                              fontSize: 12,
+                                            },
+                                          }}
                                         size="small"
                                         InputLabelProps={{ shrink: true }}
                                         style={{  width: '200px' }}
@@ -115,7 +127,11 @@ function Step1({ nextStep }) {
                                     <p style={{fontSize: "12px", paddingRight:"50px"}}>이름</p>
                                     <TextField
                                         variant="outlined"
-
+                                        InputProps={{
+                                            sx: {
+                                              fontSize: 12,
+                                            },
+                                          }}
                                         size="small"
                                         InputLabelProps={{ shrink: true }}
                                         style={{  width: '200px'  }}
@@ -126,6 +142,11 @@ function Step1({ nextStep }) {
                                     <TextField
                                         variant="outlined"
                                         size="small"
+                                        InputProps={{
+                                            sx: {
+                                              fontSize: 12,
+                                            },
+                                          }}
                                         InputLabelProps={{ shrink: true }}
                                         style={{ width: '200px'  }}
                                     />

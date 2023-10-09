@@ -36,8 +36,8 @@
     font-size: 1.4rem;
     line-height: 1.5;
 }
-.introduce-sec{
-    background: linear-gradient(rgb(245, 247, 255) 0%, rgba(247, 249, 252, 0) 100%) 0% 0% / cover no-repeat;
+.introduce-sec {
+    background: linear-gradient(rgb(230, 245, 248) 0%, rgba(240, 248, 255, 0) 100%) 0% 0% / cover no-repeat;
 }
 .introduce-content{
     max-width: 1200px;

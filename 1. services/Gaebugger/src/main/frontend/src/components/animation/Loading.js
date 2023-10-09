@@ -4,7 +4,7 @@ import animationData from '../../assets/animation_lmx2u3qe.json';  // 이 부분
 
 const Loading = () => {
     return (
-        <div style={{ width: '500px', height: '500px' }}>
+        <div style={{ width: '700px', height: '700px' }}>
             <Lottie 
                 animationData={animationData}
                 style={{ width: '100%', height: '100%' }} 
