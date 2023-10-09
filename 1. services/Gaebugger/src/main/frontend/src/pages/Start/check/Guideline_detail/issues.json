@@ -1,0 +1,20 @@
+[
+    {
+        "issue_id":1,
+        "issue_type":"법률 위반",
+        "issue_content":"규칙1: 뭘 하면안된다.",
+        "issue_reason":"개인정보 보호법 17조 8항"
+    },
+    {
+        "issue_id":2,
+        "issue_type":"법률 위반",
+        "issue_content":"규칙2: 이름 제대로 써야한다.",
+        "issue_reason":"개인정보 보호법 17조 9항"
+    },
+    {
+        "issue_id":3,
+        "issue_type":"작성지침 미준수",
+        "issue_content":"규칙3: 이름 제대로 표기해야한다.",
+        "issue_reason":"개인정보처리방침 작성지침 18쪽 1"
+    }
+]

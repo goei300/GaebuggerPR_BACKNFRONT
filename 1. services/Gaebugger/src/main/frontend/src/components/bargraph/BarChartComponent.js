@@ -62,7 +62,7 @@ const BarChartComponent = ({ data }) => {
 
     
     return (
-        <div ref={chartRef} style={{ height: '400px' ,border:'3px solid #f0f0f0'}}>
+        <div ref={chartRef} style={{ height: '400px' ,border:'3px solid #f0f0f0', marginLeft:"20px", marginRight:"20px",borderRadius:"10px"}}>
 
             {/* 라디오 버튼 추가 */}
             <FormControl component="fieldset" style={{ display: 'flex' }}>
@@ -94,7 +94,7 @@ const BarChartComponent = ({ data }) => {
                 margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
                 layout="vertical"
                 borderRadius={4}
-                padding={0.6}
+                padding={0.7}
                 enableGridX={false}
                 enableGridY={false}
                 fontFamily="NotoSansKR-SemiBold"
@@ -141,7 +141,7 @@ const BarChartComponent = ({ data }) => {
                     tickRotation: 0,
                     legend: '항목',
                     legendPosition: 'middle',
-                    legendOffset: 32
+                    legendOffset: 32    
                 }}
                 axisLeft={{
                     tickSize: 5,

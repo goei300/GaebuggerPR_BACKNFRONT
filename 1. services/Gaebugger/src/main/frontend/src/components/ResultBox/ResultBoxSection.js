@@ -4,6 +4,7 @@ import Icon from '@mui/material/Icon';
 import WarningIcon from '@mui/icons-material/Warning';
 import FmdBadIcon from '@mui/icons-material/FmdBad';
 import RuleFolderIcon from '@mui/icons-material/RuleFolder';
+import "../../assets/fonts/fonts.css";
 const ResultBoxSection = ({ serverData, handleOpen }) => {
     const [isVisible, setIsVisible] = useState(false);
     const containerRef = useRef(null);
@@ -37,8 +38,8 @@ const ResultBoxSection = ({ serverData, handleOpen }) => {
 
     return (
         <div >
-            <h3 style={{marginLeft:'30px'}}>항목별 진단</h3>
-            <Box ref={containerRef} display="flex" justifyContent="space-between" my={4} style={{ opacity: isVisible ? 1 : 0, transition: 'opacity 1s' }}>
+            <h2 style={{marginLeft:'20px',fontFamily: "NotoSansKR-Medium"}}>항목별 진단</h2>
+            <Box ref={containerRef} display="flex" justifyContent="space-between" my={4} style={{ opacity: isVisible ? 1 : 0, transition: 'opacity 1s',marginLeft:"20px",marginRight:"20px" }}>
                 {[
                     { key: 'lawViolate', label: '법률 위반', color: '#D32F2F', icon:<WarningIcon fontSize="large"/> },
                     { key: 'lawDanger', label: '법률 위반 위험', color: '#FF9800', icon: <FmdBadIcon fontSize="large"/> },
