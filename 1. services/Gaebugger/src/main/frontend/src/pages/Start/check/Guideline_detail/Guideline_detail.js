@@ -4,6 +4,7 @@ import {   Paper, Typography,  Box, Divider, Container, Button, IconButton,Table
 import DescriptionIcon from '@mui/icons-material/Description';
 import testIssue from './issues.json';
 import ResultSlide from "../../../../components/ResultSlide/ResultSlide";
+import RenderIssue from "../../../../components/RenderIssue/RenderIssue";
 import guidelineDetail from './test_process.json';
 import './Highlight.css';
 import '../../../../assets/fonts/fonts.css';
@@ -15,13 +16,18 @@ import {
     StyledToggleButtonGroup 
 } from './styles/ComponentStyles';
 function Guideline_detail({processId, prevStep}){
-    // 임의의 데이터
+    // 임의의 데이터    
     const [solutionTypes,setSolutionTypes] = useState([1,2,3]);
     const modifiedTxt = guidelineDetail.modifiedText;
     const modifiedText_component = guidelineDetail.modifiedText_component;
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [selectedIssue, setSelectedIssue] = useState(null);
 
+
+    const handleIssueClick = (issue) => {
+        setSelectedIssue(issue);
+    }
     const handleModifiedText = (event, newTypes) => {
         // 전체 버튼이 선택된 경우
         if (newTypes.includes("all")) {
@@ -85,7 +91,7 @@ function Guideline_detail({processId, prevStep}){
                         <h3 style={{fontFamily:"NotoSansKR-SemiBold", marginLeft: "20px"}}>이슈 테이블</h3>
                         <StyledPaper elevation={3} style={{ margin: '10px', padding: '20px' }}>
                             <Table style={{ width: "100%"}}>
-                                <TableHead >
+                                <TableHead>
                                     <TableRow style={{}}>
                                         <TableCell style={{fontFamily:"NotoSansKR-Bold", width:"10%"}}>이슈 번호</TableCell>
                                         <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"10%"}}> 이슈 유형</TableCell>
@@ -95,14 +101,14 @@ function Guideline_detail({processId, prevStep}){
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {testIssue.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(issue => (
+                                    {testIssue.process_Issues.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(issue => (
                                         <TableRow key={issue.issue_id}>
-                                            <TableCell style={{width:"10%"}}>{issue.issue_id}</TableCell>
-                                            <TableCell style={{width:"10%"}}>{issue.issue_type}</TableCell>
-                                            <TableCell style={{width:"40%"}}>{issue.issue_content}</TableCell>
-                                            <TableCell style={{width:"30%"}}>{issue.issue_reason}</TableCell>
+                                            <TableCell style={{width:"10%",fontFamily:"NotoSansKR-Regular"}}>{issue.issue_id}</TableCell>
+                                            <TableCell style={{width:"10%",fontFamily:"NotoSansKR-Regular"}}>{issue.issue_type}</TableCell>
+                                            <TableCell style={{width:"40%",fontFamily:"NotoSansKR-Regular"}}>{issue.issue_content}</TableCell>
+                                            <TableCell style={{width:"30%",fontFamily:"NotoSansKR-Regular"}}>{issue.issue_reason}</TableCell>
                                             <TableCell>
-                                            <Button variant="contained" color="primary" size="small">확인</Button>
+                                                <Button variant="contained" color="primary" size="small">확인</Button>
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -116,6 +122,7 @@ function Guideline_detail({processId, prevStep}){
                                 onPageChange={handleChangePage}
                                 rowsPerPageOptions={[]}  // 페이지 당 행 수 선택 옵션을 숨김
                                 labelDisplayedRows={({ from, to, count }) => `${from}-${to} of ${count}`}  // "페이지 당 행" 라벨을 숨기기 위한 추가 설정
+                                style={{display:"flex",justifyContent:"center",alignContent:"center"}}
                             />
                         </StyledPaper>
                     </div>
@@ -125,12 +132,13 @@ function Guideline_detail({processId, prevStep}){
                     <div className="issueDetail">
                         <h3 style={{fontFamily:"NotoSansKR-SemiBold", marginLeft: "20px"}}>이슈 상세검토</h3>
                         
-                        <ResultSlide />
-                        { /* 각 이슈별로 슬라이드 형식의 상세 글 paper안에서 보여주면 좋을 듯*/}
-
+                        <div className="paragraph" style={{display:"flex",justifyContent:"space-between"}}>
+                            <ResultSlide issues={testIssue.process_Issues} paragraph={testIssue.process_Paragraph}  style={{flex:"1",margin:"0 10px",width: "10%"}} onIssueClick={handleIssueClick}/>
+                            {/*ResultSlide에서 표시된 issue 누르면 renderIssue에 해당 issue 정보 랜더링 하기*/}
+                            <RenderIssue issue={selectedIssue} style={{flex:"1",margin:"0 10px"}}/>
+                        </div>
                     </div>
                 </div>
-
 
                 {/* 수정된 txt파일 내용 */}
                 <Box mt={4}> 
