@@ -6,16 +6,56 @@ import CustomizedSteppers from "../../../../components/StepIndicator/StepIndicat
 import './Step1.css';
 import { CloudUpload as UploadFile } from '@mui/icons-material';
 
-function Step1({ nextStep }) {
-    const [file, setFile] = useState(null);
-    const [industryType, setIndustryType] = useState('');
-    
-
+function Step1({ nextStep, infoObject, setInfoObject  }) {
+    const { companyName, industryType, position, name, email, file } = infoObject;
     // Select 컴포넌트에서 선택된 값을 처리하는 함수
-    const handleIndustryTypeChange = (event) => {
-        setIndustryType(event.target.value);
-    };
 
+    const handleCompanyNameChange = (e) => {
+        setInfoObject({
+            ...infoObject,
+            companyName: e.target.value
+        });
+    };
+    const handleIndustryTypeChange = (e) => {
+        setInfoObject({
+            ...infoObject,
+            industryType: e.target.value
+        });
+    };
+    const handlePositionChange = (e) => {
+        setInfoObject({
+            ...infoObject,
+            position: e.target.value
+        });
+    };
+    const handleNameChange = (e) => {
+        setInfoObject({
+            ...infoObject,
+            name: e.target.value
+        });
+    };
+    const handleEmailChange = (e) => {
+        setInfoObject({
+            ...infoObject,
+            email: e.target.value
+        });
+    };
+    const handleFileChange = (e) => {
+        const chosenFile = e.target.files[0];
+    
+        // 파일 확장자 검사
+        if (chosenFile && !chosenFile.name.endsWith('.txt')) {
+            alert("오직 .txt 파일만 허용됩니다.");
+            e.target.value = '';  // 파일 입력을 초기화
+            return;
+        }
+    
+        // 원래의 로직 (파일 상태 업데이트 등)을 계속 실행
+        setInfoObject({
+            ...infoObject,
+            file: chosenFile
+        });
+    };
     const StyledPaper = styled(Paper)({
         padding: '30px',
         boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)',
@@ -23,19 +63,7 @@ function Step1({ nextStep }) {
         margin: '100px'
     });
     
-    const handleFileChange = (event) => {
-        const chosenFile = event.target.files[0];
-    
-        // 파일 확장자 검사
-        if (chosenFile && !chosenFile.name.endsWith('.txt')) {
-            alert("오직 .txt 파일만 허용됩니다.");
-            event.target.value = '';  // 파일 입력을 초기화
-            return;
-        }
-    
-        // 원래의 로직 (파일 상태 업데이트 등)을 계속 실행
-        setFile(chosenFile);
-    };
+
 
     const handleNext = async () => {
 /*         const formData = new FormData();
@@ -79,13 +107,14 @@ function Step1({ nextStep }) {
                                         size="small"
                                         InputLabelProps={{ shrink: true }}
                                         InputProps={{
-                                            sx: {
+                                            sx: {  
                                               fontSize: 12,
                                             },
                                           }}
                                         style={{ width: '200px',fontSize: "small" }}
-                        
-                                    />
+                                        value={companyName}
+                                        onChange={handleCompanyNameChange}
+                                        />
                                 </Box>
                                 <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom="15px">
                                     <p style={{fontSize: "12px", paddingRight:"50px"}}>업종 유형</p>
@@ -96,12 +125,20 @@ function Step1({ nextStep }) {
                                         onChange={handleIndustryTypeChange} // 선택된 항목을 변경할 때 호출될 핸들러 함수
                                         label="업종유형"
                                         style={{ width: '200px', fontSize:"small" }}
-                                        
                                     >
-                                        <MenuItem value={"type1"} style={{fontSize: "small"}}>유형1</MenuItem>
-                                        <MenuItem value={"type2"} style={{fontSize: "small"}}>유형2</MenuItem>
-                                        <MenuItem value={"type3"} style={{fontSize: "small"}}>유형3</MenuItem>
-                                        {/* 추가적인 유형들... */}
+                                        <MenuItem value={"type1"} style={{fontSize: "small"}}>제조</MenuItem>
+                                        <MenuItem value={"type2"} style={{fontSize: "small"}}>전기/가스/수도</MenuItem>
+                                        <MenuItem value={"type3"} style={{fontSize: "small"}}>건설업</MenuItem>
+                                        <MenuItem value={"type4"} style={{fontSize: "small"}}>유통/물류/도소매</MenuItem>
+                                        <MenuItem value={"type5"} style={{fontSize: "small"}}>숙박/음식</MenuItem>
+                                        <MenuItem value={"type6"} style={{fontSize: "small"}}>정보/통신</MenuItem>
+                                        <MenuItem value={"type7"} style={{fontSize: "small"}}>금융/보험</MenuItem>
+                                        <MenuItem value={"type8"} style={{fontSize: "small"}}>부동산/임대</MenuItem>
+                                        <MenuItem value={"type9"} style={{fontSize: "small"}}>교육 서비스업</MenuItem>
+                                        <MenuItem value={"type10"} style={{fontSize: "small"}}>보건/복지</MenuItem>
+                                        <MenuItem value={"type11"} style={{fontSize: "small"}}>협회/단체</MenuItem>
+                                        <MenuItem value={"type12"} style={{fontSize: "small"}}>기타</MenuItem>
+
                                     </Select>
                                 </Box>
                             </div>
@@ -121,6 +158,8 @@ function Step1({ nextStep }) {
                                         size="small"
                                         InputLabelProps={{ shrink: true }}
                                         style={{  width: '200px' }}
+                                        value={position}
+                                        onChange={handlePositionChange}
                                     />
                                 </Box>
                                 <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom="15px">
@@ -135,6 +174,8 @@ function Step1({ nextStep }) {
                                         size="small"
                                         InputLabelProps={{ shrink: true }}
                                         style={{  width: '200px'  }}
+                                        value={name}
+                                        onChange={handleNameChange}
                                     />
                                 </Box>
                                 <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom="15px">
@@ -149,6 +190,8 @@ function Step1({ nextStep }) {
                                           }}
                                         InputLabelProps={{ shrink: true }}
                                         style={{ width: '200px'  }}
+                                        value={email}
+                                        onChange={handleEmailChange}
                                     />
                                 </Box>
                             </div>

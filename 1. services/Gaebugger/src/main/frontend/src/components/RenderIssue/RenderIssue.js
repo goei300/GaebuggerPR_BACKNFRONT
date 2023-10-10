@@ -16,17 +16,17 @@ function RenderIssue({issue,style}){
         }
     }, [issue]);
     if (!issue) return(
-        <StyledPaper className={animate ? "fade-in" : ""} style={{ ...style, textAlign: 'center', padding: '20px' }}>
+        <StyledPaper className={animate ? "fade-in" : ""} style={{ ...style, textAlign: 'center', padding: '20px',fontSize:"24px",fontFamily:"NotoSansKR-SemiBold",display:"flex",flexDirection:"column",justifyContent:"center" }}>
             <p>이슈를 클릭해 주세요</p>
         </StyledPaper>
     )
     
     return (
         <StyledPaper className={animate ? "fade-in" : ""} style={{ ...style, textAlign: 'center', padding: '20px',fontFamily:"NotoSansKR-Regular",display:"flex",flexDirection:"column",justifyContent:"center" }}>
-            <h4>진단 번호</h4>
+            <h4>이슈 번호</h4>
             <body1>{issue.issue_id}</body1>
             <Divider style={{ margin: '10px 0' ,opacity:0}} />
-            <h4>진단 유형</h4>
+            <h4>이슈 유형</h4>
             <body1>{issue.issue_type}</body1>
             <Divider style={{ margin: '10px 0',opacity:0 }} />
             <h4>가이드 라인</h4>

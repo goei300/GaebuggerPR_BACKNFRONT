@@ -5,7 +5,7 @@ import CustomizedSteppers from '../../../../components/StepIndicator/StepIndicat
 import {styled} from '@mui/material/styles';
 import '../../../../assets/fonts/fonts.css';
 import './Step2.css';
-function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId  }) {
+function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId,infoObject  }) {
 
     const StyledPaper = styled(Paper)({
         padding: '30px',
