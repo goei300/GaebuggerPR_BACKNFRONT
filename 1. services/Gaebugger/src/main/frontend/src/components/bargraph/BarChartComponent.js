@@ -75,12 +75,12 @@ const BarChartComponent = ({ data }) => {
                     <FormControlLabel 
                         value="common" 
                         control={<Radio />} 
-                        label={<Typography style={{ fontFamily: 'NotoSansKR-Regular', fontSize: '14px', color: 'black' }}>일반</Typography>} 
+                        label={<Typography style={{ fontFamily: 'NotoSansKR-Regular', fontSize: '14px', color: 'black' }}>유형1</Typography>} 
                     />
                     <FormControlLabel 
                         value="finance" 
                         control={<Radio />} 
-                        label={<Typography style={{ fontFamily: 'NotoSansKR-Regular', fontSize: '14px', color: 'black' }}>금융</Typography>} 
+                        label={<Typography style={{ fontFamily: 'NotoSansKR-Regular', fontSize: '14px', color: 'black' }}>유형2</Typography>} 
                     />
                 </RadioGroup>
             </FormControl>

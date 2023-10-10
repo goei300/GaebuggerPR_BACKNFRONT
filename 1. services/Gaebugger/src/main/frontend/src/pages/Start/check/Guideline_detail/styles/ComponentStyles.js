@@ -1,5 +1,10 @@
 import { styled } from '@mui/system';
-import { Paper, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Paper, ToggleButton, ToggleButtonGroup,TableCell } from '@mui/material';
+
+export const StyledTableCell = styled(TableCell)(({ width }) => ({
+    fontFamily: "NotoSansKR-Bold",
+    width: width || 'auto',
+}));
 
 export const StyledPaper = styled(Paper)({
     padding: '30px',
@@ -28,7 +33,8 @@ export const customStyles_title = {
     fontFamily: 'NotoSansKR-Regular',
     borderBottom: '2px solid #007BFF',
     paddingBottom: '5px',
-    display: 'inline-block'
+    display: 'inline-block',
+    textDecoration: "line-through"
 };
 
 export const StyledToggleButton = styled(ToggleButton)({
