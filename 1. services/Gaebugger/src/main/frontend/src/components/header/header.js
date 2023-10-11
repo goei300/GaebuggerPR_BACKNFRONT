@@ -39,7 +39,7 @@ const Header = ({ active }) => {
                         onMouseEnter={() => setShowContactDropdown(true)}
                         onMouseLeave={() => setShowContactDropdown(false)}
                     >
-                        <Link to="/contact" className={active === "contact" ? "active-link" : ""}>플랫폼 소개</Link>
+                        <Link to="/contact" className={active === "contact" ? "active-link" : ""}>주요 기능</Link>
                         <CustomDropdown 
                             isOpen={showContactDropdown}
                             items={[
@@ -52,7 +52,7 @@ const Header = ({ active }) => {
                         onMouseEnter={() => setShowServicesDropdown(true)}
                         onMouseLeave={() => setShowServicesDropdown(false)}
                     >
-                        <Link to="/services" className={active === "services" ? "active-link" : ""}>기능 소개</Link>
+                        <Link to="/services" className={active === "services" ? "active-link" : ""}>사용 사례</Link>
                         <CustomDropdown 
                             isOpen={showServicesDropdown}
                             items={[
@@ -62,7 +62,10 @@ const Header = ({ active }) => {
                         />
                     </li>
                     <li>
-                        <Link to="/guidelines" className={active === "guidelines" ? "active-link" : ""}>이용 방법</Link>
+                        <Link to="/guidelines" className={active === "guidelines" ? "active-link" : ""}>리소스</Link>
+                    </li>
+                    <li>
+                        <Link to="/guidelines" className={active === "guidelines" ? "active-link" : ""}>사용 문의</Link>
                     </li>
                     <li>
                         <Button 

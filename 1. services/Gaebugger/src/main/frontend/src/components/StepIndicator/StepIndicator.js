@@ -14,6 +14,7 @@ import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector
 import '../../assets/fonts/fonts.css';
 import './StepIndicator.css';
 import { ThemeProvider } from '@emotion/react';
+import { Divider } from '@mui/material';
 
 
 const theme = createTheme({
@@ -117,18 +118,22 @@ const steps = ['프로파일 작성', '기재사항 체크', '진단 중', '진�
 
 export default function CustomizedSteppers({ activeStep }) {
   return (
-    <ThemeProvider theme={theme}>
-      <Stack sx={{ width: '100%' }} spacing={4}>
-        <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
-          {steps.map((label) => (
-            <Step key={label}>
-              <StyledStepLabel ownerState={{ active: activeStep === steps.indexOf(label) }} StepIconComponent={ColorlibStepIcon}>
-                {label}
-              </StyledStepLabel>
-            </Step>
-          ))}
-        </Stepper>
-      </Stack>
-    </ThemeProvider>
+    <div className="StepIndicator" style={{marginTop:"50px"}}>
+      <h1 style={{textAlign:"center", fontFamily:"NotoSansKR-Bold",marginBottom:"50px"}}>현재 진단 단계</h1>
+      <ThemeProvider theme={theme}>
+        <Stack sx={{ width: '100%' }} spacing={4}>
+          <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StyledStepLabel ownerState={{ active: activeStep === steps.indexOf(label) }} StepIconComponent={ColorlibStepIcon}>
+                  {label}
+                </StyledStepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </Stack>
+      </ThemeProvider>
+      <Divider style={{marginTop:"50px", border: '10px solid #009bff', borderRadius:'5px'}} />
+    </div>
   );
 }

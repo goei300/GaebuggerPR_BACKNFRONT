@@ -86,7 +86,7 @@ function Step1({ nextStep, infoObject, setInfoObject  }) {
     };
 
     return (
-        <Container className="compact-container">
+        <Container className="compact-container" style={{padding:"0px"}}>
             <CustomizedSteppers activeStep={0} />
             <Divider style={{ marginTop: '24px', opacity: 0 }} />
             <Box width="80%" mx="auto" my={4}>

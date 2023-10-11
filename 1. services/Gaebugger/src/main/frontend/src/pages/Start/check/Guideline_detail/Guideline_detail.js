@@ -77,38 +77,53 @@ function Guideline_detail({processId, prevStep}){
     }
 
     return (
-        <Container className="compact-container">
+        <Container className="compact-container" style={{padding:"0px"}}>
             <CustomizedSteppers activeStep={3} />
-            <Divider style={{ margin: "50px", opacity: 0 }} />
+            <Divider style={{ margin: "20px", opacity: 0 }} />
 
-            <StyledPaper>
+            <StyledPaper style={{margin:"20px"}}>
                 <div className="eachIssue">
                     <h1 style={{ marginLeft: '10px', fontFamily: "NotoSansKR-SemiBold" }}>이슈 개별 분석</h1>
-                    <Divider style={{ marginBottom: '50px' }} />
+                    <Divider style={{ marginBottom: '30px',border: "1px solid" }} />
 
                     {/* 이슈 테이블 */}
                     <div className="issueTable">
-                        <h3 style={{fontFamily:"NotoSansKR-SemiBold", marginLeft: "20px"}}>이슈 테이블</h3>
+                        <h2 style={{fontFamily:"NotoSansKR-SemiBold", marginLeft: "20px"}}>이슈 테이블</h2>
+                        <Divider style={{marginBottom:'10px'}} />
+                        <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>표를 통해 모든 이슈를 간편하게 확인해보세요.</h3>
+                        <Divider style={{marginBottom:'20px',opacity:0}} />
                         <StyledPaper elevation={3} style={{ margin: '10px', padding: '20px' }}>
                             <Table style={{ width: "100%"}}>
                                 <TableHead>
                                     <TableRow style={{}}>
-                                        <TableCell style={{fontFamily:"NotoSansKR-Bold", width:"10%"}}>이슈 번호</TableCell>
-                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"10%"}}> 이슈 유형</TableCell>
-                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"40%"}}>이슈 내용</TableCell>
-                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"30%"}}>이슈 근거</TableCell>
-                                        <TableCell style={{fontFamily:"NotoSansKR-Bold"}}>확인해보기</TableCell>
+                                        <TableCell style={{fontFamily:"NotoSansKR-Bold", width:"5%"}}>번호</TableCell>
+                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"15%"}}> 유형</TableCell>
+                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"40%"}}>내용</TableCell>
+                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"30%"}}>근거</TableCell>
+                                        <TableCell style={{fontFamily:"NotoSansKR-Bold"}}>확인하기</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {testIssue.process_Issues.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(issue => (
                                         <TableRow key={issue.issue_id}>
-                                            <TableCell style={{width:"10%",fontFamily:"NotoSansKR-Regular"}}>{issue.issue_id}</TableCell>
-                                            <TableCell style={{width:"10%",fontFamily:"NotoSansKR-Regular"}}>{issue.issue_type}</TableCell>
-                                            <TableCell style={{width:"40%",fontFamily:"NotoSansKR-Regular"}}>{issue.issue_content}</TableCell>
-                                            <TableCell style={{width:"30%",fontFamily:"NotoSansKR-Regular"}}>{issue.issue_reason}</TableCell>
+                                            <TableCell style={{width:"10%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_id}</TableCell>
+                                            <TableCell style={{width:"10%", fontFamily:"NotoSansKR-Regular"}}>
+                                                {issue.issue_type}
+                                                {issue.issue_type === "법률 위반" && <span style={{color: "red", fontWeight: "bold", marginLeft: "7px"}}>(-10)</span>}
+                                                {issue.issue_type === "법률 위반 위험" && <span style={{color: "orange", fontWeight: "bold", marginLeft: "7px"}}>(-5)</span>}
+                                                {issue.issue_type === "작성지침 미준수" && <span style={{color: "goldenrod", fontWeight: "bold", marginLeft: "7px"}}>(-3)</span>}
+                                            </TableCell>
+                                            <TableCell style={{width:"40%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_content}</TableCell>
+                                            <TableCell style={{width:"30%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_reason}</TableCell>
                                             <TableCell>
-                                                <Button variant="contained" color="primary" size="small">확인</Button>
+                                                <Button 
+                                                    variant="contained" 
+                                                    color="primary" 
+                                                    size="small" 
+                                                    style={{ borderRadius: '25px', padding: '5px 15px' }} // 이 부분에서 버튼의 모양과 크기를 조절합니다.
+                                                >
+                                                    확인
+                                                </Button>
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -130,8 +145,10 @@ function Guideline_detail({processId, prevStep}){
                     <Divider style={{marginBottom:"50px", opacity:0}} />
                     {/* 이슈사항 상세 검토 */}
                     <div className="issueDetail">
-                        <h3 style={{fontFamily:"NotoSansKR-SemiBold", marginLeft: "20px"}}>이슈 상세검토</h3>
-                        
+                        <h2 style={{fontFamily:"NotoSansKR-SemiBold", marginLeft: "20px"}}>이슈 상세검토</h2>
+                        <Divider style={{marginBottom:'10px'}} />
+                        <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>이슈 정보와 가이드라인까지 한번에 확인해보세요.</h3>
+                        <Divider style={{marginBottom:'20px',opacity:0}} />
                         <div className="paragraph" style={{display:"flex",justifyContent:"space-between"}}>
                             <ResultSlide issues={testIssue.process_Issues} paragraph={testIssue.process_Paragraph}  style={{flex:"1",margin:"0 10px",width: "10%"}} onIssueClick={handleIssueClick}/>
                             {/*ResultSlide에서 표시된 issue 누르면 renderIssue에 해당 issue 정보 랜더링 하기*/}
@@ -141,6 +158,8 @@ function Guideline_detail({processId, prevStep}){
                 </div>
 
                 {/* 수정된 txt파일 내용 */}
+
+                <Divider style={{marginTop:"500px",opacity:0}} />
                 <Box mt={4}> 
                     <Typography variant="h6" gutterBottom style={customStyles_title}>솔루션 적용 후</Typography>
                     <Box border={1} p={2} borderColor="grey.300" mt={2} position="relative">
@@ -172,7 +191,7 @@ function Guideline_detail({processId, prevStep}){
                         <IconButton onClick={downloadModifiedText} color="primary" aria-label="download">
                             <DescriptionIcon />
                         </IconButton>
-                        <Typography>다운로드</Typography>
+                        <Typography>다운로드</Typography>   
                     </Box>
                 </Box>
 
