@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Typography, Box, ToggleButtonGroup, ToggleButton, Paper } from '@mui/material';
 import "../../assets/fonts/fonts.css";
+import { makeStyles } from '@mui/styles';
 
 const NonConformityCheck = ({ data }) => {
   const [selectedViolations, setSelectedViolations] = useState([]);
@@ -35,8 +36,8 @@ const NonConformityCheck = ({ data }) => {
   const getColorByType = (type) => {
     switch (type) {
       case "법률 위반": return 'red';
-      case "법률 위반 위험": return 'yellow';
-      case "작성지침 미준수": return 'blue';
+      case "법률 위반 위험": return 'orange';
+      case "작성지침 미준수": return 'yellow';
       default: return 'transparent';
     }
   };
@@ -49,6 +50,37 @@ const NonConformityCheck = ({ data }) => {
         </React.Fragment>
     ));
 };
+const useStyles = makeStyles({
+  lawViolation: {
+    fontFamily:"NotoSansKR-Regular",
+    backgroundColor: "transparent", // 예: 빨간색
+    '&.Mui-selected': {
+      fontFamily:"NotoSansKR-SemiBold",
+      borderBottom: "6px solid red",  // 밑줄 적용
+      paddingBottom: "5px"            // 밑줄과 텍스트 간의 간격
+    }
+  },
+  lawRisk: {
+    fontFamily:"NotoSansKR-Regular",
+    backgroundColor: "transparent", // 예: 노란색
+    '&.Mui-selected': {
+
+      fontFamily:"NotoSansKR-SemiBold",
+      borderBottom: "6px solid orange",  // 밑줄 적용
+      paddingBottom: "5px"            // 밑줄과 텍스트 간의 간격
+    }
+  },
+  guidelineViolation: {
+    fontFamily:"NotoSansKR-Regular",
+    backgroundColor: "transparent", // 예: 자주색
+    '&.Mui-selected': {
+      fontFamily:"NotoSansKR-SemiBold",
+      borderBottom: "6px solid yellow",  // 밑줄 적용
+      paddingBottom: "5px"            // 밑줄과 텍스트 간의 간격
+    }
+  },
+});
+const classes = useStyles();
   return (
     <Box mt={4} style={{display: "flex", flexDirection: "column", marginLeft:"20px",marginRight:"20px"}}>
       <ToggleButtonGroup
@@ -56,10 +88,28 @@ const NonConformityCheck = ({ data }) => {
         onChange={(event, newValues) => setSelectedViolations(newValues)}
         aria-label="issues"
         style={{justifyContent:"flex-end"}}
-      >
-        <ToggleButton value="법률 위반" aria-label="법률 위반" style={{ '&.Mui-selected': { backgroundColor: '#707070' } }}>법률 위반</ToggleButton>
-        <ToggleButton value="법률 위반 위험" aria-label="법률 위반 위험" style={{ '&.Mui-selected': { backgroundColor: '#707070' } }}>법률 위반 위험</ToggleButton>
-        <ToggleButton value="작성지침 미준수" aria-label="작성지침 미준수" style={{ '&.Mui-selected': { backgroundColor: "#ffffff" } }}>작성지침 미준수</ToggleButton>
+      > 
+        <ToggleButton 
+          value="법률 위반" 
+          aria-label="법률 위반" 
+          className={classes.lawViolation}
+        >
+          법률 위반
+        </ToggleButton>
+        <ToggleButton 
+          value="법률 위반 위험" 
+          aria-label="법률 위반 위험" 
+          className={classes.lawRisk}
+        >
+          법률 위반 위험
+        </ToggleButton>
+        <ToggleButton 
+          value="작성지침 미준수" 
+          aria-label="작성지침 미준수" 
+          className={classes.guidelineViolation}
+        >
+          작성지침 미준수
+        </ToggleButton>
       </ToggleButtonGroup>
       <Paper style={{maxHeight: '450px', overflowY: 'scroll', padding: '16px', border: "2px solid #d9d9d9"}}>
         {getHighlightedContent().map((item, index) => (

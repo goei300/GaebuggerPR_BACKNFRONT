@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography,Divider } from '@mui/material';
 import Icon from '@mui/material/Icon';
 import WarningIcon from '@mui/icons-material/Warning';
 import FmdBadIcon from '@mui/icons-material/FmdBad';
 import RuleFolderIcon from '@mui/icons-material/RuleFolder';
 import "../../assets/fonts/fonts.css";
-const ResultBoxSection = ({ serverData, handleOpen }) => {
+
+const ResultBoxSection = ({ serverData }) => {
     const [isVisible, setIsVisible] = useState(false);
     const containerRef = useRef(null);
 
@@ -38,8 +39,10 @@ const ResultBoxSection = ({ serverData, handleOpen }) => {
 
     return (
         <div >
-            <h2 style={{marginLeft:'20px',fontFamily: "NotoSansKR-Medium"}}>항목별 진단</h2>
-            <Box ref={containerRef} display="flex" justifyContent="space-between" my={4} style={{ opacity: isVisible ? 1 : 0, transition: 'opacity 1s',marginLeft:"20px",marginRight:"20px" }}>
+            <h2 style={{marginLeft:'20px',fontFamily: "NotoSansKR-Medium"}}>항목 별 진단</h2>
+            <Divider style={{marginBottom:'10px'}} />
+            <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>유형별로 몇 건 위반했는지 확인해 보세요.</h3>
+            <Box ref={containerRef} display="flex" justifyContent="space-between" my={4} style={{ opacity: isVisible ? 1 : 0, transition: 'opacity 1s',marginTop:"40px",marginLeft:"20px",marginRight:"20px" }}>
                 {[
                     { key: 'lawViolate', label: '법률 위반', color: '#D32F2F', icon:<WarningIcon fontSize="large"/> },
                     { key: 'lawDanger', label: '법률 위반 위험', color: '#FF9800', icon: <FmdBadIcon fontSize="large"/> },
