@@ -119,54 +119,56 @@ function Step4({ processId, nextStep }) {
     ];
     const total = pieData.reduce((acc, data) => acc + data.value, 0);
     return (
-        <Container className="compact-container">
+        <Container className="compact-container" style={{padding:"0px"}}>
             <CustomizedSteppers activeStep={3} />
-            <Divider style={{marginTop: "50px", border: '10px solid #8AD6FC'}} />
             {/* 다양한 항목들 */}
-            <div className="estimate_userFile" style={{marginBottom: "200px"}}>
-                <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>대시보드</h1>
-                <Divider style={{marginBottom:'30px'}} />
-                <StyledPaper>
-                    <ResultBoxSection serverData={serverData} />
-                    <Divider style={{margin: "30px", opacity:0}} />
-                    <h2 style={{marginLeft:'20px', fontFamily: "NotoSansKR-Medium"}}>점수 결과</h2>
-                    <Divider style={{marginBottom:'10px'}} />
-                    <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>사용자님의 이슈를 토대로 계산한 점수 결과입니다.</h3>
-                    <div className="score-whyscore" style={{borderRadius: '10px',backgroundColor: "#ffffff", border: '3px solid #F2F2F2',marginTop:"40px", marginLeft:"20px",marginRight:"20px"}}>
-                        <ScoreDisplay data={serverData} />
-                        <PieChartComponent pieData={pieData} total={total} />   
-                    </div>
-                </StyledPaper>
-            </div>
-
-            <div className="average-bargraph">
-                <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>업종별 평균 비교 그래프</h1>
-                <Divider style={{marginBottom:'10px'}} />
-                <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>사용자님의 같은 유형에 맞게 평균 통계자료를 보여줄게요.</h3>
-                <Divider style={{marginBottom:'20px',opacity:0}} />
-                <BarChartComponent data={graphData} />      
-
-            </div>
-            <Divider style={{margin: "100px", opacity:0}} />
-
-            {/* 여기 부적합요소 확인 스크롤 보여주기. */}
-            <div className="nonconformity">
-                <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>한눈에 이슈 확인 하기</h1>
-                <Divider style={{marginBottom:'10px'}} />
-                <div style={{display:"flex", justifyContent: "space-between"}}>
-                    <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>사용자님의 처리방침 내용 중 어디가 틀렸는지 한 눈에 확인해 보세요.</h3>
-                    <div className="whatisIssue" style={{display:"flex",justifyContent:"end", alignItems:"center", marginRight:"20px"}}>
-                        <h5 style={{marginRight:"10px",fontFamily:"NotoSansKR-Light"}}> 이슈가 무엇인가요?</h5>
-                        <IssuePopover />
-                    </div>
+            <div className="results" style={{margin:"20px"}}>
+                <div className="estimate_userFile" style={{marginBottom: "200px"}}>
+                    <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>대시보드</h1>
+                    <Divider style={{marginBottom:'30px'}} />
+                    <StyledPaper>
+                        <ResultBoxSection serverData={serverData} />
+                        <Divider style={{margin: "50px", opacity:0}} />
+                        <h2 style={{marginLeft:'20px', fontFamily: "NotoSansKR-Medium"}}>점수 결과</h2>
+                        <Divider style={{marginBottom:'10px'}} />
+                        <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>사용자님의 이슈를 토대로 계산한 점수 결과입니다.</h3>
+                        <div className="score-whyscore" style={{borderRadius: '10px',backgroundColor: "#ffffff", border: '3px solid #F2F2F2',marginTop:"40px", marginLeft:"20px",marginRight:"20px"}}>
+                            <ScoreDisplay data={serverData} />
+                            <PieChartComponent pieData={pieData} total={total} />   
+                        </div>
+                    </StyledPaper>
+                    <Divider style={{marginBottom:"20px",opacity:0}} />
                 </div>
-                <NonConformityCheck data={testData} />
-            </div>
-            <Divider style={{margin: "100px", opacity:0}} />
 
-            <Box display="flex" justifyContent="flex-end" mt={4}>
-                <Button onClick={nextStep} variant="outlined" color="primary" style={{fontFamily: "NotoSansKR-Bold"}}>상세 가이드라인</Button>
-            </Box>
+                <div className="average-bargraph">
+                    <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>업종별 평균 비교 그래프</h1>
+                    <Divider style={{marginBottom:'10px'}} />
+                    <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>사용자님과 같은 업종에서는 얼마나 이슈가 발생하는지 보여드릴게요.</h3>
+                    <Divider style={{marginBottom:'20px',opacity:0}} />
+                    <BarChartComponent data={graphData} />      
+
+                </div>
+                <Divider style={{margin: "100px", opacity:0}} />
+
+                {/* 여기 부적합요소 확인 스크롤 보여주기. */}
+                <div className="nonconformity">
+                    <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>한눈에 이슈 확인 하기</h1>
+                    <Divider style={{marginBottom:'10px'}} />
+                    <div style={{display:"flex", justifyContent: "space-between"}}>
+                        <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>사용자님의 처리방침 전체 내용 중 어디가 틀렸는지 이슈 표기를 통해 확인해보세요.</h3>
+                        <div className="whatisIssue" style={{display:"flex",justifyContent:"end", alignItems:"center", marginRight:"20px"}}>
+                            <h5 style={{marginRight:"10px",fontFamily:"NotoSansKR-Light"}}> 이슈가 무엇인가요?</h5>
+                            <IssuePopover />
+                        </div>
+                    </div>
+                    <NonConformityCheck data={testData} />
+                </div>
+                <Divider style={{margin: "100px", opacity:0}} />
+
+                <Box display="flex" justifyContent="flex-end" mt={4}>
+                    <Button onClick={nextStep} variant="outlined" color="primary" style={{fontFamily: "NotoSansKR-Bold"}}>상세 가이드라인</Button>
+                </Box>
+            </div>
         </Container>
     );
     

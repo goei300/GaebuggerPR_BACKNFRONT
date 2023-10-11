@@ -4,7 +4,7 @@ import "../../assets/fonts/fonts.css";
 import { makeStyles } from '@mui/styles';
 
 const NonConformityCheck = ({ data }) => {
-  const [selectedViolations, setSelectedViolations] = useState([]);
+  const [selectedViolations, setSelectedViolations] = useState(['법률 위반','법률 위반 위험','작성지침 미준수']);
 
   const getHighlightedContent = () => {
     let lastIndex = 0;

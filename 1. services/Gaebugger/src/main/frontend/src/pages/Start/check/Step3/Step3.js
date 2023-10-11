@@ -42,9 +42,8 @@ function Step3({ nextStep, processId }) {
     }, [processId, nextStep]);
 
     return (
-        <Container className="compact-container">
+        <Container className="compact-container" style={{padding:"0px"}}>
             <CustomizedSteppers activeStep={2} />
-            <Divider style={{ margin: '20px 0' }} />
             <StyledPaper elevation={3}>
                 <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="400px">
                     {!loadingComplete ? (

@@ -37,8 +37,11 @@
     line-height: 1.5;
 }
 .introduce-sec {
-    background: linear-gradient(rgb(230, 245, 248) 0%, rgba(240, 248, 255, 0) 100%) 0% 0% / cover no-repeat;
+    background: linear-gradient(rgb(248, 253, 255) 0%, rgb(255, 255, 255) 100%) 0% 0% / cover no-repeat;
 }
+
+
+
 .introduce-content{
     max-width: 1200px;
     margin: auto;
@@ -79,6 +82,9 @@
 
 .section p.animated {
     animation-delay: 1s; /* h2 애니메이션 후 1초 후 시작 */
+}
+.section Button.animated {
+    animation-delay: 1.5s; /* h2 애니메이션 후 1초 후 시작 */
 }
 @keyframes fadeIn {
     from {
