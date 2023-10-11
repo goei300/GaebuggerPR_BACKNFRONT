@@ -1,10 +1,68 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { arc } from 'd3-shape';
 import { ResponsivePie } from '@nivo/pie';
 import {  Typography } from '@mui/material';
 
 const PieChartComponent = ({ pieData, total }) => {
     const [isVisible, setIsVisible] = useState(false);
     const containerRef = useRef(null);
+
+    const CustomSliceLabels = props => {
+        const { dataWithArc, centerX, centerY, innerRadius, outerRadius } = props;
+    
+        return (
+            <g transform={`translate(${centerX}, ${centerY})`}>
+                {dataWithArc.map(datum => {
+                    const radius = innerRadius + ((outerRadius || 100) - innerRadius) * 0.5; // 조각의 중간 지점에서 레이블을 배치
+                    const angle = (datum.arc.startAngle + datum.arc.endAngle) / 2; // 중심 각도
+                    console.log("Start Angle:", datum.arc.startAngle);
+                    console.log("End Angle:", datum.arc.endAngle);
+                    console.log("Computed Angle:", angle);
+                    console.log("radius:",radius);
+                    console.log("Inner Radius:", innerRadius);
+                    console.log("Outer Radius:", outerRadius);
+                    console.log("Computed Radius:", radius);
+                    const x = Math.cos(angle - Math.PI / 2) * radius; // -Math.PI/2는 조정을 위해 사용됩니다.
+                    const y = Math.sin(angle - Math.PI / 2) * radius;
+                    console.log("x:", x);
+                    console.log("y:", y);
+                    if (datum.data.id === "점수") {
+                        return (
+                            <text 
+                                key={datum.data.id}
+                                x={x}
+                                y={y}
+                                style={{ fontSize: '20px', fontFamily: 'NotoSansKR-SemiBold' }}
+                                textAnchor="middle"
+                                dominantBaseline="central"
+                            >
+                                {datum.label}
+                            </text>
+                        );
+                    } else {
+                        return (
+                            <text 
+                                key={datum.data.id}
+                                x={x}
+                                y={y}
+                                style={{ fontSize: '16px', fontFamily: 'NotoSansKR-Regular' }}
+                                textAnchor="middle"
+                                dominantBaseline="central"
+                            >
+                                {datum.label}
+                            </text>
+                        );
+                    }
+                })}
+            </g>
+        );
+    };
+
+    
+    const arcGenerator = arc()
+        .innerRadius(85)  // 이 값을 조절하여 도넛 차트의 내부 반지름을 설정할 수 있습니다.
+        .cornerRadius(3);  // 모서리를 둥글게 만들어 줍니다.
+
     const totalValue = pieData.reduce((sum, data) => {
         let additionalValue = data.value;
         if (data.label === "법률 위반") {
@@ -32,7 +90,7 @@ const PieChartComponent = ({ pieData, total }) => {
           }
           return { ...data, value: newValue };
         }),
-        { id:"점수", label: "나머지", value: remainingValue } // 남은 값을 추가 항목으로 추가
+        { id:"점수", label: "점수", value: remainingValue } // 남은 값을 추가 항목으로 추가
       ];
 
     useEffect(() => {
@@ -61,7 +119,6 @@ const PieChartComponent = ({ pieData, total }) => {
             }
         };
     }, []);
-
     return (
         <div ref={containerRef} style={{ display: 'flex', position: 'relative', flexDirection: 'column', alignItems: 'center', height: '450px', width: '450px', opacity: isVisible ? 1 : 0, transition: 'opacity 1s' }}>
             <Typography variant='h5' style={{ 
@@ -76,39 +133,29 @@ const PieChartComponent = ({ pieData, total }) => {
             </Typography>
             <ResponsivePie
                 data={transformedPieData}
+/*                 layers={[CustomSliceLabels,'slices']} */
                 margin={{ top: 40, right: 120, bottom: 0, left: 120 }}
                 innerRadius={0.8}
+                outerRadius={100}
                 padAngle={0.7}
                 cornerRadius={3}
-                colors={['#d32f2f','#ff9800', '#ffeb3b', '#D9D9D9']}
+                colors={['#d32f2f','#ff9800', '#ffeb3b', '#00CC00']}
                 borderColor={{ from: 'color', modifiers: [['darker', 0.6]] }}
                 animate={true}
                 motionStiffness={90}    
                 motionDamping={15}
-                theme={{
-                    labels: {
-                        fontSize: '16px', // 크기 조절
-                        fontWeight: 'bold', // 볼드체 적용
-                        fontFamily: 'NotoSansKR-SemiBold'
+                
+                theme={{ 
+                    labels:{
+                        text:{
+                            fontFamily: "NotoSansKR-SemiBold",
+                            fontSize: 15
+                        }
                     }
                 }}
                 labelSkipWidth={16}
                 labelSkipHeight={16}
-                labelTextColor={data => {
-                    if (data.id === "전체") {
-                        return '#FF0000'; // "전체"에 대한 텍스트 색상 변경
-                    } else {
-                        return data.color; // 나머지는 원래의 데이터 색상을 사용
-                    }
-                }}
-                label={data => {
-                    if (data.id === "전체") {
-                        // "전체" 레이블에 대한 개별적 스타일 조정 (예: 폰트 크기 변경)
-                        return <text style={{ fontSize: '20px' }}>{`${data.label}: ${data.value}`}</text>;
-                    } else {
-                        return `${data.label}: ${data.value}`;
-                    }
-                }}
+
             />
             <div style={{
                 position: 'absolute',
