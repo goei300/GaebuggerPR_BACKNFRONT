@@ -5,33 +5,29 @@ import '../../assets/fonts/fonts.css';
 const BarChartComponent = ({ data }) => {
     const [isVisible, setIsVisible] = useState(false); // 기본적으로는 보이지 않게 설정
     const chartRef = useRef(null);
-    const [selectedValue, setSelectedValue] = useState('all');
+    const [selectedValue, setSelectedValue] = useState('allType');
     const [currentKeys, setCurrentKeys] = useState(['사용자', '전체평균']);
 
     const handleRadioChange = (event) => {
         const value = event.target.value;
-        if (value === "all") {
+        if (value === "allType") {
             // 평균 데이터로 변경하는 로직
             setSelectedValue(event.target.value);
 
-        } else if(value ==="common") {
+        } else if(value ===data[0].사용자유형) {
             // 원래 데이터로 복귀하는 로직
-            setSelectedValue(event.target.value);
-        }
-        else if(value==="finance"){
             setSelectedValue(event.target.value);
         }
     };
 
     useEffect(() => {
-        if (selectedValue === "all") {
+        if (selectedValue === "allType") {
             setCurrentKeys(['사용자', '전체평균']);
-        } else if (selectedValue === "common") {
-            setCurrentKeys(['사용자', '일반']);
-        } else if (selectedValue === "finance") {
-            setCurrentKeys(['사용자', '법률']);
+        } else if (selectedValue === data[0].사용자유형 && data.length > 0) {
+            console.log(data[0].사용자유형);
+            setCurrentKeys(['사용자', '사용자업종평균']); // 예를 들어 "menuFacture평균"으로 변환
         }
-    }, [selectedValue]);
+    }, [selectedValue, data]);
 
     useEffect(() => {
         const observer = new IntersectionObserver(entries => {
@@ -59,7 +55,7 @@ const BarChartComponent = ({ data }) => {
     }, []);
 
 
-
+    const userType=data.IndustryType;
     
     return (
         <div ref={chartRef} style={{ height: '400px' ,border:'3px solid #f0f0f0', marginLeft:"20px", marginRight:"20px",borderRadius:"10px"}}>
@@ -68,19 +64,14 @@ const BarChartComponent = ({ data }) => {
             <FormControl component="fieldset" style={{ display: 'flex' }}>
                 <RadioGroup style={{ position: 'absolute', right: '0' }} row aria-label="data" name="row-radio-buttons-group" value={selectedValue} onChange={handleRadioChange}>
                     <FormControlLabel 
-                        value="all" 
+                        value="allType" 
                         control={<Radio />} 
                         label={<Typography style={{ fontFamily: 'NotoSansKR-Regular', fontSize: '14px', color: 'black' }}>전체평균</Typography>} 
                     />
                     <FormControlLabel 
-                        value="common" 
+                        value={data[0].사용자유형}
                         control={<Radio />} 
-                        label={<Typography style={{ fontFamily: 'NotoSansKR-Regular', fontSize: '14px', color: 'black' }}>유형1</Typography>} 
-                    />
-                    <FormControlLabel 
-                        value="finance" 
-                        control={<Radio />} 
-                        label={<Typography style={{ fontFamily: 'NotoSansKR-Regular', fontSize: '14px', color: 'black' }}>유형2</Typography>} 
+                        label={<Typography style={{ fontFamily: 'NotoSansKR-Regular', fontSize: '14px', color: 'black' }}>{data[0].사용자유형}</Typography>} 
                     />
                 </RadioGroup>
             </FormControl>
