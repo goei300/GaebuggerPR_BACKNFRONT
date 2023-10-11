@@ -70,10 +70,10 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
 
 
     return (
-        <Container className="compact-container" >
+        <Container className="compact-container" style={{padding:"0px"}}>
             <CustomizedSteppers activeStep={1} />
             <div className="instruction" style={{ height: '200px' }}>해당하는 기재사항을 체크해주세요</div> {/* 20 px 여백을 실제로 추가 */}
-            <StyledPaper elevation={3}>
+            <StyledPaper elevation={3} style={{margin:"20px"}}>
                 <Box display="flex" alignItems="center" my={3} >
                     <Box width={60} marginRight={4}>
                         <Typography variant="h6" color="textSecondary" style={{ fontFamily: 'NotoSansKR-Bold, sans-serif' }}>번호</Typography>

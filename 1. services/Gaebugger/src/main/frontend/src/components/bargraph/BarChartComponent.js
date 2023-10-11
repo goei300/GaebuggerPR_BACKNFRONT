@@ -82,7 +82,7 @@ const BarChartComponent = ({ data }) => {
                 data={data}
                 keys={currentKeys}
                 indexBy="name"
-                margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+                margin={{ top: 50, right: 170, bottom: 50, left: 60 }}
                 layout="vertical"
                 borderRadius={4}
                 padding={0.7}
