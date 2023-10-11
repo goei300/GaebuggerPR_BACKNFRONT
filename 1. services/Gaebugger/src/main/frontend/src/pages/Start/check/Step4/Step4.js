@@ -29,11 +29,31 @@ function Step4({ processId, nextStep }) {
         lawViolate: "3",
         lawDanger: "2",
         guideViolate: "1",
+        type: "제조",        
         score: 57,
     };
 
+    const IndustryTypeAverage={
+        allType:{
+            lawViolate: 3,
+            lawDanger: 2,
+            guideViolate:1
+        },
+        "제조":{
+            lawViolate:2,
+            lawDanger:4,
+            guideViolate:3
+        },
+        "전기/가스/수도":{
+            lawViolate:4,
+            lawDanger:3,
+            guideViolate:2
+        }
+        
+    };
     const [serverData] = useState(mockServerData);
     
+
 /*     const [serverData, setServerData] = useState(null);
 
     useEffect(() => {
@@ -60,24 +80,24 @@ function Step4({ processId, nextStep }) {
         {
             name: '법률 위반',
             사용자: serverData['lawViolate'],
-            전체평균:3,
-            일반: 2,
-            법률: 1,
+            사용자유형: serverData['type'],
+            전체평균: IndustryTypeAverage.allType.lawViolate,
+            사용자업종평균: IndustryTypeAverage[serverData['type']].lawViolate
         },
         {
             name: '법률 위반 위험',
             사용자: serverData['lawDanger'],
-            전체평균:2,
-            일반: 2,
-            법률: 2,
+            사용자유형: serverData['type'],
+            전체평균: IndustryTypeAverage.allType.lawDanger,
+            사용자업종평균: IndustryTypeAverage[serverData['type']].lawDanger
         },
         {
             name: '작성지침 미준수',
             사용자: serverData['guideViolate'],
-            전체평균:1,
-            일반: 1,
-            법률: 2,
-        },
+            사용자유형: serverData['type'],
+            전체평균: IndustryTypeAverage.allType.guideViolate,
+            사용자업종평균: IndustryTypeAverage[serverData['type']].guideViolate
+        }
     ];
     
     const pieData = [
