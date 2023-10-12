@@ -51,6 +51,28 @@
         },
         {
             "issue_id":2,
+            "issue_paragraph_id":2,
+            "issue_type":"법률 위반 위험",
+            "issue_content": "규칙4: 어떤게 부족합니다.",
+            "issue_reason" : "개인정보 보호법 제 18조 1항",
+            "issue_startIndex" : 243,
+            "issue_endIndex": 260,
+            "issue_guideline": "~~라고 작성되어있습니다. ~~라고 고치시면 좋을 것 같아요.",
+            "issue_goodCase": ""
+        },
+        {
+            "issue_id":3,
+            "issue_paragraph_id":2,
+            "issue_type":"작성지침 미준수",
+            "issue_content": "규칙5: 뭐가 이상합니다.",
+            "issue_reason" : "작성지침 18항목",
+            "issue_startIndex" : 283,
+            "issue_endIndex": 300,
+            "issue_guideline": "~~라고 작성되어있습니다. ~~라고 고치시면 좋을 것 같아요.",
+            "issue_goodCase": ""
+        },
+        {
+            "issue_id":4,
             "issue_paragraph_id":3,
             "issue_type":"법률 위반",
             "issue_content": "규칙2: 어떤거 미기재.",
@@ -61,7 +83,7 @@
             "issue_goodCase":""
         },
         {
-            "issue_id":3,
+            "issue_id":5,
             "issue_paragraph_id":6,
             "issue_type":"작성지침 미준수",
             "issue_content": "규칙8: ~등과 같은 추상적 목적 기재.",
