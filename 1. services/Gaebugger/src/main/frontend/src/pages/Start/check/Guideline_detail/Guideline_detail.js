@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import CustomizedSteppers from "../../../../components/StepIndicator/StepIndicator";
-import {   Paper, Typography,  Box, Divider, Container, Button, IconButton,Table, TableBody, TableCell, TableHead, TableRow,TablePagination  } from '@mui/material';
+import {    Select, MenuItem, InputLabel, FormControl, Typography,  Box, Divider, Container, Button, IconButton,Table, TableBody, TableCell, TableHead, TableRow,TablePagination  } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
 import testIssue from './issues.json';
 import ResultSlide from "../../../../components/ResultSlide/ResultSlide";
@@ -25,8 +25,15 @@ function Guideline_detail({processId, prevStep}){
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [selectedIssueList, setSelectedIssueList] = useState(null);
     const [selectedIssue, setSelectedIssue] = useState(null);
+    const [selectedButtonIssue, setSelectedButtonIssue] = useState(null);
     const [selectedOption, setSelectedOption] = useState("paragraph"); // 초기값은 "paragraph"
-
+    const [selectedIssueType, setSelectedIssueType] = useState('모든 유형');  // 초기 상태 설정
+    // issue_type 필터링 기능
+    const filteredIssues = testIssue.process_Issues.filter(issue => {
+        if (selectedIssueType === "모든 유형") return true;
+        return issue.issue_type === selectedIssueType;
+    });
+    
 
     const handleIssueRender = (issuelist) => {
         setSelectedIssueList(issuelist);
@@ -36,6 +43,10 @@ function Guideline_detail({processId, prevStep}){
     }
     const handleOptionChange = (option) => {
         setSelectedOption(option);
+    }
+    const handleButtonClick = (issue) => {
+        setSelectedButtonIssue(issue);
+        // 뷰포트를 ResultSlide로 이동하는 코드 추가
     }
     const handleModifiedText = (event, newTypes) => {
         // 전체 버튼이 선택된 경우
@@ -102,18 +113,37 @@ function Guideline_detail({processId, prevStep}){
                         <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>표를 통해 모든 이슈를 간편하게 확인해보세요.</h3>
                         <Divider style={{marginBottom:'20px',opacity:0}} />
                         <StyledPaper elevation={3} style={{ margin: '10px', padding: '20px' }}>
+                            <Box sx={{ minWidth: 180 }}>
+                                <FormControl variant="outlined" sx={{width: "auto"}} >
+                                    <InputLabel id="issue-type-label" sx={{fontSize: "13px"}}>유형 선택</InputLabel>
+                                    <Select
+                                        labelId="issue-type-label"
+                                        value={selectedIssueType}
+                                        onChange={(e) => setSelectedIssueType(e.target.value)}
+                                        label="유형 선택"
+                                        sx={{ height: "30px",fontSize:"12px", fontFamily:"NotoSansKR-Regular",'& .MuiOutlinedInput-input': { paddingTop: "10px", paddingBottom: "10px" } }}
+                                    >
+                                        <MenuItem value="모든 유형"sx={{ fontSize:"14px", fontFamily:"NotoSansKR-Regular",height: "30px" }}>모든 유형</MenuItem>
+                                        <MenuItem value="법률 위반" sx={{ fontSize:"14px", fontFamily:"NotoSansKR-Regular",height: "30px" }}>법률 위반</MenuItem>
+                                        <MenuItem value="법률 위반 위험" sx={{ fontSize:"14px", fontFamily:"NotoSansKR-Regular",height: "30px" }}>법률 위반 위험</MenuItem>
+                                        <MenuItem value="작성지침 미준수" sx={{ fontSize:"14px", fontFamily:"NotoSansKR-Regular",height: "30px" }}>작성지침 미준수</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Box>
+
+
                             <Table style={{ width: "100%"}}>
                                 <TableHead>
                                     <TableRow style={{}}>
                                         <TableCell style={{fontFamily:"NotoSansKR-Bold", width:"5%"}}>번호</TableCell>
                                         <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"15%"}}> 유형</TableCell>
-                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"40%"}}>내용</TableCell>
+                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"40%"}}>위반 사유</TableCell>
                                         <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"30%"}}>근거</TableCell>
                                         <TableCell style={{fontFamily:"NotoSansKR-Bold"}}>확인하기</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {testIssue.process_Issues.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(issue => (
+                                    {filteredIssues.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(issue => (
                                         <TableRow key={issue.issue_id}>
                                             <TableCell style={{width:"10%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_id}</TableCell>
                                             <TableCell style={{width:"10%", fontFamily:"NotoSansKR-Regular"}}>
@@ -129,7 +159,8 @@ function Guideline_detail({processId, prevStep}){
                                                     variant="contained" 
                                                     color="primary" 
                                                     size="small" 
-                                                    style={{ borderRadius: '25px', padding: '5px 15px' }} // 이 부분에서 버튼의 모양과 크기를 조절합니다.
+                                                    style={{ borderRadius: '25px', padding: '5px 15px' }}
+                                                    onClick={() => handleButtonClick(issue)} // 버튼 클릭 시 핸들러 호출
                                                 >
                                                     확인
                                                 </Button>
@@ -191,7 +222,7 @@ function Guideline_detail({processId, prevStep}){
                         <div className="showingIssue" style={{ border:"1px solid #d9d9d9",marginLeft:"20px",borderRadius:"10px",padding:"30px"}}>
                             {selectedOption === "paragraph" ? (
                                 <div className="paragraph" style={{display:"flex",justifyContent:"space-between"}}>
-                                    <ResultSlide issues={testIssue.process_Issues} paragraph={testIssue.process_Paragraph} style={{flex:"1",margin:"0 10px",width: "10%"}} onIssueRender={handleIssueRender} onIssueClick={handleIssueClick}/>
+                                    <ResultSlide issues={testIssue.process_Issues} paragraph={testIssue.process_Paragraph} style={{flex:"1",margin:"0 10px",width: "10%"}} onIssueRender={handleIssueRender} onIssueClick={handleIssueClick} selectedButtonIssue={selectedButtonIssue}/>
                                     <RenderIssue issuelist={selectedIssueList} highlightIssue={selectedIssue} style={{flex:"1",margin:"0 10px"}}/>
                                 </div>
                             ) : (
