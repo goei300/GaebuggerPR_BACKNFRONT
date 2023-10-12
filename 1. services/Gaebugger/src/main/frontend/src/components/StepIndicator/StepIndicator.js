@@ -133,7 +133,7 @@ export default function CustomizedSteppers({ activeStep }) {
           </Stepper>
         </Stack>
       </ThemeProvider>
-      <Divider style={{marginTop:"50px", border: '10px solid #009bff', borderRadius:'5px'}} />
+      <Divider style={{marginTop:"50px", border: '5px solid #009bff'}} />
     </div>
   );
 }
