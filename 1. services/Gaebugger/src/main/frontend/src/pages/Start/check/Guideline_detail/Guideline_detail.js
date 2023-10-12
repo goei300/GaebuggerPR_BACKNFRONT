@@ -7,6 +7,7 @@ import ResultSlide from "../../../../components/ResultSlide/ResultSlide";
 import RenderIssue from "../../../../components/RenderIssue/RenderIssue";
 import guidelineDetail from './test_process.json';
 import './Highlight.css';
+import './Guideline_detail.css';
 import '../../../../assets/fonts/fonts.css';
 import { 
     StyledPaper, 
@@ -22,12 +23,16 @@ function Guideline_detail({processId, prevStep}){
     const modifiedText_component = guidelineDetail.modifiedText_component;
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [selectedIssueList, setSelectedIssueList] = useState(null);
     const [selectedIssue, setSelectedIssue] = useState(null);
     const [selectedOption, setSelectedOption] = useState("paragraph"); // 초기값은 "paragraph"
 
 
-    const handleIssueClick = (issuelist) => {
-        setSelectedIssue(issuelist);
+    const handleIssueRender = (issuelist) => {
+        setSelectedIssueList(issuelist);
+    }
+    const handleIssueClick = (issue) => {
+        setSelectedIssue(issue);
     }
     const handleOptionChange = (option) => {
         setSelectedOption(option);
@@ -154,19 +159,40 @@ function Guideline_detail({processId, prevStep}){
                         <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>이슈 정보와 가이드라인까지 한번에 확인해보세요.</h3>
                         <Divider style={{marginBottom:'20px',opacity:0}} />
                         
-                        <div className="slideOption" style={{fontFamily:"NotoSansKR-Medium",width:"400px", borderRadius:"10px", marginBottom:"0px",border:"1px solid #d9d9d9"}}>
-                            <p style={{fontFamily:"NotoSansKR-Medium",marginLeft:"25px",fontSize:"20px"}}>슬라이드 넘기기 형식 </p>
-                            <div className="OptionChoice" style={{fontFamily:"NotoSansKR-Bold", marginLeft:"25px", display: "flex", flexDirection:"row", justifyContent:"flex-start",fontSize:"22px"}}>
-                                <p className="perParagrah" onClick={() => handleOptionChange("paragraph")} style={{marginTop:"0px",marginBottom:"0px"}}>단락별</p>
+                        <div className="slideOption" style={{fontFamily:"NotoSansKR-Medium",width:"400px", borderRadius:"10px", marginBottom:"10px"}}>
+                            <p style={{fontFamily:"NotoSansKR-Medium",marginLeft:"25px",fontSize:"20px",marginBottom:"10px"}}>슬라이드 넘기기 형식 </p>
+                            <div className="OptionChoice" style={{fontFamily:"NotoSansKR-Bold",color:"#e0e0e0", marginLeft:"30px", display: "flex", flexDirection:"row", justifyContent:"flex-start",fontSize:"22px"}}>
+                                <p 
+                                    className="perParagrah"
+                                     
+                                    onClick={() => handleOptionChange("paragraph")} 
+                                    style={{
+                                        marginTop:"0px",
+                                        marginBottom:"0px",
+                                        color: selectedOption === 'paragraph' ? 'black' : '#e0e0e0'
+                                    }}
+                                >
+                                    단락별
+                                </p>
                                 <span style={{margin: '0 10px'}}>|</span> {/* 여기에 구분 문자를 추가 */}
-                                <p className="perIssue" onClick={() => handleOptionChange("issue")} style={{marginTop:"0px",marginBottom:"0px"}}>이슈별</p>
+                                <p 
+                                    className="perIssue" 
+                                    onClick={() => handleOptionChange("issue")} 
+                                    style={{
+                                        marginTop:"0px",
+                                        marginBottom:"0px",
+                                        color: selectedOption === 'issue' ? 'black' : '#e0e0e0'
+                                    }}
+                                >
+                                    이슈별
+                                </p>
                             </div>
                         </div>
-                        <div className="showingIssue" style={{ border:"1px solid #d9d9d9",borderRadius:"10px",padding:"30px"}}>
+                        <div className="showingIssue" style={{ border:"1px solid #d9d9d9",marginLeft:"20px",borderRadius:"10px",padding:"30px"}}>
                             {selectedOption === "paragraph" ? (
                                 <div className="paragraph" style={{display:"flex",justifyContent:"space-between"}}>
-                                    <ResultSlide issues={testIssue.process_Issues} paragraph={testIssue.process_Paragraph} style={{flex:"1",margin:"0 10px",width: "10%"}} onIssueClick={handleIssueClick}/>
-                                    <RenderIssue issuelist={selectedIssue} style={{flex:"1",margin:"0 10px"}}/>
+                                    <ResultSlide issues={testIssue.process_Issues} paragraph={testIssue.process_Paragraph} style={{flex:"1",margin:"0 10px",width: "10%"}} onIssueRender={handleIssueRender} onIssueClick={handleIssueClick}/>
+                                    <RenderIssue issuelist={selectedIssueList} highlightIssue={selectedIssue} style={{flex:"1",margin:"0 10px"}}/>
                                 </div>
                             ) : (
                                 <div className="issue">
