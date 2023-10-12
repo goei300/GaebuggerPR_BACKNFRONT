@@ -6,7 +6,7 @@ import { Divider, Paper } from '@mui/material';
 import "../../assets/fonts/fonts.css";
 import "./ResultSlide.css";
 import { StyledPaper } from '../../pages/Start/check/Guideline_detail/styles/ComponentStyles';
-function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick}) {
+function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selectedButtonIssue}) {
 
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
     const [onlyShowIssueParagraphs, setOnlyShowIssueParagraphs] = useState(false);
@@ -188,10 +188,13 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick}) {
         onIssueRender(relevantIssues);
 
     }, [onlyShowIssueParagraphs, paragraph, issues]);
+
+
+
     
     return (
         <StyledPaper style={style}>
-            <h2 style={{fontFamily:"NotoSansKR-Medium"}}>단락</h2>
+            <h2 style={{fontFamily:"NotoSansKR-Medium",textAlign:"center"}}>단락</h2>
             {/* 이슈가 있는 단락만 보기 체크박스 구현 */}
             <div style={{ marginBottom: '10px', textAlign:"end" }}>
                 <input
