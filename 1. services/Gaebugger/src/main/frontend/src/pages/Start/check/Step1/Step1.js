@@ -117,7 +117,7 @@ function Step1({ nextStep, infoObject, setInfoObject  }) {
                                         />
                                 </Box>
                                 <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom="15px">
-                                    <p style={{fontSize: "12px", paddingRight:"50px"}}>업종 유형</p>
+                                    <p style={{fontSize: "12px", paddingRight:"50px"}}>업종</p>
                                     <Select
                                         variant="outlined"
                                         size="small"
@@ -160,6 +160,7 @@ function Step1({ nextStep, infoObject, setInfoObject  }) {
                                         style={{  width: '200px' }}
                                         value={position}
                                         onChange={handlePositionChange}
+                                        placeholder="예) CEO, 대표이사 등"
                                     />
                                 </Box>
                                 <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom="15px">

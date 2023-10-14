@@ -5,6 +5,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import testIssue from './issues.json';
 import ResultSlide from "../../../../components/ResultSlide/ResultSlide";
 import RenderIssue from "../../../../components/RenderIssue/RenderIssue";
+import SlideByIssue from "../../../../components/SlideByIssue/SlideByIssue";
 import guidelineDetail from './test_process.json';
 import './Highlight.css';
 import './Guideline_detail.css';
@@ -45,9 +46,17 @@ function Guideline_detail({processId, prevStep}){
         setSelectedOption(option);
     }
     const handleButtonClick = (issue) => {
-        setSelectedButtonIssue(issue);
-        // 뷰포트를 ResultSlide로 이동하는 코드 추가
-    }
+        handleOptionChange("paragraph");
+        setSelectedButtonIssue(null);
+        setTimeout(() => {
+
+
+            console.log(selectedButtonIssue);
+            setSelectedButtonIssue(issue);
+            console.log("after issue is :", selectedButtonIssue);
+        }, 100);
+
+    };
     const handleModifiedText = (event, newTypes) => {
         // 전체 버튼이 선택된 경우
         if (newTypes.includes("all")) {
@@ -66,10 +75,9 @@ function Guideline_detail({processId, prevStep}){
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
       };
-    
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 5));
-        setPage(0); // 페이지 수를 변경할 때 첫 페이지로 돌아갑니다.
+    const handleRowsPerPageChange = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);  // 페이지당 행 수를 변경하면 페이지를 처음 페이지로 초기화
     };
     const highlightModifiedText = () => {
         let highlightedText = modifiedTxt;
@@ -103,14 +111,14 @@ function Guideline_detail({processId, prevStep}){
 
             <StyledPaper style={{margin:"20px"}}>
                 <div className="eachIssue">
-                    <h1 style={{ marginLeft: '10px', fontFamily: "NotoSansKR-SemiBold" }}>이슈 개별 분석</h1>
+                    <h1 style={{ marginLeft: '10px', fontFamily: "NotoSansKR-SemiBold" }}>상세 분석 결과</h1>
                     <Divider style={{ marginBottom: '30px',border: "1px solid" }} />
 
-                    {/* 이슈 테이블 */}
+                    {/* 상세 테이블 */}
                     <div className="issueTable">
-                        <h2 style={{fontFamily:"NotoSansKR-SemiBold", marginLeft: "20px"}}>이슈 테이블</h2>
+                        <h2 style={{fontFamily:"NotoSansKR-SemiBold", marginLeft: "20px"}}>상세 테이블</h2>
                         <Divider style={{marginBottom:'10px'}} />
-                        <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>표를 통해 모든 이슈를 간편하게 확인해보세요.</h3>
+                        <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>테이블을 통해 진단 결과를 간편하게 확인해보세요</h3>
                         <Divider style={{marginBottom:'20px',opacity:0}} />
                         <StyledPaper elevation={3} style={{ margin: '10px', padding: '20px' }}>
                             <Box sx={{ minWidth: 180 }}>
@@ -136,9 +144,9 @@ function Guideline_detail({processId, prevStep}){
                                 <TableHead>
                                     <TableRow style={{}}>
                                         <TableCell style={{fontFamily:"NotoSansKR-Bold", width:"5%"}}>번호</TableCell>
-                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"15%"}}> 유형</TableCell>
-                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"40%"}}>위반 사유</TableCell>
-                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"30%"}}>근거</TableCell>
+                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"20%"}}>진단 유형</TableCell>
+                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"40%"}}>가이드라인</TableCell>
+                                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"30%"}}>진단 근거</TableCell>
                                         <TableCell style={{fontFamily:"NotoSansKR-Bold"}}>확인하기</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -150,7 +158,7 @@ function Guideline_detail({processId, prevStep}){
                                                 {issue.issue_type}
                                                 {issue.issue_type === "법률 위반" && <span style={{color: "red", fontWeight: "bold", marginLeft: "7px"}}>(-10)</span>}
                                                 {issue.issue_type === "법률 위반 위험" && <span style={{color: "orange", fontWeight: "bold", marginLeft: "7px"}}>(-5)</span>}
-                                                {issue.issue_type === "작성지침 미준수" && <span style={{color: "goldenrod", fontWeight: "bold", marginLeft: "7px"}}>(-3)</span>}
+                                                {issue.issue_type === "작성지침 미준수" && <span style={{color: "gold", fontWeight: "bold", marginLeft: "7px"}}>(-3)</span>}
                                             </TableCell>
                                             <TableCell style={{width:"40%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_content}</TableCell>
                                             <TableCell style={{width:"30%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_reason}</TableCell>
@@ -171,27 +179,40 @@ function Guideline_detail({processId, prevStep}){
                             </Table>
                             <TablePagination
                                 component="div"
-                                count={testIssue.length}  // 전체 행의 수
+                                count={filteredIssues.length}  // 필터링된 행의 수
                                 rowsPerPage={rowsPerPage}
                                 page={page}
+                                labelDisplayedRows={({ count }) => {
+                                    const totalPages = Math.ceil(count / rowsPerPage);
+                                    return (
+                                        <div>
+                                          페이지: {page + 1} / {totalPages}
+                                          <br />
+                                          전체: {count} 건의 위반 사항
+                                        </div>
+                                      );
+                                }}
                                 onPageChange={handleChangePage}
-                                rowsPerPageOptions={[]}  // 페이지 당 행 수 선택 옵션을 숨김
-                                labelDisplayedRows={({ from, to, count }) => `${from}-${to} of ${count}`}  // "페이지 당 행" 라벨을 숨기기 위한 추가 설정
+                                onRowsPerPageChange={handleRowsPerPageChange}
+                                rowsPerPageOptions={[3, 5, 10]}
+                                labelRowsPerPage="페이지당 위반 사항 수" // 이 부분을 변경
+
                                 style={{display:"flex",justifyContent:"center",alignContent:"center"}}
                             />
+
                         </StyledPaper>
                     </div>
 
                     <Divider style={{marginBottom:"50px", opacity:0}} />
                     {/* 이슈사항 상세 검토 */}
                     <div className="issueDetail">
-                        <h2 style={{fontFamily:"NotoSansKR-SemiBold", marginLeft: "20px"}}>이슈 상세검토</h2>
+                        <h2 style={{fontFamily:"NotoSansKR-SemiBold", marginLeft: "20px"}}>상세 가이드라인</h2>
                         <Divider style={{marginBottom:'10px'}} />
-                        <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>이슈 정보와 가이드라인까지 한번에 확인해보세요.</h3>
+                        <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>진단 유형, 진단 근거, 가이드라인을 확인할 수 있습니다.</h3>
                         <Divider style={{marginBottom:'20px',opacity:0}} />
                         
                         <div className="slideOption" style={{fontFamily:"NotoSansKR-Medium",width:"400px", borderRadius:"10px", marginBottom:"10px"}}>
-                            <p style={{fontFamily:"NotoSansKR-Medium",marginLeft:"25px",fontSize:"20px",marginBottom:"10px"}}>슬라이드 넘기기 형식 </p>
+                            <p style={{fontFamily:"NotoSansKR-Medium",marginLeft:"30px",fontSize:"20px",marginBottom:"10px"}}>슬라이드 넘기기 형식 </p>
                             <div className="OptionChoice" style={{fontFamily:"NotoSansKR-Bold",color:"#e0e0e0", marginLeft:"30px", display: "flex", flexDirection:"row", justifyContent:"flex-start",fontSize:"22px"}}>
                                 <p 
                                     className="perParagrah"
@@ -203,7 +224,7 @@ function Guideline_detail({processId, prevStep}){
                                         color: selectedOption === 'paragraph' ? 'black' : '#e0e0e0'
                                     }}
                                 >
-                                    단락별
+                                    항목별
                                 </p>
                                 <span style={{margin: '0 10px'}}>|</span> {/* 여기에 구분 문자를 추가 */}
                                 <p 
@@ -215,20 +236,19 @@ function Guideline_detail({processId, prevStep}){
                                         color: selectedOption === 'issue' ? 'black' : '#e0e0e0'
                                     }}
                                 >
-                                    이슈별
+                                    위반 사항별
                                 </p>
                             </div>
                         </div>
                         <div className="showingIssue" style={{ border:"1px solid #d9d9d9",marginLeft:"20px",borderRadius:"10px",padding:"30px"}}>
                             {selectedOption === "paragraph" ? (
                                 <div className="paragraph" style={{display:"flex",justifyContent:"space-between"}}>
-                                    <ResultSlide issues={testIssue.process_Issues} paragraph={testIssue.process_Paragraph} style={{flex:"1",margin:"0 10px",width: "10%"}} onIssueRender={handleIssueRender} onIssueClick={handleIssueClick} selectedButtonIssue={selectedButtonIssue}/>
+                                    <ResultSlide issues={testIssue.process_Issues} paragraph={testIssue.process_Paragraph} style={{flex:"1",margin:"0 10px",width: "10%"}} onIssueRender={handleIssueRender} onIssueClick={handleIssueClick} selectedButtonIssue={selectedButtonIssue} setSelectedButtonIssue={setSelectedButtonIssue}/>
                                     <RenderIssue issuelist={selectedIssueList} highlightIssue={selectedIssue} style={{flex:"1",margin:"0 10px"}}/>
                                 </div>
                             ) : (
-                                <div className="issue">
-                                    {/* 여기에 이슈별로 렌더링되는 컴포넌트를 넣습니다. */}
-                                </div>
+                                <SlideByIssue paragraph={testIssue.process_Original} issues={testIssue.process_Issues} style={{flex:"1",margin:"0 10px",width: "10%"}} />
+
                             )}
                         </div>
                     </div>

@@ -83,7 +83,7 @@
 .section p.animated {
     animation-delay: 1s; /* h2 애니메이션 후 1초 후 시작 */
 }
-.section Button.animated {
+.section StyledButton.animated {
     animation-delay: 1.5s; /* h2 애니메이션 후 1초 후 시작 */
 }
 @keyframes fadeIn {

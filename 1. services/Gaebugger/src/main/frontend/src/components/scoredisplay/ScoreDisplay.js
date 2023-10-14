@@ -37,8 +37,9 @@ const ScoreDisplay = ({ data}) => {
         if(isVisible) {
             const maxScore = data.score;
             const intervalTime = 10;
-            const incrementValue = maxScore / (500 / intervalTime);
-
+            const totalIncrements = 500 / intervalTime; // 총 0번의 증가
+            const incrementValue = maxScore / totalIncrements;
+    
             const interval = setInterval(() => {
                 setDisplayedScore(prevScore => {
                     const newScore = prevScore + incrementValue;
@@ -47,14 +48,15 @@ const ScoreDisplay = ({ data}) => {
                         setShowComment(true);
                         return maxScore;
                     }
-                    return Math.floor(newScore);
+                    return Math.round(newScore); // 반올림을 사용하여 가장 가까운 정수로 반올림
                 });
                 
             }, intervalTime);
-
+    
             return () => clearInterval(interval);
         }
-    }, [data.score,isVisible]);
+    }, [data.score, isVisible]);
+    
 
 
     return (
