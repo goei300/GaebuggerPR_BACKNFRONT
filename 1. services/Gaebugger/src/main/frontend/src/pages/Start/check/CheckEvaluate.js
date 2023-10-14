@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Helmet } from "react-helmet";
 import Step1 from "./Step1/Step1";
 import Step2 from "./Step2/Step2";
@@ -21,6 +21,10 @@ function CheckEvaluate() {
         email: '',
         file: null
     });
+    useEffect(() => {
+        // step이 변경될 때 맨 위로 스크롤
+        window.scrollTo({ top: 0, behavior: 'auto' });
+    }, [step]);
     const nextStep = () => {
         setSlideDirection('right');
         setStep(prevStep => prevStep + 1);

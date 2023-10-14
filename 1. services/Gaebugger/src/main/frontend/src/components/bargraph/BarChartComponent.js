@@ -130,7 +130,6 @@ const BarChartComponent = ({ data }) => {
                     tickSize: 5,
                     tickPadding: 5,
                     tickRotation: 0,
-                    legend: '항목',
                     legendPosition: 'middle',
                     legendOffset: 32    
                 }}

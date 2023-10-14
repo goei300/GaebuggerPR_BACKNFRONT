@@ -26,14 +26,15 @@ function Step4({ processId, nextStep }) {
     // 임의의 테스트 데이터
     const mockServerData = {
         processId: "abcde",
+        industryType: "KITRI",
         lawViolate: "3",
         lawDanger: "2",
         guideViolate: "1",
         type: "제조",        
-        score: 57,
+        score: 38
     };
 
-    const IndustryTypeAverage={
+        const IndustryTypeAverage={
         allType:{
             lawViolate: 3,
             lawDanger: 2,
@@ -50,9 +51,8 @@ function Step4({ processId, nextStep }) {
             guideViolate:2
         }
         
-    };
+        };
     const [serverData] = useState(mockServerData);
-    
 
 /*     const [serverData, setServerData] = useState(null);
 
@@ -129,9 +129,11 @@ function Step4({ processId, nextStep }) {
                     <StyledPaper>
                         <ResultBoxSection serverData={serverData} />
                         <Divider style={{margin: "50px", opacity:0}} />
-                        <h2 style={{marginLeft:'20px', fontFamily: "NotoSansKR-Medium"}}>점수 결과</h2>
+                        <h2 style={{marginLeft:'20px', fontFamily: "NotoSansKR-Medium"}}>점수</h2>
                         <Divider style={{marginBottom:'10px'}} />
-                        <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>사용자님의 이슈를 토대로 계산한 점수 결과입니다.</h3>
+                        <h3 style={{ marginLeft: "25px", fontFamily: "NotoSansKR-Medium", color: "#999" }}>
+                            <span style={{ fontWeight: "bold", fontSize: "1.2em",color:"black" }}>{serverData['industryType']}</span>님의 개인정보 처리방침 진단 결과를 토대로 계산한 점수입니다.
+                        </h3>
                         <div className="score-whyscore" style={{borderRadius: '10px',backgroundColor: "#ffffff", border: '3px solid #F2F2F2',marginTop:"40px", marginLeft:"20px",marginRight:"20px"}}>
                             <ScoreDisplay data={serverData} />
                             <PieChartComponent pieData={pieData} total={total} />   
@@ -143,7 +145,9 @@ function Step4({ processId, nextStep }) {
                 <div className="average-bargraph">
                     <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>업종별 평균 비교 그래프</h1>
                     <Divider style={{marginBottom:'10px'}} />
-                    <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>사용자님과 같은 업종에서는 얼마나 이슈가 발생하는지 보여드릴게요.</h3>
+                    <h3 style={{ marginLeft: "25px", fontFamily: "NotoSansKR-Medium", color: "#999" }}>
+                            <span style={{ fontWeight: "bold", fontSize: "1.2em",color:"black" }}>{serverData['industryType']}</span>님과 같은 업종에서는 얼마나 이슈가 발생하는지 보여드릴게요
+                    </h3>
                     <Divider style={{marginBottom:'20px',opacity:0}} />
                     <BarChartComponent data={graphData} />      
 
@@ -152,21 +156,23 @@ function Step4({ processId, nextStep }) {
 
                 {/* 여기 부적합요소 확인 스크롤 보여주기. */}
                 <div className="nonconformity">
-                    <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>한눈에 이슈 확인 하기</h1>
+                    <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>한눈에 진단 결과 확인 하기</h1>
                     <Divider style={{marginBottom:'10px'}} />
                     <div style={{display:"flex", justifyContent: "space-between"}}>
-                        <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>사용자님의 처리방침 전체 내용 중 어디가 틀렸는지 이슈 표기를 통해 확인해보세요.</h3>
-                        <div className="whatisIssue" style={{display:"flex",justifyContent:"end", alignItems:"center", marginRight:"20px"}}>
+                        <h3 style={{ marginLeft: "25px", fontFamily: "NotoSansKR-Medium", color: "#999" }}>
+                            <span style={{ fontWeight: "bold", fontSize: "1.2em",color:"black" }}>{serverData['industryType']}</span>님의 개인정보 처리방침 내용 중 위반 문장을 진단 유형별로 확인해보세요
+                        </h3>
+{/*                         <div className="whatisIssue" style={{display:"flex",justifyContent:"end", alignItems:"center", marginRight:"20px"}}>
                             <h5 style={{marginRight:"10px",fontFamily:"NotoSansKR-Light"}}> 이슈가 무엇인가요?</h5>
                             <IssuePopover />
-                        </div>
+                        </div> */}
                     </div>
                     <NonConformityCheck data={testData} />
                 </div>
                 <Divider style={{margin: "100px", opacity:0}} />
 
                 <Box display="flex" justifyContent="flex-end" mt={4}>
-                    <Button onClick={nextStep} variant="outlined" color="primary" style={{fontFamily: "NotoSansKR-Bold"}}>상세 가이드라인</Button>
+                    <Button onClick={nextStep} variant="outlined" color="primary" style={{fontFamily: "NotoSansKR-Bold"}}>상세 분석 결과</Button>
                 </Box>
             </div>
         </Container>

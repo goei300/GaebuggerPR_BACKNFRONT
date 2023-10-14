@@ -74,6 +74,12 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
             <CustomizedSteppers activeStep={1} />
             <div className="instruction" style={{ height: '200px' }}>해당하는 기재사항을 체크해주세요</div> {/* 20 px 여백을 실제로 추가 */}
             <StyledPaper elevation={3} style={{margin:"20px"}}>
+
+                <div style={{display:"flex", justifyContent:"flex-end", flexDirection:"column", textAlign:"end"}}>
+                    <h3 style={{fontFamily:"NotoSansKR-Bold", color:"Black"}}>
+                    <span style={{ fontWeight: "bold", fontSize: "1.4em",color:"black" }}>*</span>
+                        처리하는 항목일 시 필수 기재</h3>
+                </div>
                 <Box display="flex" alignItems="center" my={3} >
                     <Box width={60} marginRight={4}>
                         <Typography variant="h6" color="textSecondary" style={{ fontFamily: 'NotoSansKR-Bold, sans-serif' }}>번호</Typography>
@@ -93,7 +99,9 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
                                 <Typography variant="h6" style={{ fontFamily: 'NotoSansKR-Bold, sans-serif' }}>{item.id}</Typography>
                             </Box>
                             <Box flex={1} marginRight={2}>
-                                <Typography variant="body1" style={{ fontFamily: 'NotoSansKR-Medium, sans-serif' }}>{item.text}</Typography>
+                                <Typography variant="body1" style={{ fontFamily: [5, 6, 12, 13, 14, 15, 17].includes(item.id) ? 'NotoSansKR-Black, sans-serif' : 'NotoSansKR-Medium, sans-serif' }}>
+                                    {[5, 6, 12, 13, 14, 15, 17].includes(item.id) ? `* ${item.text}` : item.text}
+                                </Typography>
                             </Box>
                             <Box flex={1} display="flex" justifyContent="flex-end" alignItems="center">
                                 <DropdownComponent 
@@ -117,6 +125,7 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
                         </Box>
                     )
                 ))}
+
                 <Divider style={{ marginTop: '20px' }} />
                 <Box mt={3} display="flex" justifyContent="space-between">
                     <Button variant="outlined" color="primary" onClick={prevStep}>
