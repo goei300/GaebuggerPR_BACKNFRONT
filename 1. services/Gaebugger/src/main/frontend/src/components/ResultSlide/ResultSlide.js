@@ -6,7 +6,7 @@ import { Divider, Paper } from '@mui/material';
 import "../../assets/fonts/fonts.css";
 import "./ResultSlide.css";
 import { StyledPaper } from '../../pages/Start/check/Guideline_detail/styles/ComponentStyles';
-function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selectedButtonIssue}) {
+function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selectedButtonIssue,setSelectedButtonIssue}) {
 
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
     const [onlyShowIssueParagraphs, setOnlyShowIssueParagraphs] = useState(false);
@@ -29,11 +29,11 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
         const currentParagraphId = displayedParagraphs[currentIndex].paragraph_id;
         const relevantIssues = getRelevantIssues(currentParagraphId);
         // 현재 paragraph와 관련된 모든 issue들을 onIssueRender에 전달
-
+        console.log("handleAfterChange is on!!");
         onIssueRender(relevantIssues);
     };
     
-    // 이슈가 있는 paragraph_id 목록을 가져옵니다.
+    // 위반사항이 있는 paragraph_id 목록을 가져옵니다.
     const getIssueParagraphIds = () => {
         const uniqueIds = new Set(issues.map(issue => issue.issue_paragraph_id));
         return Array.from(uniqueIds);
@@ -138,10 +138,10 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
             let lastIndex = 0;
     
             const relevantIssues = getRelevantIssues(p.paragraph_id);
-            // 체크박스가 체크되어 있고, 해당 단락의 ID가 이슈가 있는 단락의 ID 목록에 없다면 렌더링하지 않습니다.
+            // 체크박스가 체크되어 있고, 해당 단락의 ID가 위반사항이 있는 단락의 ID 목록에 없다면 렌더링하지 않습니다.
             if (onlyShowIssueParagraphs && !issueParagraphIds.includes(p.paragraph_id)) {
                 return (
-                    <p>이슈가 없습니다!</p>
+                    <p>위반사항이 없습니다!</p>
                 );
             }
 
@@ -189,13 +189,43 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
 
     }, [onlyShowIssueParagraphs, paragraph, issues]);
 
+    useEffect(() => {
+
+        if (selectedButtonIssue) {
+            setOnlyShowIssueParagraphs(false);
+            console.log("checkbox false!");
+            // 100ms의 딜레이를 준 후에 slickGoTo 호출
+            setTimeout(() => {
+                const targetSlide = selectedButtonIssue.issue_paragraph_id - 1;
+                sliderRef.current.slickGoTo(targetSlide);
+
+                var element = document.querySelector('.slick-list'); // 요소를 선택
+                var rect = element.getBoundingClientRect();
+                console.log("slider~~~~offsetTop is:", rect.top);
+                
+                var absoluteY = rect.top + window.scrollY-250;  // 절대적인 y좌표 계산
+                console.log("Absolute Y position of .slick-list is:", absoluteY);
+                
+                window.scrollTo({
+                    top: absoluteY,  // 절대적인 y좌표로 스크롤
+                    behavior: 'smooth'
+                });
 
 
+                
+            }, 100);
+            setTimeout(()=>{
+                handleIssueClick(selectedButtonIssue);
+            },650)
+
+
+        }
+    }, [selectedButtonIssue]);
     
     return (
         <StyledPaper style={style}>
-            <h2 style={{fontFamily:"NotoSansKR-Medium",textAlign:"center"}}>단락</h2>
-            {/* 이슈가 있는 단락만 보기 체크박스 구현 */}
+            <h2 style={{fontFamily:"NotoSansKR-Medium",textAlign:"center"}}>항목</h2>
+            {/* 위반 사항이 있는 단락만 보기 체크박스 구현 */}
             <div style={{ marginBottom: '10px', textAlign:"end" }}>
                 <input
                     type="checkbox"
@@ -203,7 +233,7 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
                     checked={onlyShowIssueParagraphs}
                     onChange={handleCheckboxChange}
                 />
-                <label htmlFor="onlyShowIssueParagraphs" style={{fontFamily:"NotoSansKR-Medium"}}>이슈가 있는 단락만 보기</label>
+                <label htmlFor="onlyShowIssueParagraphs" style={{fontFamily:"NotoSansKR-Medium"}}>위반 사항이 있는 항목만 보기</label>
             </div>
             <Divider style={{marginBottom:"10px"}} />
             <Slider ref={sliderRef} {...settings} key={onlyShowIssueParagraphs ? 'withIssues' : 'all'}>

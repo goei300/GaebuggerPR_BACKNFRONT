@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../assets/fonts/fonts.css';
 import './header.css';
-import logoImage from '../../assets/images/pado_font+icon.png';
+import logoImage from '../../assets/images/pripen_logo.png';
+
 import { Button } from '@mui/material';
 
 const Header = ({ active }) => {
@@ -28,7 +29,7 @@ const Header = ({ active }) => {
             <div className="logo_menu">
                 <div className="logo">
                     <Link to="/">
-                        <img src={logoImage} alt="LOGO" />
+                        <img src={logoImage} alt="LOGO" style={{width:"130%", marginTop:"5px"}} />
                     </Link>
                 </div>
             </div>

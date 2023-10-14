@@ -66,9 +66,9 @@ const PieChartComponent = ({ pieData, total }) => {
     const totalValue = pieData.reduce((sum, data) => {
         let additionalValue = data.value;
         if (data.label === "법률 위반") {
-          additionalValue = data.value * 10;
+          additionalValue = data.value * 15;
         } else if (data.label === "법률 위반 위험") {
-          additionalValue = data.value * 5;
+          additionalValue = data.value * 7;
         } else if (data.label === "작성지침 미준수") {
           additionalValue = data.value * 3;
         }
@@ -129,7 +129,7 @@ const PieChartComponent = ({ pieData, total }) => {
                         position: 'absolute',
 
                     }}>
-                        감점 요인
+                        점수 분셕 결과
             </Typography>
             <ResponsivePie
                 data={transformedPieData}
