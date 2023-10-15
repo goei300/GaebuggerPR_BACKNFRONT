@@ -5,7 +5,7 @@ import os
 
 import config
 api_key = os.getenv("OPENAI_API_KEY")
-print(api_key)
+
 
 # Module
 from .Answer_Prompt_Template import chatchain
