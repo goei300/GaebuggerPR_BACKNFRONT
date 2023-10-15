@@ -34,7 +34,7 @@ table = table
 def Search_Match_Omission_Model(user_input):
 
     # 저장한 txt파일(사용자 인풋) 불러옴(경로 및 이름 수정필요!!!)
-    loader = TextLoader("./bob.txt", encoding='utf-8')
+    loader = TextLoader("./policy.txt", encoding='utf-8')
     documents = loader.load()
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=5000, chunk_overlap=800)
     docs = text_splitter.split_documents(documents)
