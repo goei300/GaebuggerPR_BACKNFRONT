@@ -11,6 +11,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 function CheckEvaluate() {
     const [step, setStep] = useState(1);
     const [slideDirection, setSlideDirection] = useState('left');
+    const [file,setFile] =useState(null);
     const [checkedItems, setCheckedItems] = useState({});
     const [processId, setProcessId] = useState(null);
     const [infoObject, setInfoObject] = useState({
@@ -19,7 +20,6 @@ function CheckEvaluate() {
         position: '',
         name: '',
         email: '',
-        file: null
     });
     useEffect(() => {
         // step이 변경될 때 맨 위로 스크롤
@@ -43,6 +43,8 @@ function CheckEvaluate() {
                     nextStep={nextStep}
                     infoObject={infoObject}
                     setInfoObject={setInfoObject}
+                    setFile={setFile}
+                    file={file}
                 />
             );
             break;
@@ -55,6 +57,7 @@ function CheckEvaluate() {
                 setProcessId={setProcessId} // Step2에서 processId를 설정하기 위한 함수를 prop으로 전달
                 checkedItems={checkedItems}
                 infoObject={infoObject}
+                file={file}
                 />;
             break;
         case 3:

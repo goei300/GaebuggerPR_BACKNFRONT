@@ -5,8 +5,10 @@ import CustomizedSteppers from '../../../../components/StepIndicator/StepIndicat
 import {styled} from '@mui/material/styles';
 import '../../../../assets/fonts/fonts.css';
 import './Step2.css';
-function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId,infoObject  }) {
+function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId,infoObject,file  }) {
 
+
+    console.log("infoObject is:",infoObject);
     const StyledPaper = styled(Paper)({
         padding: '30px',
         boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)', // 부드러운 그림자
@@ -29,18 +31,6 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
 
     };
 
-    const handleNextStep = () => {
-        // 기존 checkedItems에 있는 것 중에 '기재'인 항목만 선택합니다.
-        const selectedItems = Object.keys(checkedItems).filter(key => 
-            checkedItems[key] === '기재'
-        ).reduce((acc, key) => {
-            acc[key] = '기재';
-            return acc;
-        }, {});
-    
-         // setCheckedItems(selectedItems);
-        nextStep();
-    };
     
 
 
@@ -68,7 +58,67 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
         { id: 21, text: '개인정보 처리방침의 변경에 관한 사항', type: 'text', default: '필수기재' }
     ];
 
+    const allItemsChecked = () => {
+        // type이 'checkbox'인 items 항목들 중 checkedItems에 없거나 선택되지 않은 항목들을 반환합니다.
+        const uncheckedItems = items.filter(item => item.type === 'checkbox' && !checkedItems[item.id]);
+        return uncheckedItems.length === 0; // uncheckedItems의 길이가 0이면 모든 항목이 선택된 것입니다.
+    }
+    
+    const uncheckedItemsList = () => {
+        // 선택되지 않은 항목들을 반환합니다.
+        return items.filter(item => item.type === 'checkbox' && !checkedItems[item.id]);
+    }
+    const handleNextStep = async () => {
+        // 체크박스가 아닌 항목의 id를 모두 포함시킨다.
+        const nonCheckboxIds = items.filter(item => item.type !== 'checkbox').map(item => item.id);
+    
+        // 체크박스 기능이 있고, '기재'로 선택된 항목의 id만 추출한다.
+        const checkedIds = Object.keys(checkedItems)
+            .filter(key => checkedItems[key] === '기재')
+            .map(key => parseInt(key));
+    
+        // 두 리스트를 합쳐준다.
+        let combinedIds = [...nonCheckboxIds, ...checkedIds];
 
+        // 각 ID의 값을 1씩 빼준다.
+        combinedIds = combinedIds.map(id => id - 1);
+        
+        combinedIds.sort((a, b) => a - b);
+
+        console.log("Combined IDs are:", combinedIds);
+        console.log("infoObject is:",infoObject);
+        console.log("file is:",file);
+
+        const formData = new FormData();
+
+        // 파일 추가
+        formData.append('file', file);
+
+        // JSON 데이터 추가
+        formData.append('data', JSON.stringify({
+            checkedItems: combinedIds,
+            infoData: infoObject
+        }));
+        try {
+            // 백엔드로 데이터를 전송합니다.
+            const response = await fetch('/api/start', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.status === 200) {
+                const data = await response.json();
+                console.log("my process id is:", data.processID);
+                setProcessId(data.processID);
+                nextStep();
+            } else {
+                console.error("Failed to send data to the backend.");
+            }
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
+
+    };
     return (
         <Container className="compact-container" style={{padding:"0px"}}>
             <CustomizedSteppers activeStep={1} />
@@ -131,7 +181,26 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
                     <Button variant="outlined" color="primary" onClick={prevStep}>
                         이전 단계
                     </Button>
-                    <StyledButton variant="contained" color="primary" onClick={handleNextStep}>
+
+                    { !allItemsChecked() && (
+                        <Box mt={1} color="red" textAlign="center">
+                            <Typography variant="body1" fontFamily="NotoSansKR-SemiBold">
+                                다음 사항을 선택해 주세요: 
+                                <br/>
+                                {uncheckedItemsList().map((item, index) => (
+                                    <span key={item.id}>
+                                        {item.id}{index !== uncheckedItemsList().length - 1 ? ', ' : ''}
+                                    </span>
+                                ))}
+                            </Typography>
+                        </Box>
+                    )}
+                    <StyledButton 
+                        variant="contained" 
+                        color="primary" 
+                        onClick={handleNextStep} 
+                        disabled={!allItemsChecked()}
+                    >
                         진단 시작
                     </StyledButton>
                 </Box>
