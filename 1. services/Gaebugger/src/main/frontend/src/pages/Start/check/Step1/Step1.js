@@ -6,16 +6,33 @@ import CustomizedSteppers from "../../../../components/StepIndicator/StepIndicat
 import './Step1.css';
 import { CloudUpload as UploadFile } from '@mui/icons-material';
 
-function Step1({ nextStep, infoObject, setInfoObject  }) {
-    const { companyName, industryType, position, name, email, file } = infoObject;
+function Step1({ nextStep, infoObject, setInfoObject,setFile,file  }) {
+    const { companyName, industryType, position, name, email } = infoObject;
     // Select 컴포넌트에서 선택된 값을 처리하는 함수
-
+    const [textFieldValue, setTextFieldValue] = useState("");
+    const [selectValue, setSelectValue] = useState("");
     const handleCompanyNameChange = (e) => {
         setInfoObject({
             ...infoObject,
             companyName: e.target.value
         });
     };
+    const areFieldsValid = () => {
+        return companyName && industryType && position && name && email && file;
+    }
+
+    const missingFields = () => {
+        const fields = [];
+        if (!companyName) fields.push("회사 명");
+        if (!industryType) fields.push("업종");
+        if (!position) fields.push("직책/직위");
+        if (!name) fields.push("이름");
+        if (!email) fields.push("이메일");
+        if (!file) fields.push("파일");
+        return fields.join(', ');
+    };
+
+      
     const handleIndustryTypeChange = (e) => {
         setInfoObject({
             ...infoObject,
@@ -49,12 +66,8 @@ function Step1({ nextStep, infoObject, setInfoObject  }) {
             e.target.value = '';  // 파일 입력을 초기화
             return;
         }
-    
-        // 원래의 로직 (파일 상태 업데이트 등)을 계속 실행
-        setInfoObject({
-            ...infoObject,
-            file: chosenFile
-        });
+
+        setFile(chosenFile);
     };
     const StyledPaper = styled(Paper)({
         padding: '30px',
@@ -245,8 +258,18 @@ function Step1({ nextStep, infoObject, setInfoObject  }) {
                             )}
                     <Divider style={{ margin: '20px 0' }} />
 
+                    {!areFieldsValid() && (
+                        <Box mt={1} color="red" textAlign="center" fontFamily="NotoSansKR-SemiBold">
+                            다음 항목을 확인해 주세요: {missingFields()}
+                        </Box>
+                    )}
                     <Box mt={3} display="flex" justifyContent="flex-end">
-                        <Button variant="contained" color="primary" onClick={handleNext} disabled={!file}>
+                        <Button 
+                            variant="contained" 
+                            color="primary" 
+                            onClick={handleNext} 
+                            disabled={!areFieldsValid()}
+                        >
                             다음 단계
                         </Button>
                     </Box>

@@ -16,31 +16,27 @@ function Step3({ nextStep, processId }) {
     const [loadingComplete, setLoadingComplete] = useState(false);
 
     useEffect(() => {
-/*         const checkResponseStatus = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8080/api/check-response/${processId}`);
-                if (response.status === 200) {
-                    setLoadingComplete(true);
-                    return;
-                }
-                setTimeout(checkResponseStatus, 5000);
-            } catch (error) {
-                console.error("Error checking processing status", error);
-                setTimeout(checkResponseStatus, 5000);
+        // SSE 연결 설정
+        const sse = new EventSource(`http://localhost:8080/api/check-response/${processId}`);
+
+        // 서버에서 이벤트를 받을 때 처리할 리스너 설정
+        sse.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data && data.completed) {
+                setLoadingComplete(true);
+                sse.close();
             }
         };
 
-        checkResponseStatus(); */
-
-        const timeout = setTimeout(() => {
-            setLoadingComplete(true);
-        },5000);
-
-        return () => {
-            clearTimeout(timeout);/* checkResponseStatus */
+        // 에러가 발생하면 연결 종료
+        sse.onerror = (error) => {
+            console.error("SSE error:", error);
+            sse.close();
         };
-    }, [processId, nextStep]);
 
+        // 컴포넌트 언마운트 시 연결 종료
+        return () => sse.close();
+    }, [processId, nextStep]);
     return (
         <Container className="compact-container" style={{padding:"0px"}}>
             <CustomizedSteppers activeStep={2} />
