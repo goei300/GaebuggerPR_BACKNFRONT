@@ -42,7 +42,7 @@ def process_text():
     print("들어온 유저의 체크박스: ", user_input)
 
     # 테스트에서만 임시로 저장
-    with open("temp.txt", "w", encoding="utf-8") as file:
+    with open("./policy.txt", "w", encoding="utf-8") as file:
         file.write(text)
 
 
