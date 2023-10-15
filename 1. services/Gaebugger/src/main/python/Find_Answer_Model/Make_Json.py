@@ -42,6 +42,7 @@ def Make_Issues(ans, issue_paragraph_id, text, df):
 
     print("Make_Issues에 들어온 LLM의 결과입니다.", ans)
 
+    issue_yn_pattern = r'위반 사항: (.+?)\n'
     issue_type_pattern = r'위반 유형: (.+?)\n'
     issue_reason_pattern = r'(규칙\d+)'
     issue_content_pattern = r'규칙\d+: (.+?)\n'
@@ -50,6 +51,7 @@ def Make_Issues(ans, issue_paragraph_id, text, df):
 
 
 
+    issue_yns = re.findall(issue_yn_pattern, ans)
     issue_types = re.findall(issue_type_pattern, ans)
     issue_reasons = rule_matches = re.findall(issue_reason_pattern, ans)
     issue_contents = re.findall(issue_content_pattern, ans)
@@ -79,15 +81,24 @@ def Make_Issues(ans, issue_paragraph_id, text, df):
 
     process_Issues = []
 
-    for issue_type, issue_content, start, end, issue_guideline, issue_text, issue_reason in zip(issue_types, issue_contents, issue_startIndex, issue_endIndex, issue_guidelines, issue_texts, issue_reasons):
+    print("이슈아이디:", issue_id,"의 뽑은 리스트")
+    print("위반여부리스트", issue_yns)
+    print("위반유형리스트", issue_types)
+    print("위반규칙", issue_contents)
+    print("이슈가이드라인", issue_guidelines)
+    print("위반문장리스트", issue_texts)
+    print("이슈근거리스트", issue_reasons)
 
+    for issue_yn, issue_type, issue_content, start, end, issue_guideline, issue_text, issue_reason in zip(issue_yns, issue_types, issue_contents, issue_startIndex, issue_endIndex, issue_guidelines, issue_texts, issue_reasons):
+
+        print(issue_yn)
         print(issue_type)
         print(issue_reason)
         print(issue_content)
         print(start)
         print(end)
         print(issue_guideline)
-        if (issue_type == '없음'):
+        if ((issue_yn == '없음')):
             continue
         elif(issue_type=='법률 위반'):
             process_Law_Violate+=1
@@ -102,7 +113,7 @@ def Make_Issues(ans, issue_paragraph_id, text, df):
 
 
         if((issue_type=='법률 위반') or (issue_type=='법률 위반 위험') or (issue_type=='지침 미준수')):
-            if(issue_text == '없음'):
+            if((issue_text == '없음') or (issue_text == '')):
                 issue["issue_startIndex"] = -999
                 issue["issue_endIndex"] = -999
             else:
