@@ -5,7 +5,7 @@ import os
 
 import config
 api_key = os.getenv("OPENAI_API_KEY")
-
+print(api_key)
 
 # Module
 from .Answer_Prompt_Template import chatchain
@@ -38,11 +38,11 @@ def Answer_Model(df, text):
         answer = chatchain.run(policy=df['matched_part'][i], instruction=df['instruction'][i])
 
         # ans는 그냥 결과 보여주기 위함
-        ans += str(i+1)+">" +" " + "instuction: " + df['part'][i] + "에 해당하는 가이드라인은 이렇습니다." + "\n" + answer + "\n\n\n\n"
+        ans += str(i+1)+">" +" " + "instruction: " + df['part'][i] + "에 해당하는 가이드라인은 이렇습니다." + "\n" + answer + "\n\n\n\n"
 
         # Make_Issues 함수를 통해 Json형식에 들어갈 데이터 추출
             # issue_json은 리스트 형태로 된 각 규칙으 딕셔너리 집합체 [{}, {}, {}]
-        issue_json, process_Law_Violate_temp, process_Law_Danger_temp, process_Guide_Violate_temp = Make_Issues(answer, i, text)
+        issue_json, process_Law_Violate_temp, process_Law_Danger_temp, process_Guide_Violate_temp = Make_Issues(answer, i, text, df)
 
         process_Law_Violate += process_Law_Violate_temp
         process_Law_Danger += process_Law_Danger_temp
