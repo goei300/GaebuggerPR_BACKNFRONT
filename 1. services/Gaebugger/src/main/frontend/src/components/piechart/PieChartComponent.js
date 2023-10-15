@@ -82,9 +82,9 @@ const PieChartComponent = ({ pieData, total }) => {
         ...pieData.map(data => {
           let newValue = data.value;
           if (data.label === "법률 위반") {
-            newValue = data.value * 10;
+            newValue = data.value * 15;
           } else if (data.label === "법률 위반 위험") {
-            newValue = data.value * 5;
+            newValue = data.value * 7;
           } else if (data.label === "작성지침 미준수") {
             newValue = data.value * 3;
           }
