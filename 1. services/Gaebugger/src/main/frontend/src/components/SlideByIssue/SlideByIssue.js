@@ -149,7 +149,7 @@ const SlideByIssue = ({ paragraph, issues,style }) => {
             </StyledPaper>
             
             <StyledPaper style={{ ...style, textAlign: 'center',fontFamily:"NotoSansKR-Regular",display:"flex",flexDirection:"column",overflow: "hidden"}}>
-                <h2 style={{fontFamily:"NotoSansKR-Medium"}}>위반 사항</h2>
+                <h2 style={{fontFamily:"NotoSansKR-Medium"}}>위반 문장</h2>
                 <Divider style={{marginBottom:"10px",marginTop:"1px"}} />
                 <Slider {...sliderSettings} ref={sliderRef} style={{alignItems: "center", display:"flex",height:"100%",justifyContent:"center"}}>
                     {issues.map(issue => (
