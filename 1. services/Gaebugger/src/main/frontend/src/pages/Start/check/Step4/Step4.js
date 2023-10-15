@@ -146,7 +146,7 @@ function Step4({ processId, nextStep }) {
                     <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>업종별 평균 비교 그래프</h1>
                     <Divider style={{marginBottom:'10px'}} />
                     <h3 style={{ marginLeft: "25px", fontFamily: "NotoSansKR-Medium", color: "#999" }}>
-                            <span style={{ fontWeight: "bold", fontSize: "1.2em",color:"black" }}>{serverData['industryType']}</span>님과 같은 업종에서는 얼마나 이슈가 발생하는지 보여드릴게요
+                            <span style={{ fontWeight: "bold", fontSize: "1.2em",color:"black" }}>{serverData['industryType']}</span>님의 유형별 진단 결과와 업종별 평균 결과를 비교해보세요
                     </h3>
                     <Divider style={{marginBottom:'20px',opacity:0}} />
                     <BarChartComponent data={graphData} />      
