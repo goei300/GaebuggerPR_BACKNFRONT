@@ -1,4 +1,4 @@
-# [답변 주기전에 약속된 JSON형태로 바꿔주는 모듈]
+# [답변 주기전에 약속된 JSON형태로 바꿔주는 함수]
 
 import pandas as pd
 import numpy as np
@@ -106,15 +106,15 @@ def Make_Issues(ans, issue_paragraph_id, text, df):
             process_Law_Violate+=1
         elif(issue_type=='법률 위반 위험'):
             process_Law_Danger+=1
-        elif(issue_type=='지침 미준수'):
+        elif(issue_type=='작성지침 미준수'):
             process_Guide_Violate+=1
 
         print("법률 위반", process_Law_Violate)
         print("법률 위반 위험", process_Law_Danger)
-        print("지침 미준수", process_Guide_Violate)
+        print("작성지침 미준수", process_Guide_Violate)
 
 
-        if((issue_type=='법률 위반') or (issue_type=='법률 위반 위험') or (issue_type=='지침 미준수')):
+        if((issue_type=='법률 위반') or (issue_type=='법률 위반 위험') or (issue_type=='작성지침 미준수')):
             if((issue_text == '없음') or (issue_text == '')):
                 issue["issue_startIndex"] = -999
                 issue["issue_endIndex"] = -999
