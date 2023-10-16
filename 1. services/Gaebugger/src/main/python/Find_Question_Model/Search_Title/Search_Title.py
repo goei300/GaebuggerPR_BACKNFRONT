@@ -199,7 +199,7 @@ def Search_Title_With_Rule(docs, rule):
 def Make_Unique_Title(title_list):
     unique_title_list=[]
     for i in title_list:
-        unique_title_list.append(i+"\n")
+        unique_title_list.append(i+"\r\n")
     return unique_title_list
 
 ########################################################################################################

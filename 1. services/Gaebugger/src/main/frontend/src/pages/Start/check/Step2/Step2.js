@@ -31,31 +31,29 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
 
     };
 
-    
-
-
     const items = [
-        { id: 1, text: '개인정보 처리목적', type: 'text', default: '필수기재' },
-        { id: 2, text: '개인정보의 처리 및 보유 기간 작성', type: 'text', default: '필수기재' },
-        { id: 3, text: '처리하는 개인정보의 항목', type: 'text', default: '필수기재' },
-        { id: 4, text: '만 14세 미만 아동의 개인정보 처리에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
-        { id: 5, text: '개인정보의 제3자 제공에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
-        { id: 6, text: '개인정보 처리업무의 위탁에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
-        { id: 7, text: '개인정보의 국외 이전에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
-        { id: 8, text: '개인정보의 파기 절차 및 방법에 관한 사항', type: 'text', default: '필수기재' },
-        { id: 9, text: '미이용자의 개인정보 파기 등에 관한 조치', type: 'checkbox', options: ['기재', '기재안함'] },
-        { id: 10, text: '정보주체와 법정대리인의 권리·의무 및 행사방법에 관한 사항', type: 'text', default: '필수기재' },
-        { id: 11, text: '개인정보의 안전성 확보조치에 관한 사항', type: 'text', default: '필수기재' },
-        { id: 12, text: '개인정보를 자동으로 수집하는 장치의 설치·운영 및 그 거부에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
-        { id: 13, text: '행태정보의 수집·이용·제공 및 거부 등에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
-        { id: 14, text: '추가적인 이용·제공 관련 판단 기준', type: 'checkbox', options: ['기재', '기재안함'] },
-        { id: 15, text: '가명정보 처리에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
-        { id: 16, text: '개인정보 보호책임자에 관한 사항', type: 'text', default: '필수기재' },
-        { id: 17, text: '국내대리인 지정에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
-        { id: 18, text: '개인정보의 열람청구를 접수·처리하는 부서', type: 'text', default: '필수기재' },
-        { id: 19, text: '정보주체의 권익침해에 대한 구제방법', type: 'text', default: '필수기재' },
-        { id: 20, text: '영상정보처리기기 운영·관리에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
-        { id: 21, text: '개인정보 처리방침의 변경에 관한 사항', type: 'text', default: '필수기재' }
+        { id: 1, text: '제목 및 서문', type: 'text', default: '필수기재'},
+        { id: 2, text: '개인정보 처리목적', type: 'text', default: '필수기재' },
+        { id: 3, text: '개인정보의 처리 및 보유 기간 작성', type: 'text', default: '필수기재' },
+        { id: 4, text: '처리하는 개인정보의 항목', type: 'text', default: '필수기재' },
+        { id: 5, text: '만 14세 미만 아동의 개인정보 처리에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 6, text: '개인정보의 제3자 제공에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 7, text: '개인정보 처리업무의 위탁에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 8, text: '개인정보의 국외 이전에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 9, text: '개인정보의 파기 절차 및 방법에 관한 사항', type: 'text', default: '필수기재' },
+        { id: 10, text: '미이용자의 개인정보 파기 등에 관한 조치', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 11, text: '정보주체와 법정대리인의 권리·의무 및 행사방법에 관한 사항', type: 'text', default: '필수기재' },
+        { id: 12, text: '개인정보의 안전성 확보조치에 관한 사항', type: 'text', default: '필수기재' },
+        { id: 13, text: '개인정보를 자동으로 수집하는 장치의 설치·운영 및 그 거부에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 14, text: '행태정보의 수집·이용·제공 및 거부 등에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 15, text: '추가적인 이용·제공 관련 판단 기준', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 16, text: '가명정보 처리에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 17, text: '개인정보 보호책임자에 관한 사항', type: 'text', default: '필수기재' },
+        { id: 18, text: '국내대리인 지정에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 19, text: '개인정보의 열람청구를 접수·처리하는 부서', type: 'text', default: '필수기재' },
+        { id: 20, text: '정보주체의 권익침해에 대한 구제방법', type: 'text', default: '필수기재' },
+        { id: 21, text: '영상정보처리기기 운영·관리에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 22, text: '개인정보 처리방침의 변경에 관한 사항', type: 'text', default: '필수기재' }
     ];
 
     const allItemsChecked = () => {
@@ -149,8 +147,8 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
                                 <Typography variant="h6" style={{ fontFamily: 'NotoSansKR-Bold, sans-serif' }}>{item.id}</Typography>
                             </Box>
                             <Box flex={1} marginRight={2}>
-                                <Typography variant="body1" style={{ fontFamily: [5, 6, 12, 13, 14, 15, 17].includes(item.id) ? 'NotoSansKR-Black, sans-serif' : 'NotoSansKR-Medium, sans-serif' }}>
-                                    {[5, 6, 12, 13, 14, 15, 17].includes(item.id) ? `* ${item.text}` : item.text}
+                                <Typography variant="body1" style={{ fontFamily: [6, 7, 13, 14, 15, 16, 18].includes(item.id) ? 'NotoSansKR-Black, sans-serif' : 'NotoSansKR-Medium, sans-serif' }}>
+                                    {[6, 7, 13, 14, 15, 16, 18].includes(item.id) ? `* ${item.text}` : item.text}
                                 </Typography>
                             </Box>
                             <Box flex={1} display="flex" justifyContent="flex-end" alignItems="center">

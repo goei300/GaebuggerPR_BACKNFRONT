@@ -1,5 +1,5 @@
 import pandas as pd
-df = pd.read_csv("C://Users//scw10//PycharmProjects//rest_test//venv//test_instruction_v2.3.csv")
+df = pd.read_csv("./test_instruction_v2.3.csv")
 # 1) 0: 의무
 # 2) 1: 해당시 의무
 # 3) 2: 해당시 권장

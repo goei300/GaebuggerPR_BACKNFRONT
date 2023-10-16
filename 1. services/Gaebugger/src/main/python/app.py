@@ -56,6 +56,11 @@ def process_text():
 
     result_dict = Cutting(text, unique_title_dict, unique_title_dict2, table) # 여기서 목차여부 넘기는데 나중에 객체지향설계로 상속하도록 할 예정
     print("룰과 파트내용 매칭된 딕셔너리 {rule:파트}\n")
+    print("cutting전  text:",text)
+    print("cutting전  unique_title_dict",unique_title_dict)
+    print("cutting전  unique_title_dict2", unique_title_dict2)
+    print("cutting전  table",table)
+
     print(result_dict)
 
     df = Matching(text, result_dict, df)
