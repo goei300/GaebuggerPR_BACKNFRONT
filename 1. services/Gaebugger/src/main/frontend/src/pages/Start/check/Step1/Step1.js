@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios';
-import { Box, Button, Typography, Container, Divider, Input, Paper,TextField, Select, MenuItem } from '@mui/material';
+import { Box, Button, Typography, Container, Divider, Input, Paper,TextField, Select, MenuItem,FormControl,InputLabel } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CustomizedSteppers from "../../../../components/StepIndicator/StepIndicator";
 import './Step1.css';
@@ -118,10 +118,11 @@ function Step1({ nextStep, infoObject, setInfoObject,setFile,file  }) {
                                         variant="outlined"
                                         label="회사명"
                                         size="small"
-                                        InputLabelProps={{ shrink: true }}
+                                        InputLabelProps={{ shrink: true, fontSize:"small" }}
                                         InputProps={{
                                             sx: {  
-                                              fontSize: 12,
+                                              fontSize: "small",
+                                              fontFamily:"NotoSansKR-Regular"
                                             },
                                           }}
                                         style={{ width: '200px',fontSize: "small" }}

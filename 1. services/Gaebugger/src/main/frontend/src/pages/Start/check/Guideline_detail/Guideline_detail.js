@@ -195,14 +195,14 @@ function Guideline_detail({processId, prevStep,responseData}){
                                         <div>
                                           페이지: {page + 1} / {totalPages}
                                           <br />
-                                          전체: {count} 건의 위반 사항
+                                          전체: {count} 건의 위반 문장
                                         </div>
                                       );
                                 }}
                                 onPageChange={handleChangePage}
                                 onRowsPerPageChange={handleRowsPerPageChange}
                                 rowsPerPageOptions={[3, 5, 10]}
-                                labelRowsPerPage="페이지당 위반 사항 수" // 이 부분을 변경
+                                labelRowsPerPage="페이지당 위반 문장 수" // 이 부분을 변경
 
                                 style={{display:"flex",justifyContent:"center",alignContent:"center"}}
                             />
@@ -243,7 +243,7 @@ function Guideline_detail({processId, prevStep,responseData}){
                                         color: selectedOption === 'issue' ? 'black' : '#e0e0e0'
                                     }}
                                 >
-                                    위반 사항별
+                                    위반 문장별
                                 </p>
                             </div>
                         </div>
