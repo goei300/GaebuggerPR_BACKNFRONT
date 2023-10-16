@@ -40,7 +40,7 @@ public class ApiResponseDTO {
         private String issue_reason;
         private int issue_startIndex;
         private int issue_endIndex;
-        private String issue_guideline;
+        private List<String> issue_guideline;
         private String issue_goodCase;
     }
 }

@@ -130,35 +130,30 @@ function Step1({ nextStep, infoObject, setInfoObject,setFile,file  }) {
                                         onChange={handleCompanyNameChange}
                                         />
                                 </Box>
-                                <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom="15px" >
-                                    <p style={{ fontSize: "12px", paddingRight: "50px" }}>업종</p>
-                                    <FormControl variant="outlined" size="small" style={{ width: '200px',fontFamily:"NotoSansKR-Regular" }}>
-                                        <InputLabel style={{}}>업종유형</InputLabel>
-                                        <Select
-                                            value={industryType}
-                                            onChange={handleIndustryTypeChange}
-                                            label="업종유형"
-                                            InputProps={{
-                                                sx:{
-                                                    fontSize:"small",
-                                                    fontFamily:"NotoSansKR-Regular",
-                                                },
-                                            }}
-                                        >
-                                            <MenuItem value={"type1"} style={{ fontSize: "small" }}>제조</MenuItem>
-                                            <MenuItem value={"type2"} style={{ fontSize: "small" }}>전기/가스/수도</MenuItem>
-                                            <MenuItem value={"type3"} style={{ fontSize: "small" }}>건설업</MenuItem>
-                                            <MenuItem value={"type4"} style={{ fontSize: "small" }}>유통/물류/도소매</MenuItem>
-                                            <MenuItem value={"type5"} style={{ fontSize: "small" }}>숙박/음식</MenuItem>
-                                            <MenuItem value={"type6"} style={{ fontSize: "small" }}>정보/통신</MenuItem>
-                                            <MenuItem value={"type7"} style={{ fontSize: "small" }}>금융/보험</MenuItem>
-                                            <MenuItem value={"type8"} style={{ fontSize: "small" }}>부동산/임대</MenuItem>
-                                            <MenuItem value={"type9"} style={{ fontSize: "small" }}>교육 서비스업</MenuItem>
-                                            <MenuItem value={"type10"} style={{ fontSize: "small" }}>보건/복지</MenuItem>
-                                            <MenuItem value={"type11"} style={{ fontSize: "small" }}>협회/단체</MenuItem>
-                                            <MenuItem value={"type12"} style={{ fontSize: "small" }}>기타</MenuItem>
-                                        </Select>
-                                    </FormControl>
+                                <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom="15px">
+                                    <p style={{fontSize: "12px", paddingRight:"50px"}}>업종</p>
+                                    <Select
+                                        variant="outlined"
+                                        size="small"
+                                        value={industryType} // state 값을 사용하여 현재 선택된 값을 관리해야 합니다.
+                                        onChange={handleIndustryTypeChange} // 선택된 항목을 변경할 때 호출될 핸들러 함수
+                                        label="업종유형"
+                                        style={{ width: '200px', fontSize:"small" }}
+                                    >
+                                        <MenuItem value={"제조"} style={{fontSize: "small"}}>제조</MenuItem>
+                                        <MenuItem value={"전기/가스/수도"} style={{fontSize: "small"}}>전기/가스/수도</MenuItem>
+                                        <MenuItem value={"건설업"} style={{fontSize: "small"}}>건설업</MenuItem>
+                                        <MenuItem value={"유통/물류/도소매"} style={{fontSize: "small"}}>유통/물류/도소매</MenuItem>
+                                        <MenuItem value={"숙박/음식"} style={{fontSize: "small"}}>숙박/음식</MenuItem>
+                                        <MenuItem value={"정보/통신"} style={{fontSize: "small"}}>정보/통신</MenuItem>
+                                        <MenuItem value={"금융/보험"} style={{fontSize: "small"}}>금융/보험</MenuItem>
+                                        <MenuItem value={"부동산/임대"} style={{fontSize: "small"}}>부동산/임대</MenuItem>
+                                        <MenuItem value={"교육 서비스업"} style={{fontSize: "small"}}>교육 서비스업</MenuItem>
+                                        <MenuItem value={"보건/복지"} style={{fontSize: "small"}}>보건/복지</MenuItem>
+                                        <MenuItem value={"협회/단체"} style={{fontSize: "small"}}>협회/단체</MenuItem>
+                                        <MenuItem value={"기타"} style={{fontSize: "small"}}>기타</MenuItem>
+
+                                    </Select>
                                 </Box>
                             </div>
                         </Box>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useReducer } from 'react';
 import { Box, Typography, Container, Divider, Paper, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import '../compactContainer.css';
@@ -6,25 +6,42 @@ import CustomizedSteppers from "../../../../components/StepIndicator/StepIndicat
 import './Step3.css';
 import axios from "axios";
 import Loading from '../../../../components/animation/Loading';
+import apiResponseReducer from "../apiResponseReducer";
 
 const StyledPaper = styled(Paper)({
     padding: '30px',
     borderRadius: '10px',
 });
 
-function Step3({ nextStep, processId }) {
-    const [loadingComplete, setLoadingComplete] = useState(false);
+function Step3({ nextStep, processId,dispatch,apiResponse }) {
 
+    const [loadingComplete, setLoadingComplete] = useState(false);
     useEffect(() => {
         // SSE 연결 설정
         const sse = new EventSource(`http://localhost:8080/api/check-response/${processId}`);
 
-        // 서버에서 이벤트를 받을 때 처리할 리스너 설정
-        sse.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            if (data && data.completed) {
-                setLoadingComplete(true);
-                sse.close();
+        // data 이벤트를 통해 ApiResponseDTO 데이터 수신
+        sse.addEventListener('data', event => {
+            const responseData = JSON.parse(event.data);
+
+            // responseData를 사용하여 필요한 처리 수행
+            console.log("Received data:", responseData);  // 출력문 추가
+
+            // 데이터를 reducer에 전달하여 상태 업데이트
+            dispatch({ type: 'SET_DATA', payload: responseData });
+            // 점수 계산
+        });
+
+        sse.onmessage = event => {
+            try {
+                const messageData = JSON.parse(event.data);
+                if (messageData && messageData.completed) {
+                    console.log("Processing completed!");  // 작업 완료 메시지 출력
+                    setLoadingComplete(true);
+                    sse.close();  // SSE 연결 종료
+                }
+            } catch (error) {
+                // 여기서는 오류를 무시합니다. 오류가 발생한 경우는 "data" 이벤트에 대한 데이터를 파싱하려고 시도했을 때입니다.
             }
         };
 
@@ -36,7 +53,8 @@ function Step3({ nextStep, processId }) {
 
         // 컴포넌트 언마운트 시 연결 종료
         return () => sse.close();
-    }, [processId, nextStep]);
+    }, []);
+
     return (
         <Container className="compact-container" style={{padding:"0px"}}>
             <CustomizedSteppers activeStep={2} />
