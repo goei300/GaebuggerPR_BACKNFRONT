@@ -17,7 +17,7 @@ import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import Tooltip from '@mui/material/Tooltip';
 import IssuePopover from '../../../../components/IssuePopover/IssuePopover';
 
-function Step4({ processId, nextStep }) {
+function Step4({ processId, nextStep,responseData,infoObject }) {
     const [open, setOpen] = useState(false);
     const [detailType, setDetailType] = useState("");
     const [visible, setVisible] = useState(false);
@@ -25,16 +25,32 @@ function Step4({ processId, nextStep }) {
 
     // 임의의 테스트 데이터
     const mockServerData = {
-        processId: "abcde",
-        industryType: "KITRI",
-        lawViolate: "3",
-        lawDanger: "2",
-        guideViolate: "1",
-        type: "제조",        
-        score: 38
+        processId: responseData.process_Id,
+        industryType: infoObject['companyName'],
+        lawViolate: responseData.process_Law_Violate,
+        lawDanger: responseData.process_Law_Danger,
+        guideViolate: responseData.process_Guide_Violate,
+        type: infoObject['industryType'],
+        score: responseData.process_Score
+    };
+    console.log("mockServerData is:");
+    console.log(mockServerData);
+    const transformedIssues = responseData.process_Issues.map(issue => {
+        return {
+            id: issue.issue_id,
+            type: issue.issue_type,  // "제조"
+            startIndex: issue.issue_startIndex,
+            endIndex: issue.issue_endIndex
+        };
+    });
+
+    const extractedData = {
+        content: responseData.process_Original,
+        issues: transformedIssues
     };
 
-        const IndustryTypeAverage={
+    console.log(extractedData);
+    const IndustryTypeAverage={
         allType:{
             lawViolate: 3,
             lawDanger: 2,
@@ -49,9 +65,58 @@ function Step4({ processId, nextStep }) {
             lawViolate:4,
             lawDanger:3,
             guideViolate:2
-        }
-        
-        };
+        },
+        "건설업":{
+            lawViolate:2,
+            lawDanger:4,
+            guideViolate:2
+        },
+        "유통/물류/도소매":{
+            lawViolate:2,
+            lawDanger:1,
+            guideViolate:7
+        },
+        "숙박/음식":{
+            lawViolate:1,
+            lawDanger:3,
+            guideViolate:4
+        },
+        "정보/통신":{
+            lawViolate:0,
+            lawDanger:6,
+            guideViolate:3
+        },
+        "금융/보험":{
+            lawViolate:2,
+            lawDanger:3,
+            guideViolate:9
+        },
+        "부동산/임대":{
+            lawViolate:5,
+            lawDanger:2,
+            guideViolate:5
+        },
+        "교육 서비스업":{
+            lawViolate:1,
+            lawDanger:1,
+            guideViolate:3
+        },
+        "보건/복지":{
+            lawViolate:1,
+            lawDanger:0,
+            guideViolate:7
+        },
+        "협회/단체":{
+            lawViolate:1,
+            lawDanger:3,
+            guideViolate:5
+        },
+        "기타":{
+            lawViolate:1,
+            lawDanger:4,
+            guideViolate:5
+        },
+    };
     const [serverData] = useState(mockServerData);
 
 /*     const [serverData, setServerData] = useState(null);
@@ -104,20 +169,25 @@ function Step4({ processId, nextStep }) {
         {
             "id": "법률 위반",
             "label": "법률 위반",
-            "value": 3
+            "value": serverData['lawViolate']
         },
         {
             "id": "법률 위반 위험",
             "label": "법률 위반 위험",
-            "value": 2
+            "value": serverData['lawDanger']
         },
         {
             "id": "작성지침 미준수",
             "label": "작성지침 미준수",
-            "value": 1
+            "value": serverData['guideViolate']
         }
     ];
+
+    console.log("piedata is?");
+    console.log(pieData);
     const total = pieData.reduce((acc, data) => acc + data.value, 0);
+    console.log("total is? ");
+    console.log(total);
     return (
         <Container className="compact-container" style={{padding:"0px"}}>
             <CustomizedSteppers activeStep={3} />
@@ -167,7 +237,7 @@ function Step4({ processId, nextStep }) {
                             <IssuePopover />
                         </div> */}
                     </div>
-                    <NonConformityCheck data={testData} />
+                    <NonConformityCheck data={extractedData} />
                 </div>
                 <Divider style={{margin: "100px", opacity:0}} />
 

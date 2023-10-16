@@ -104,8 +104,8 @@ const classes = useStyles();
           법률 위반 위험
         </ToggleButton>
         <ToggleButton 
-          value="작성지침 미준수" 
-          aria-label="작성지침 미준수" 
+          value="작성지침 미준수"
+          aria-label="작성지침 미준수"
           className={classes.guidelineViolation}
         >
           작성지침 미준수
