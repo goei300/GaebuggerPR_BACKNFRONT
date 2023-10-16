@@ -17,7 +17,7 @@ import {
     StyledToggleButton, 
     StyledToggleButtonGroup 
 } from './styles/ComponentStyles';
-function Guideline_detail({processId, prevStep}){
+function Guideline_detail({processId, prevStep,responseData}){
     // 임의의 데이터    
     const [solutionTypes,setSolutionTypes] = useState([1,2,3]);
     const modifiedTxt = guidelineDetail.modifiedText;
@@ -30,12 +30,19 @@ function Guideline_detail({processId, prevStep}){
     const [selectedOption, setSelectedOption] = useState("paragraph"); // 초기값은 "paragraph"
     const [selectedIssueType, setSelectedIssueType] = useState('모든 유형');  // 초기 상태 설정
     // issue_type 필터링 기능
-    const filteredIssues = testIssue.process_Issues.filter(issue => {
+    const filteredIssues = responseData.process_Issues.filter(issue => {
         if (selectedIssueType === "모든 유형") return true;
         return issue.issue_type === selectedIssueType;
     });
-    
 
+    console.log("process_Issues is:");
+    console.log(responseData.process_Issues);
+    console.log("process_Paragraph is:");
+    console.log(responseData.process_Paragraph);
+    console.log("testIssue_Issues is:");
+    console.log(testIssue.process_Issues);
+    console.log("testIssue_paragraph is:");
+    console.log(testIssue.process_Paragraph);
     const handleIssueRender = (issuelist) => {
         setSelectedIssueList(issuelist);
     }
@@ -160,7 +167,7 @@ function Guideline_detail({processId, prevStep}){
                                                 {issue.issue_type === "법률 위반 위험" && <span style={{color: "orange", fontWeight: "bold", marginLeft: "7px"}}>(-5)</span>}
                                                 {issue.issue_type === "작성지침 미준수" && <span style={{color: "gold", fontWeight: "bold", marginLeft: "7px"}}>(-3)</span>}
                                             </TableCell>
-                                            <TableCell style={{width:"40%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_content}</TableCell>
+                                            <TableCell style={{width:"40%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_guideline[0]}</TableCell>
                                             <TableCell style={{width:"30%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_reason}</TableCell>
                                             <TableCell>
                                                 <Button 
@@ -243,11 +250,11 @@ function Guideline_detail({processId, prevStep}){
                         <div className="showingIssue" style={{ border:"1px solid #d9d9d9",marginLeft:"20px",borderRadius:"10px",padding:"30px"}}>
                             {selectedOption === "paragraph" ? (
                                 <div className="paragraph" style={{display:"flex",justifyContent:"space-between"}}>
-                                    <ResultSlide issues={testIssue.process_Issues} paragraph={testIssue.process_Paragraph} style={{flex:"1",margin:"0 10px",width: "10%"}} onIssueRender={handleIssueRender} onIssueClick={handleIssueClick} selectedButtonIssue={selectedButtonIssue} setSelectedButtonIssue={setSelectedButtonIssue}/>
+                                    <ResultSlide issues={responseData.process_Issues} paragraph={responseData.process_Paragraph} style={{flex:"1",margin:"0 10px",width: "10%"}} onIssueRender={handleIssueRender} onIssueClick={handleIssueClick} selectedButtonIssue={selectedButtonIssue} setSelectedButtonIssue={setSelectedButtonIssue}/>
                                     <RenderIssue issuelist={selectedIssueList} highlightIssue={selectedIssue} style={{flex:"1",margin:"0 10px"}}/>
                                 </div>
                             ) : (
-                                <SlideByIssue paragraph={testIssue.process_Original} issues={testIssue.process_Issues} style={{flex:"1",margin:"0 10px",width: "10%"}} />
+                                <SlideByIssue paragraph={responseData.process_Original} issues={responseData.process_Issues} style={{flex:"1",margin:"0 10px",width: "10%"}} />
 
                             )}
                         </div>

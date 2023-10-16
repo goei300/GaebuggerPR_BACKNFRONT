@@ -1,10 +1,11 @@
-import React, { useState,useEffect } from "react";
+import React, {useState, useEffect, useReducer} from "react";
 import { Helmet } from "react-helmet";
 import Step1 from "./Step1/Step1";
 import Step2 from "./Step2/Step2";
 import Step3 from './Step3/Step3';
 import Step4 from './Step4/Step4';
 import Guideline_detail from "./Guideline_detail/Guideline_detail";
+import apiResponseReducer, { initialState } from './apiResponseReducer';
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 
@@ -21,6 +22,7 @@ function CheckEvaluate() {
         name: '',
         email: '',
     });
+    const [apiResponse, dispatch] = useReducer(apiResponseReducer, initialState);
     useEffect(() => {
         // step이 변경될 때 맨 위로 스크롤
         window.scrollTo({ top: 0, behavior: 'auto' });
@@ -65,14 +67,16 @@ function CheckEvaluate() {
                 <Step3
                     nextStep={nextStep}
                     processId={processId} // processId를 Step3로 전달
+                    dispatch={dispatch} // dispatch 함수를 Step3에 전달
+                    apiResponse={apiResponse} // 상태도 전달 (필요한 경우)
                 />
             );
             break;
         case 4:
-            currentStep = <Step4 processId={processId} nextStep={nextStep} />;
+            currentStep = <Step4 processId={processId} nextStep={nextStep} responseData={apiResponse} infoObject={infoObject}/>;
             break;
         case 5:
-            currentStep = <Guideline_detail processId={processId} prevStep={prevStep} />;
+            currentStep = <Guideline_detail processId={processId} prevStep={prevStep} responseData={apiResponse} />;
     
         default:
             break;
