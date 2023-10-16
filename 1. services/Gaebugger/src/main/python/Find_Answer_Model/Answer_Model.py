@@ -6,7 +6,6 @@ import os
 import config
 api_key = os.getenv("OPENAI_API_KEY")
 
-
 # Module
 from .Answer_Prompt_Template import chatchain
 from .Rule_Validation.Rule_Validation import checking_answer_template
@@ -29,7 +28,11 @@ def Answer_Model(df, text):
 
     # 파트가 있는거랑, 유저가 체크한 값(검사 대상) 만으로 데이터프레임 컷팅
     df = df[(df['matched_part'] != '') & (df['user_input']=='1')]
+    df = df.sort_values(by='matched_startIndex')
     df.reset_index(drop=True, inplace=True)
+
+    print("최종 완성된 데이터프레임입니다!")
+    print(df[['user_input', 'part', 'matched_part', 'matched_startIndex']])
     ans = ""
 
     for i in range(len(df)):
