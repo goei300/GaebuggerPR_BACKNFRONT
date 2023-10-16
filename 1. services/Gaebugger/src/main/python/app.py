@@ -71,8 +71,7 @@ def process_text():
 
     # <JSON 데이터>
     # 백엔드로 넘길 json데이터 구조
-    backend_json = {"process_Id":process_Id, "process_Original":text, "process_Law_Violate":0, "process_Law_Danger": 0,
-                    "process_Guide_Violate": 1, "process_Paragraph": [],  "process_Issues":[], "process_Modified":""}
+    backend_json = {"process_Id":process_Id, "process_Original":text, "process_Score":0, "process_Law_Violate":0, "process_Law_Danger": 0, "process_Guide_Violate": 1, "process_Paragraph": [],  "process_Issues":[], "process_Modified":""}
 
     backend_json["process_Law_Violate"]=process_Law_Violate
     backend_json["process_Law_Danger"] = process_Law_Danger
