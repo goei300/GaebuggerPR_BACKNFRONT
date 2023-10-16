@@ -13,7 +13,7 @@ const PieChartComponent = ({ pieData, total }) => {
           additionalValue = data.value * 15;
         } else if (data.label === "법률 위반 위험") {
           additionalValue = data.value * 7;
-        } else if (data.label === "지침 미준수") {
+        } else if (data.label === "작성지침 미준수") {
           additionalValue = data.value * 3;
         }
         return sum + additionalValue;
@@ -29,7 +29,7 @@ const PieChartComponent = ({ pieData, total }) => {
             newValue = data.value * 15;
           } else if (data.label === "법률 위반 위험") {
             newValue = data.value * 7;
-          } else if (data.label === "지침 미준수") {
+          } else if (data.label === "작성지침 미준수") {
             newValue = data.value * 3;
           }
           return { ...data, value: newValue };
