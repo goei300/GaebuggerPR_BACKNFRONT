@@ -1,4 +1,4 @@
-# [답변 주기전에 약속된 JSON형태로 바꿔주는 함수]
+# [답변 주기전에 약속된 JSON형태로 바꿔주는 모듈]
 
 import pandas as pd
 import numpy as np
@@ -14,7 +14,7 @@ def Make_Paragraph(df, text):
         paragraph["paragraph_id"] = i
         paragraph["paragraph_content"] = df["matched_part"][i]
         startIndex = text.find(df["matched_part"][i])
-        endIndex = len(df["matched_part"][i]) + startIndex
+        endIndex = len(df["matched_part"][i]) + startIndex - 1 # -1 하는 이유는 리스트 인덱스 구조가 다름 (Python -> JAVA)
         paragraph["paragraph_startIndex"] = startIndex
         paragraph["paragraph_endIndex"] = endIndex
         paragraph_list.append(paragraph)
@@ -77,7 +77,7 @@ def Make_Issues(ans, issue_paragraph_id, text, df):
         if i.startswith('"') and i.endswith('"'):
             i = i[1:-1]  # 앞뒤 따옴표 그냥 제거 추후 수정 -> 프롬프트에서 계속 위반문장에 따옴표를 붙임
         startIndex = text.find(i)
-        endIndex = len(i) + startIndex
+        endIndex = len(i) + startIndex - 1 # -1 하는 이유는 리스트 인덱스 구조가 다름 (Python -> JAVA)
         issue_startIndex.append(startIndex)
         issue_endIndex.append(endIndex)
 

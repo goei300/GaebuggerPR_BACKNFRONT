@@ -15,6 +15,7 @@ from Find_Answer_Model.Answer_Model import *
 from Find_Answer_Model.Answer_CoT_SC import *
 from Find_Question_Model.User_Input_Check import *
 
+
 app = Flask(__name__)
 
 @app.route('/process-text', methods=['POST'])
@@ -57,9 +58,9 @@ def process_text():
     print("룰과 파트내용 매칭된 딕셔너리 {rule:파트}\n")
     print(result_dict)
 
-    df = Matching(result_dict, df)
-    print("최종 완성된 데이터프레임입니다!")
-    print(df[['user_input', 'part', 'matched_part']])
+    df = Matching(text, result_dict, df)
+    print("Matching에서 완성된 데이터프레임입니다!")
+    print(df[['user_input', 'part', 'matched_part', 'matched_startIndex']])
     answer_text, process_Paragraph,process_Issues, process_Law_Violate, process_Law_Danger, process_Guide_Violate = Answer_CoT_SC(df, text)
 
     # <출력사항>
