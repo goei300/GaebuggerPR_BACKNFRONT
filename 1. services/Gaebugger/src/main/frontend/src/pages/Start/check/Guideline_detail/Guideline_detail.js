@@ -254,7 +254,7 @@ function Guideline_detail({processId, prevStep,responseData}){
                                     <RenderIssue issuelist={selectedIssueList} highlightIssue={selectedIssue} style={{flex:"1",margin:"0 10px"}}/>
                                 </div>
                             ) : (
-                                <SlideByIssue paragraph={responseData.process_Original} issues={responseData.process_Issues} style={{flex:"1",margin:"0 10px",width: "10%"}} />
+                                <SlideByIssue original={responseData.process_Original} issues={responseData.process_Issues} paragraphs={responseData.process_Paragraph} style={{flex:"1",margin:"0 10px",width: "10%"}} />
 
                             )}
                         </div>

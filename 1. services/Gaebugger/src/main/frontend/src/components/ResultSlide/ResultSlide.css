@@ -43,8 +43,30 @@
 }
 
 .issue-guideline {
-    background-color: goldenrod;
+    background-color: gold;
 }
+
+.omittedIssuesList > span {
+    margin: 3px;
+}
+
+.omittedIssuesList > span > span {
+    border-radius: 100% !important;
+}
+
+.omittedIssuesList .issue-law-violation  span {
+    width: 23.2px !important;
+    margin-right: 0px !important;
+}
+.omittedIssuesList .issue-law-risk span {
+    width: 23.2px !important;
+    margin-right: 0px !important;
+}
+.omittedIssuesList .issue-guideline span {
+    width: 23.2px !important;
+    margin-right: 0px !important;
+}
+
 .issue-law-violation:hover,
 .issue-law-risk:hover,
 .issue-guideline:hover {

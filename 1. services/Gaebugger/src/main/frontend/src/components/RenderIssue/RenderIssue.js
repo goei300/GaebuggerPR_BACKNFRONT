@@ -81,7 +81,14 @@ useEffect(() => {
                         <Divider style={{ margin: '10px 0' }} />
 
                         <h4>가이드 라인</h4>
-                        <body>{issue.issue_guideline}</body>
+                        <ul style={{textAlign:"start"}}>
+                            {issue.issue_guideline.map((guideline, index) => (
+                                <li key={index} style={{marginBottom:"10px"}}>
+                                    {guideline}
+                                </li>
+                            ))}
+                        </ul>
+
                     </div>
                 ))}
             </div>

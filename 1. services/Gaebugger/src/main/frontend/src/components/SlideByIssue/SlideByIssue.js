@@ -4,7 +4,7 @@ import { Divider } from '@mui/material';
 import '../../assets/fonts/fonts.css';
 import { StyledPaper } from '../../pages/Start/check/Guideline_detail/styles/ComponentStyles';
 
-const SlideByIssue = ({ paragraph, issues,style }) => {
+const SlideByIssue = ({ original, paragraphs, issues,style }) => {
     const [currentIssueIndex, setCurrentIssueIndex] = useState(0);
     const [clickedIssueId, setClickedIssueId] = useState(1); // 추가
     const paragraphRef = useRef(null);
@@ -87,10 +87,18 @@ const SlideByIssue = ({ paragraph, issues,style }) => {
             lineHeight: '20px',  // 수직 중앙 정렬
             fontSize: '1em'  // 폰트 크기
         };
-        
+
         if (issue.issue_id === clickedIssueId) {
             style.fontWeight = 'bold'; // 볼드체로 설정
-            style.fontSize = '1.2em'; // 폰트 사이즈 조정
+            if(text===null){
+                style.fontSize ='1.5em';
+                style.display ='inline-block';
+                style.width = '35px';
+                style.textAlign = 'center';
+            }
+            else {
+                style.fontSize = '1.3em'; // 폰트 사이즈 조정
+            }
         }
 
         switch(issue.issue_type) {
@@ -124,19 +132,75 @@ const SlideByIssue = ({ paragraph, issues,style }) => {
     const renderParagraphWithIssues = () => {
         let contentArray = [];
         let lastIndex = 0;
-    
-        for (let issue of issues) {
-            contentArray.push(wrapWithBreaks(paragraph.slice(lastIndex, issue.issue_startIndex)));
-            contentArray.push(wrapWithIssueSpan(paragraph.slice(issue.issue_startIndex, issue.issue_endIndex + 1), issue));
+
+        const transformedIssues = issues.map(issue => {
+            if (issue.issue_startIndex === -999 && issue.issue_endIndex === -999) {
+                const relatedParagraph = paragraphs.find(p => p.paragraph_id === issue.issue_paragraph_id);
+                return {
+                    ...issue,
+                    issue_startIndex: relatedParagraph ? relatedParagraph.paragraph_startIndex : -999,
+                    issue_endIndex: relatedParagraph ? relatedParagraph.paragraph_startIndex : -999,
+                };
+            }
+            return issue;
+        });
+
+        const sortedIssues = transformedIssues.sort((a, b) => a.issue_startIndex - b.issue_startIndex);
+
+        for (let i = 0; i < sortedIssues.length; i++) {
+            let issue = sortedIssues[i];
+
+            if (issue.issue_startIndex === issue.issue_endIndex) {
+                contentArray.push(original.slice(lastIndex, issue.issue_startIndex));
+
+                let missingIssueContent = [];
+
+                missingIssueContent.push(wrapWithIssueSpan(null, sortedIssues[i]));
+
+                // 같은 index를 가진 다음 누락 이슈들을 찾아 span으로 추가
+                while (i + 1 < sortedIssues.length && sortedIssues[i + 1].issue_startIndex === issue.issue_startIndex) {
+                    i++;
+                    missingIssueContent.push(wrapWithIssueSpan(null, sortedIssues[i]));
+                }
+
+                contentArray.push(
+                    <div className="omittedIssuesList" key={"missingDiv-" + issue.issue_startIndex} style={{ backgroundColor: "#FFD6D6", padding: "5px", borderRadius: "5px", margin: "10px 0", border: "1px solid black" }}>
+                        <strong>누락된 항목</strong>
+                        {missingIssueContent}
+                    </div>
+                );
+
+                lastIndex = issue.issue_startIndex;
+                continue;
+            }
+
+            contentArray.push(original.slice(lastIndex, issue.issue_startIndex));
+            contentArray.push(wrapWithIssueSpan(original.slice(issue.issue_startIndex, issue.issue_endIndex + 1), issue));
             lastIndex = issue.issue_endIndex + 1;
         }
-        contentArray.push(wrapWithBreaks(paragraph.slice(lastIndex)));
-    
+
+        // 남은 부분의 내용을 추가
+        contentArray.push(original.slice(lastIndex));
+
         return contentArray;
     }
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     return (
         <div className="issue" style={{display:"flex",justifyContent:"space-between"}}>
@@ -144,7 +208,7 @@ const SlideByIssue = ({ paragraph, issues,style }) => {
                 <h2 style={{fontFamily:"NotoSansKR-Medium",textAlign:"center"}}>전체 내용</h2>
                 <Divider style={{marginBottom:"10px",marginTop:"32px"}} />
                 <div ref={paragraphRef} className="paragraph-section" style={{ overflowY: 'auto', maxHeight: '400px', padding: '20px', flex: 1 }}>
-                    <p>{renderParagraphWithIssues()}</p>
+                    {renderParagraphWithIssues()}
                 </div>
             </StyledPaper>
             

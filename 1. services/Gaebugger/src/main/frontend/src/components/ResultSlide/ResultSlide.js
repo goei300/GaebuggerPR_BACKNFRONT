@@ -91,7 +91,15 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
         
         if (issue.issue_id === clickedIssueId) {
             style.fontWeight = 'bold'; // 볼드체로 설정
-            style.fontSize = '1.2em'; // 폰트 사이즈 조정
+            if(text===null){
+                style.fontSize ='1.5em';
+                style.display ='inline-block';
+                style.width = '35px';
+                style.textAlign = 'center';
+            }
+            else {
+                style.fontSize = '1.3em'; // 폰트 사이즈 조정
+            }
         }
 
         switch(issue.issue_type) {
@@ -136,19 +144,48 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
         return paragraphsToRender.map(p => {
             let contentArray = [];
             let lastIndex = 0;
-    
+
+
             const relevantIssues = getRelevantIssues(p.paragraph_id);
+            const omittedIssues = relevantIssues.filter(issue => issue.issue_startIndex === -999 && issue.issue_endIndex === -999);
+            const normalIssues = relevantIssues.filter(issue => issue.issue_startIndex !== -999 && issue.issue_endIndex !== -999);
+
             // 체크박스가 체크되어 있고, 해당 단락의 ID가 위반사항이 있는 단락의 ID 목록에 없다면 렌더링하지 않습니다.
-            if (onlyShowIssueParagraphs && !issueParagraphIds.includes(p.paragraph_id)) {
+            if (onlyShowIssueParagraphs && !issueParagraphIds.includes(p.paragraph_id) && omittedIssues.length === 0) {
                 return (
                     <p>위반사항이 없습니다!</p>
                 );
             }
 
-            for (let issue of relevantIssues) {
+            // 누락된 항목 렌더링
+            if (omittedIssues.length > 0) {
+                const omittedIssueElements = omittedIssues.map(issue => {
+                    const wrappedIssue = wrapWithIssueSpan(null, issue);
+                    return (
+                        <span
+                            key={issue.issue_id}
+                            onClick={() => handleIssueClick(issue)}
+                        >
+                            {wrappedIssue}
+                        </span>
+                    );
+                });
+
+                contentArray.push(
+                    <div key="omittedIssues" className="omittedContent" style={{border:"1px solid #e0e0e0", borderRadius:"5px", paddingLeft: "10px", marginBottom:"15px"}}>
+                        <h3 style={{fontFamily:'NotoSansKR-Regular', marginBottom:"2px", marginTop:"5px"}}>누락 항목</h3>
+                        <Divider style={{marginTop:"3px", marginBottom:"5px"}} />
+
+                        <div className="omittedIssuesList" style={{marginBottom:"5px"}}>{omittedIssueElements}</div>
+                    </div>
+                );
+            }
+
+            // 누락 아닌 이슈 랜더링
+            for (let issue of normalIssues) {
                 const relativeStart = issue.issue_startIndex - p.paragraph_startIndex;
                 const relativeEnd = issue.issue_endIndex - p.paragraph_startIndex;
-    
+
                 contentArray.push(wrapWithBreaks(p.paragraph_content.slice(lastIndex, relativeStart)));
                 contentArray.push(wrapWithIssueSpan(p.paragraph_content.slice(relativeStart, relativeEnd + 1), issue));
                 lastIndex = relativeEnd + 1;

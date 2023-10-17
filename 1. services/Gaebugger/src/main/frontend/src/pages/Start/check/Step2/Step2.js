@@ -50,8 +50,8 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
         { id: 16, text: '가명정보 처리에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
         { id: 17, text: '개인정보 보호책임자에 관한 사항', type: 'text', default: '필수기재' },
         { id: 18, text: '국내대리인 지정에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
-        { id: 19, text: '개인정보의 열람청구를 접수·처리하는 부서', type: 'text', default: '필수기재' },
-        { id: 20, text: '정보주체의 권익침해에 대한 구제방법', type: 'text', default: '필수기재' },
+        { id: 19, text: '개인정보의 열람청구를 접수·처리하는 부서', type: 'checkbox', options: ['기재','기재안함'] },
+        { id: 20, text: '정보주체의 권익침해에 대한 구제방법', type: 'checkbox', options: ['기재', '기재안함'] },
         { id: 21, text: '영상정보처리기기 운영·관리에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
         { id: 22, text: '개인정보 처리방침의 변경에 관한 사항', type: 'text', default: '필수기재' }
     ];
@@ -99,7 +99,7 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
         }));
         try {
             // 백엔드로 데이터를 전송합니다.
-            const response = await fetch('/api/start', {
+            const response = await fetch('http://localhost:8080/api/start', {
                 method: 'POST',
                 body: formData
             });

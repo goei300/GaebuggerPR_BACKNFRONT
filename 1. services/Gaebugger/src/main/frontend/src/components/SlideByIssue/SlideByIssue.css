@@ -15,3 +15,21 @@
 .slick-next {
     right: -25px; /* 값을 조절하여 원하는 위치로 이동시킵니다 */
 }
+
+.omittedIssuesList > span {
+    border-radius: 100% !important;
+    margin : 3px;
+}
+
+.omittedIssuesList .issue-law-violation  span {
+    width: 23.2px !important;
+    margin-right: 0px !important;
+}
+.omittedIssuesList .issue-law-risk span {
+    width: 23.2px !important;
+    margin-right: 0px !important;
+}
+.omittedIssuesList .issue-guideline span {
+    width: 23.2px !important;
+    margin-right: 0px !important;
+}

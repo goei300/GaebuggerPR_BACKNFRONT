@@ -30,8 +30,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class DataProcessingService {
-
-    private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final ConcurrentHashMap<UUID, ProcessingStatus> statusMap = new ConcurrentHashMap<>();
@@ -50,10 +48,9 @@ public class DataProcessingService {
         }
         return uuid;
     }
-
     private final Object lock = new Object();
     private final WebClient webClient = WebClient.create("http://localhost:5000");
-//    private final WebClient webClient_test = WebClient.create("http://localhost:8080/api");
+    private final WebClient webClient_test = WebClient.create("http://localhost:8080/api");
     @Async
     @Transactional
     public CompletableFuture<Void> processData(UUID processId, SseEmitter emitter) throws Exception {
@@ -62,14 +59,6 @@ public class DataProcessingService {
 
             status.setProcessingStarted(true);
             System.out.println("processData is on!!!");
-            // POST 요청을 사용하여 /mockData 엔드포인트를 호출
-//            ResponseEntity<Map<String, Object>> responseEntity = webClient_test.post()
-//                    .uri("/mockData")
-//                    .bodyValue(processId.toString()) // UUID를 문자열로 변환하여 요청 본문에 설정
-//                    .retrieve()
-//                    .toEntity(new ParameterizedTypeReference<Map<String, Object>>() {})
-//                    .block();
-
 
             try {
                 Map<String, Object> requestBody = Map.of(
@@ -101,22 +90,47 @@ public class DataProcessingService {
                 status.setError(e.getMessage());
             }
 
-//            try {
-//                // 5초 (5000밀리초) 동안 대기
-//                Thread.sleep(5000);
-//
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            handleApiResponse(responseEntity, status, emitter);
+            System.out.println("process done!!");
+            status.setProcessingComplete(true);
+            return CompletableFuture.completedFuture(null);
+        }
+    }
 
+    @Async
+    @Transactional
+    public CompletableFuture<Void> processData_test(UUID processId, SseEmitter emitter) throws Exception {
+        synchronized (lock){
+            ProcessingStatus status = statusMap.get(processId);
 
+            status.setProcessingStarted(true);
+            System.out.println("processData is on!!!");
+
+             // POST 요청을 사용하여 /mockData 엔드포인트를 호출
+            ApiResponseDTO responseDTO = webClient_test.post()
+                    .uri("/test-mock")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(processId.toString())
+                    .retrieve()
+                    .bodyToMono(ApiResponseDTO.class)
+                    .block();
+
+            try {
+                // 5초 (5000밀리초) 동안 대기
+                Thread.sleep(5000);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            handleApiResponse(responseDTO, status, emitter);
+            emitter.send(SseEmitter.event().name("message").data("{\"completed\":true}"));
+            emitter.complete();
 
             System.out.println("process done!!");
             status.setProcessingComplete(true);
             return CompletableFuture.completedFuture(null);
         }
     }
+
     private void handleApiResponse(ApiResponseDTO responseDTO, ProcessingStatus status, SseEmitter emitter) throws Exception {
         System.out.println("handleApiResponse is on!!");
 
@@ -145,51 +159,6 @@ public class DataProcessingService {
         String responseJson = objectMapper.writeValueAsString(responseDTO);
         emitter.send(SseEmitter.event().name("data").data(responseJson));
     }
-
-
-//    private final Object lock = new Object();
-
-    //    @Async
-//    public CompletableFuture<Void> processData(UUID processId) {
-//        synchronized (lock) {
-//            ProcessingStatus status = statusMap.get(processId);
-//
-//            status.setProcessingStarted(true);
-//            try {
-//                HttpHeaders headers = new HttpHeaders();
-//                headers.add("Content-Type", "application/json");
-//
-//                Map<String, Object> requestBody = Map.of(
-//                        "process_id", status.getuuid
-//                        "text", status.getProcessedFileContent(),
-//                        "user_input", status.getCheckedItems()
-//                );
-//
-//                System.out.println("now start api calling");
-//                HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
-//                ResponseEntity<String> response = restTemplate.exchange(
-//                        "http://localhost:5000/process-text",
-//                        HttpMethod.POST,
-//                        requestEntity,
-//                        String.class
-//                );
-//
-//                JsonNode rootNode = objectMapper.readTree(response.getBody());
-//                if (rootNode.has("result")) {
-//                    status.setAns(rootNode.get("result").asText());
-//                } else {
-//                    throw new Exception("Result key not found in response.");
-//                }
-//                status.setProcessingComplete(true);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                status.setError(e.getMessage());
-//            }
-//            System.out.println("process done!!");
-//            status.setProcessingComplete(true);
-//            return CompletableFuture.completedFuture(null);
-//        }
-//    }
 
     public ProcessingStatus getStatus(UUID processId) {
         return statusMap.get(processId);

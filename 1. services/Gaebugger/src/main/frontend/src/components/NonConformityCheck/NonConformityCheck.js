@@ -1,17 +1,32 @@
 import React, { useState } from 'react';
-import { Button, Typography, Box, ToggleButtonGroup, ToggleButton, Paper } from '@mui/material';
+import { Button, Typography, Box, ToggleButtonGroup, ToggleButton, Paper, Divider } from '@mui/material';
 import "../../assets/fonts/fonts.css";
 import { makeStyles } from '@mui/styles';
 
 const NonConformityCheck = ({ data }) => {
   const [selectedViolations, setSelectedViolations] = useState(['법률 위반','법률 위반 위험','작성지침 미준수']);
-
+  console.log("data is?");
+  console.log(data);
   const getHighlightedContent = () => {
     let lastIndex = 0;
     const contentPieces = [];
 
+    const missingIssuesCount = data.issues.filter(issue => issue.startIndex === -999 && selectedViolations.includes(issue.type)).length;
+
+    if (missingIssuesCount > 0) {
+      contentPieces.unshift(
+          <div key="missingIssue" style={{ display: 'flex', alignItems: 'center', backgroundColor: "#FFD6D6", padding: "3px", borderRadius: "3px", margin: "5px 0", border: "1px solid black" }}>
+            <strong style={{ marginRight: '10px' }}>누락된 항목:</strong>
+            <span style={{fontWeight:"bold"}}>{missingIssuesCount} 건</span>
+          </div>
+      );
+    }
+
     data.issues.forEach((issue) => {
       if (selectedViolations.includes(issue.type)) {
+        if (issue.startIndex === -999) {
+          return; // 이 issue는 이미 처리되었으므로 다음 issue로 넘어갑니다.
+        }
         // 중간 문자열을 처리
         const midContent = data.content.slice(lastIndex, issue.startIndex);
         contentPieces.push(parseText(midContent));
@@ -22,7 +37,8 @@ const NonConformityCheck = ({ data }) => {
           issueContent += '\n';
         }
         contentPieces.push(
-          <span key={issue.startIndex} style={{ backgroundColor: getColorByType(issue.type) }}>
+          <span key={issue.startIndex} style={{ backgroundColor: getColorByType(issue.type) ,borderRadius:"10px", fontFamily:"NotoSansKR-Medium", fontSize:"1.15em" }}>
+            <h3 style={{ color: "black", marginLeft: "5px" , fontSize:"18px",fontWeight:"bold"}}>위반 문장</h3>
             {parseText(issueContent)}
           </span>
         );
@@ -37,7 +53,7 @@ const NonConformityCheck = ({ data }) => {
     switch (type) {
       case "법률 위반": return 'red';
       case "법률 위반 위험": return 'orange';
-      case "작성지침 미준수": return 'yellow';
+      case "작성지침 미준수": return 'gold';
       default: return 'transparent';
     }
   };
@@ -75,7 +91,7 @@ const useStyles = makeStyles({
     backgroundColor: "transparent", // 예: 자주색
     '&.Mui-selected': {
       fontFamily:"NotoSansKR-SemiBold",
-      borderBottom: "6px solid yellow",  // 밑줄 적용
+      borderBottom: "6px solid gold",  // 밑줄 적용
       paddingBottom: "5px"            // 밑줄과 텍스트 간의 간격
     }
   },
