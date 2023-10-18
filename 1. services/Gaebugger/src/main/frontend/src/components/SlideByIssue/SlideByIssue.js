@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import Slider from 'react-slick';  // 예시로 react-slick 사용
 import { Divider } from '@mui/material';
 import '../../assets/fonts/fonts.css';
 import { StyledPaper } from '../../pages/Start/check/Guideline_detail/styles/ComponentStyles';
 
-const SlideByIssue = ({ original, paragraphs, issues,style }) => {
+const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,setSelectedButtonIssue }) => {
     const [currentIssueIndex, setCurrentIssueIndex] = useState(0);
     const [clickedIssueId, setClickedIssueId] = useState(1); // 추가
     const paragraphRef = useRef(null);
@@ -73,6 +73,7 @@ const SlideByIssue = ({ original, paragraphs, issues,style }) => {
 
     // issue를 감싸는 span 생성
     const wrapWithIssueSpan = (text, issue) => {
+        console.log('wrapWithIssueSpan called with issue_id:', issue.issue_id);
         let className;
         let style = {};
         let issueNumberStyle = {
@@ -116,19 +117,18 @@ const SlideByIssue = ({ original, paragraphs, issues,style }) => {
         }
         return (
             <span key={issue.issue_id} className={`highlighted-issue ${className}`} title={issue.issue_content} onClick={() => handleIssueClick(issue)} style={{...style, borderRadius:"10px"}} data-issue-id={issue.issue_id}>
-                <span style={{...issueNumberStyle}}>{issue.issue_id}</span>    
+                <span style={{...issueNumberStyle}}>{issue.issue_id}</span>
                 {text}
             </span>
         );
     }
-    const wrapWithBreaks = (text) => {
-        return text.split('\n').map((line, index, array) => (
-            <React.Fragment key={index}>
-                {line}
-                {index !== array.length - 1 && <br />}
-            </React.Fragment>
-        ));
-    }
+    const parseText = (text) => {
+        if (!text) return [];  // 이 부분 추가
+        const splitByNewLine = text.split('\n');
+        return splitByNewLine.map(line => line.replace(/\t/g, '    '));
+    };
+
+
     const renderParagraphWithIssues = () => {
         let contentArray = [];
         let lastIndex = 0;
@@ -164,8 +164,9 @@ const SlideByIssue = ({ original, paragraphs, issues,style }) => {
                 }
 
                 contentArray.push(
-                    <div className="omittedIssuesList" key={"missingDiv-" + issue.issue_startIndex} style={{ backgroundColor: "#FFD6D6", padding: "5px", borderRadius: "5px", margin: "10px 0", border: "1px solid black" }}>
-                        <strong>누락된 항목</strong>
+                    <div className="omittedIssuesList" key={"missingDiv-" + issue.issue_startIndex} style={{ padding: "5px", borderRadius: "5px", margin: "10px 0", border: "2px solid #d9d9d9" }}>
+                        <strong>대단락 내 누락에 의한 위반 사항</strong>
+                        <Divider style={{marginBottom:"10px"}} />
                         {missingIssueContent}
                     </div>
                 );
@@ -188,15 +189,32 @@ const SlideByIssue = ({ original, paragraphs, issues,style }) => {
 
 
 
+    useEffect(() => {
+
+        if (selectedButtonIssue) {
+            const targetSlide = selectedButtonIssue.issue_id - 1;
+            sliderRef.current.slickGoTo(targetSlide);
+
+            var element = document.querySelector('.slick-list'); // 요소를 선택
+            var rect = element.getBoundingClientRect();
+            console.log("slider~~~~offsetTop is:", rect.top);
+
+            var absoluteY = rect.top + window.scrollY-250;  // 절대적인 y좌표 계산
+            console.log("Absolute Y position of .slick-list is:", absoluteY);
+
+            window.scrollTo({
+                top: absoluteY,  // 절대적인 y좌표로 스크롤
+                behavior: 'smooth'
+            });
 
 
+            setTimeout(()=>{
+                handleIssueClick(selectedButtonIssue);
+            },650)
 
 
-
-
-
-
-
+        }
+    }, [selectedButtonIssue]);
 
 
 
@@ -207,7 +225,7 @@ const SlideByIssue = ({ original, paragraphs, issues,style }) => {
             <StyledPaper style={style}>
                 <h2 style={{fontFamily:"NotoSansKR-Medium",textAlign:"center"}}>전체 내용</h2>
                 <Divider style={{marginBottom:"10px",marginTop:"32px"}} />
-                <div ref={paragraphRef} className="paragraph-section" style={{ overflowY: 'auto', maxHeight: '400px', padding: '20px', flex: 1 }}>
+                <div ref={paragraphRef} className="paragraph-section" style={{ overflowY: 'auto', maxHeight: '400px', padding: '20px', flex: 1, whiteSpace: 'pre-line'}}>
                     {renderParagraphWithIssues()}
                 </div>
             </StyledPaper>
@@ -236,7 +254,13 @@ const SlideByIssue = ({ original, paragraphs, issues,style }) => {
                             <Divider style={{ margin: '10px 0' }} />
 
                             <h4>가이드 라인</h4>
-                            <body>{issue.issue_guideline}</body>
+                            <ul style={{textAlign:"start"}}>
+                                {issue.issue_guideline.map((guideline, index) => (
+                                    <li key={index} style={{marginBottom:"10px"}}>
+                                        {guideline}
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                     ))}
                 </Slider>

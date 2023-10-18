@@ -173,7 +173,7 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
 
                 contentArray.push(
                     <div key="omittedIssues" className="omittedContent" style={{border:"1px solid #e0e0e0", borderRadius:"5px", paddingLeft: "10px", marginBottom:"15px"}}>
-                        <h3 style={{fontFamily:'NotoSansKR-Regular', marginBottom:"2px", marginTop:"5px"}}>누락 항목</h3>
+                        <h3 style={{fontFamily:'NotoSansKR-Regular', marginBottom:"2px", marginTop:"5px"}}>누락으로 인한 위반 사항</h3>
                         <Divider style={{marginTop:"3px", marginBottom:"5px"}} />
 
                         <div className="omittedIssuesList" style={{marginBottom:"5px"}}>{omittedIssueElements}</div>

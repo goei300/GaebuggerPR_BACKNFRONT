@@ -7,20 +7,52 @@ const NonConformityCheck = ({ data }) => {
   const [selectedViolations, setSelectedViolations] = useState(['법률 위반','법률 위반 위험','작성지침 미준수']);
   console.log("data is?");
   console.log(data);
+  const contentPieces = [];
+  const getMissingIssue = () => {
+    const missingIssues = data.issues.filter(issue => issue.startIndex === -999 && selectedViolations.includes(issue.type));
+
+    const countByIssueType = {
+      "법률 위반": 0,
+      "법률 위반 위험": 0,
+      "작성지침 미준수": 0
+    };
+
+    missingIssues.forEach(issue => {
+      if (countByIssueType[issue.type] !== undefined) {
+        countByIssueType[issue.type]++;
+      }
+    });
+
+    if (missingIssues.length === 0) {
+      return null; // 누락된 항목이 없으면 null 반환
+    }
+
+    return (
+        <div key="missingIssue" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: "3px", borderRadius: "3px", margin: "5px 0", border: "1px solid black" }}>
+          <h3 style={{ marginRight: '10px', marginTop:"5px", marginBottom:"5px", fontFamily:"NotoSansKR-SemiBold" }}>누락된 항목</h3>
+          <Divider style={{marginBottom:"10px"}} />
+          {countByIssueType["법률 위반"] > 0 && (
+              <span style={{fontWeight:"bold", marginRight: '10px',fontFamily:"NotoSansKR-Regular"}}>
+                <span style={{backgroundColor:"red",borderRadius:"5px"}}>법률 위반</span>: {countByIssueType["법률 위반"]} 건
+              </span>
+          )}
+          {countByIssueType["법률 위반 위험"] > 0 && (
+              <span style={{fontWeight:"bold", marginRight: '10px',fontFamily:"NotoSansKR-Regular"}}>
+                <span style={{backgroundColor:"orange",borderRadius:"5px"}}>법률 위반 위험</span>: {countByIssueType["법률 위반 위험"]} 건
+              </span>
+          )}
+          {countByIssueType["작성지침 미준수"] > 0 && (
+              <span style={{fontWeight:"bold",fontFamily:"NotoSansKR-Regular"}}>
+                <span style={{backgroundColor:"gold",borderRadius:"5px"}}>작성지침 미준수</span>: {countByIssueType["작성지침 미준수"]} 건
+              </span>
+          )}
+        </div>
+    );
+  };
+
   const getHighlightedContent = () => {
     let lastIndex = 0;
-    const contentPieces = [];
 
-    const missingIssuesCount = data.issues.filter(issue => issue.startIndex === -999 && selectedViolations.includes(issue.type)).length;
-
-    if (missingIssuesCount > 0) {
-      contentPieces.unshift(
-          <div key="missingIssue" style={{ display: 'flex', alignItems: 'center', backgroundColor: "#FFD6D6", padding: "3px", borderRadius: "3px", margin: "5px 0", border: "1px solid black" }}>
-            <strong style={{ marginRight: '10px' }}>누락된 항목:</strong>
-            <span style={{fontWeight:"bold"}}>{missingIssuesCount} 건</span>
-          </div>
-      );
-    }
 
     data.issues.forEach((issue) => {
       if (selectedViolations.includes(issue.type)) {
@@ -65,7 +97,7 @@ const NonConformityCheck = ({ data }) => {
             {index !== splitByNewLine.length - 1 && <br />}
         </React.Fragment>
     ));
-};
+  };
 const useStyles = makeStyles({
   lawViolation: {
     fontFamily:"NotoSansKR-Regular",
@@ -128,6 +160,7 @@ const classes = useStyles();
         </ToggleButton>
       </ToggleButtonGroup>
       <Paper style={{maxHeight: '450px', overflowY: 'scroll', padding: '16px', border: "2px solid #d9d9d9"}}>
+        {getMissingIssue()}
         {getHighlightedContent().map((item, index) => (
           <Typography key={index} variant="body1" display="inline" style={{fontFamily:"NotoSansKR-Regular"}}>{item}</Typography>
         ))}

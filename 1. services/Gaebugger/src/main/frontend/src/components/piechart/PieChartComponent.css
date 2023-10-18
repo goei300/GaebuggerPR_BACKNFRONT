@@ -1,0 +1,3 @@
+.piechartComponent > div:not(.allNum) {
+    width: 120% !important;
+}
