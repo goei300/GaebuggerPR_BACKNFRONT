@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { arc } from 'd3-shape';
 import { ResponsivePie } from '@nivo/pie';
 import {  Typography } from '@mui/material';
-
+import './PieChartComponent.css';
 const PieChartComponent = ({ pieData, total }) => {
     const [isVisible, setIsVisible] = useState(false);
     const containerRef = useRef(null);
@@ -64,17 +64,18 @@ const PieChartComponent = ({ pieData, total }) => {
         };
     }, []);
     return (
-        <div ref={containerRef} style={{ display: 'flex', position: 'relative', flexDirection: 'column', alignItems: 'center', height: '450px', width: '450px', opacity: isVisible ? 1 : 0, transition: 'opacity 1s' }}>
+        <div className="piechartComponent" ref={containerRef} style={{ display: 'flex', position: 'relative', flexDirection: 'column', alignItems: 'center', height: '450px', width: '450px', opacity: isVisible ? 1 : 0, transition: 'opacity 1s' }}>
             <Typography variant='h5' style={{ 
                         fontFamily: "NotoSansKR-SemiBold",
                         textAlign: 'center',
-                        marginTop: '60px',
+                        marginTop: '30px',
                         color: '#333',
                         position: 'absolute',
-
+                        marginBottom: "20px"
                     }}>
                         점수 분석 결과
             </Typography>
+
             <ResponsivePie
                 data={transformedPieData}
 /*                 layers={[CustomSliceLabels,'slices']} */
@@ -86,10 +87,10 @@ const PieChartComponent = ({ pieData, total }) => {
                 colors={['#d32f2f','#ff9800', '#ffeb3b', '#00CC00']}
                 borderColor={{ from: 'color', modifiers: [['darker', 0.6]] }}
                 animate={true}
-                motionStiffness={90}    
+                motionStiffness={90}
                 motionDamping={15}
-                
-                theme={{ 
+
+                theme={{
                     labels:{
                         text:{
                             fontFamily: "NotoSansKR-SemiBold",
@@ -99,9 +100,8 @@ const PieChartComponent = ({ pieData, total }) => {
                 }}
                 labelSkipWidth={16}
                 labelSkipHeight={16}
-
             />
-            <div style={{
+            <div className="allNum" style={{
                 position: 'absolute',
                 top: '53%',
                 left: '50%',
