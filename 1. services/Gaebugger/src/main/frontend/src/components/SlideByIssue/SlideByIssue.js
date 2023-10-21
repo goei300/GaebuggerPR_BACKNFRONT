@@ -4,6 +4,8 @@ import { Divider } from '@mui/material';
 import '../../assets/fonts/fonts.css';
 import { StyledPaper } from '../../pages/Start/check/Guideline_detail/styles/ComponentStyles';
 import './SlideByIssue.css';
+import MoreIcon from '@mui/icons-material/More';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,setSelectedButtonIssue }) => {
     const [currentIssueIndex, setCurrentIssueIndex] = useState(0);
     const [clickedIssueId, setClickedIssueId] = useState(1); // 추가
@@ -12,19 +14,6 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
     const [activeIssueId, setActiveIssueId] = useState(null);
     const [isIconHovered, setIconHovered] = useState(false);
 
-    const issueIconStyle = {
-        display: 'inline-block',
-        margin: '0 5px',  // 각 이슈 아이콘 사이의 간격
-        borderRadius: '50%',
-        backgroundColor: '#ff5722',  // 배경색
-        color: 'white',  // 글자색
-        width: '25px',  // 아이콘 크기
-        height: '25px',
-        textAlign: 'center',  // 글자 중앙 정렬
-        lineHeight: '25px',  // 수직 중앙 정렬
-        cursor: 'pointer',  // 마우스 호버 시 포인터 아이콘으로 변경
-        fontSize: '0.9em'  // 폰트 크기
-    };
     const handleIssueClick = (issue) => {
         setClickedIssueId(issue.issue_id);
     
@@ -104,8 +93,8 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
                     <h2 style={{margin:'0px'}}>외 {otherIssues.length}건</h2>
                     &nbsp;
                     &nbsp;
-                    <span className="issueIcon" onMouseEnter={() => setIconHovered(true)} >+</span>
-                    <div className="popover" style={{ display: isIconHovered ? 'block' : 'none' }}>
+                    <ExpandMoreIcon className="issueIcon" onMouseEnter={() => setIconHovered(true)} />
+                    <div className="popover" style={{ display: isIconHovered ? 'flex' : 'none' }}>
                         {otherIssues.map(issue => (
                             <div key={issue.issue_id} onClick={() => handleIssueClick(issue)}>
                                 {wrapWithIssueSpan(null, issue)}

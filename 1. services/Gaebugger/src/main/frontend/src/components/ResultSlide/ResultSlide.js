@@ -72,6 +72,34 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
         return issues.filter(issue => issue.issue_paragraph_id === paragraphId);
     }
 
+    // const wrapMultipleIssuesWithIcon = (issues) => {
+    //     issues.sort((a, b) => a.issue_id - b.issue_id);
+    //
+    //     const activeIssue = issues.find(issue => issue.issue_id === activeIssueId) || issues[0];
+    //     const otherIssues = issues.filter(issue => issue.issue_id !== activeIssue.issue_id);
+    //
+    //     return (
+    //         <div className="issueWrapper" >
+    //             {wrapWithIssueSpan(original.slice(activeIssue.issue_startIndex, activeIssue.issue_endIndex + 1), activeIssue)}
+    //             <div className="IconHoverEvent" onMouseLeave={() => setIconHovered(false)}>
+    //                 <h2 style={{margin:'0px'}}>외 {otherIssues.length}건</h2>
+    //                 &nbsp;
+    //                 &nbsp;
+    //                 <ExpandMoreIcon className="issueIcon" onMouseEnter={() => setIconHovered(true)} />
+    //                 <div className="popover" style={{ display: isIconHovered ? 'flex' : 'none' }}>
+    //                     {otherIssues.map(issue => (
+    //                         <div key={issue.issue_id} onClick={() => handleIssueClick(issue)}>
+    //                             {wrapWithIssueSpan(null, issue)}
+    //                         </div>
+    //                     ))}
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     );
+    //
+    // };
+
+
     // issue를 감싸는 span 생성
     const wrapWithIssueSpan = (text, issue) => {
         let className;
@@ -181,6 +209,7 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
                 );
             }
 
+            // const sortedIssues = transformedIssues.sort((a, b) => a.issue_startIndex - b.issue_startIndex);
             // 누락 아닌 이슈 랜더링
             for (let issue of normalIssues) {
                 const relativeStart = issue.issue_startIndex - p.paragraph_startIndex;
@@ -191,7 +220,22 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
                 lastIndex = relativeEnd + 1;
             }
             contentArray.push(wrapWithBreaks(p.paragraph_content.slice(lastIndex)));
-    
+
+            // 복수 이슈를 가진 문장 wrap 랜더링
+            // if (i + 1 < sortedIssues.length && sortedIssues[i + 1].issue_startIndex === issue.issue_startIndex && issue.issue_startIndex !== -999) {
+            //     const sameIndexIssues = [issue];
+            //
+            //     while (i + 1 < sortedIssues.length && sortedIssues[i + 1].issue_startIndex === issue.issue_startIndex) {
+            //         i++;
+            //         sameIndexIssues.push(sortedIssues[i]);
+            //     }
+            //
+            //     contentArray.push(original.slice(lastIndex, issue.issue_startIndex));
+            //     contentArray.push(wrapMultipleIssuesWithIcon(sameIndexIssues));
+            //     lastIndex = issue.issue_endIndex + 1;
+            //     continue;
+            // }
+
             return (
                 <div key={p.paragraph_id} className="slideContent">
                     {contentArray}
