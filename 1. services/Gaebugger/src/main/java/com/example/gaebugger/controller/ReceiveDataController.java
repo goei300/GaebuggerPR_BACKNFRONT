@@ -203,25 +203,26 @@ public class ReceiveDataController {
         // Issue 4
         Map<String, Object> issue4 = new HashMap<>();
         issue4.put("issue_id", 4);
-        issue4.put("issue_paragraph_id", 1);
-        issue4.put("issue_type", "작성지침 미준수");
-        issue4.put("issue_content", "재난, 감염병 등 긴급 상황 발생 시 정보주체의 동의가 없어도 관련 기관에 개인정보를 제공할 수 있다'는 내용을 기재해야 해. 해당 내용이 기재되어있지 않으면, 지침 미준수야.");
-        issue4.put("issue_reason", "작성지침 6.개인정보의 제3자 제공에 관한 사항");
-        issue4.put("issue_startIndex", -999);
-        issue4.put("issue_endIndex", -999);
-        issue4.put("issue_guideline", List.of("긴급 상황 발생 시 정보주체의 동의 없이 개인정보를 제공할 수 있다는 내용을 기재해야 합니다.","재난, 감염병 등의 긴급 상황에 대비한 개인정보 제공 방안을 기재해야 합니다."));
+        issue4.put("issue_paragraph_id", 3);
+        issue4.put("issue_type", "법률 위반");
+        issue4.put("issue_content", "아래에 해당하는 부분이 있으면 검사해.**");
+        issue4.put("issue_reason", "각 항목의 해당 법률");
+        issue4.put("issue_startIndex", 860);
+        issue4.put("issue_endIndex", 905);
+        issue4.put("issue_guideline", List.of("어떤걸 위바했네요", "그리 살지마라"));
         issue4.put("issue_goodCase", "");
         processIssues.add(issue4);
+
         // Issue 5
         Map<String, Object> issue5 = new HashMap<>();
         issue5.put("issue_id", 5);
-        issue5.put("issue_paragraph_id", 1);
-        issue5.put("issue_type", "작성지침 미준수");
-        issue5.put("issue_content", "누락테스트");
-        issue5.put("issue_reason", "누락테스트2");
-        issue5.put("issue_startIndex", -999);
-        issue5.put("issue_endIndex", -999);
-        issue5.put("issue_guideline", List.of("영차","영치2"));
+        issue5.put("issue_paragraph_id", 3);
+        issue5.put("issue_type", "법률 위반 위험");
+        issue5.put("issue_content", "아래에 해당하는 부분이 있으면 검사해.**");
+        issue5.put("issue_reason", "개인정보 보호법 으악");
+        issue5.put("issue_startIndex", 860);
+        issue5.put("issue_endIndex", 905);
+        issue5.put("issue_guideline", List.of("쪼까위험하내", "뭘바임마"));
         issue5.put("issue_goodCase", "");
         processIssues.add(issue5);
 
@@ -229,14 +230,39 @@ public class ReceiveDataController {
         Map<String, Object> issue6 = new HashMap<>();
         issue6.put("issue_id", 6);
         issue6.put("issue_paragraph_id", 1);
-        issue6.put("issue_type", "법률 위반");
-        issue6.put("issue_content", "누락테스트_법률");
-        issue6.put("issue_reason", "누락테스트2_법률");
+        issue6.put("issue_type", "작성지침 미준수");
+        issue6.put("issue_content", "재난, 감염병 등 긴급 상황 발생 시 정보주체의 동의가 없어도 관련 기관에 개인정보를 제공할 수 있다'는 내용을 기재해야 해. 해당 내용이 기재되어있지 않으면, 지침 미준수야.");
+        issue6.put("issue_reason", "작성지침 6.개인정보의 제3자 제공에 관한 사항");
         issue6.put("issue_startIndex", -999);
         issue6.put("issue_endIndex", -999);
-        issue6.put("issue_guideline", List.of("영차","영치2"));
+        issue6.put("issue_guideline", List.of("긴급 상황 발생 시 정보주체의 동의 없이 개인정보를 제공할 수 있다는 내용을 기재해야 합니다.","재난, 감염병 등의 긴급 상황에 대비한 개인정보 제공 방안을 기재해야 합니다."));
         issue6.put("issue_goodCase", "");
         processIssues.add(issue6);
+        // Issue 7
+        Map<String, Object> issue7 = new HashMap<>();
+        issue7.put("issue_id", 7);
+        issue7.put("issue_paragraph_id", 1);
+        issue7.put("issue_type", "작성지침 미준수");
+        issue7.put("issue_content", "누락테스트");
+        issue7.put("issue_reason", "누락테스트2");
+        issue7.put("issue_startIndex", -999);
+        issue7.put("issue_endIndex", -999);
+        issue7.put("issue_guideline", List.of("영차","영치2"));
+        issue7.put("issue_goodCase", "");
+        processIssues.add(issue7);
+
+        // Issue 6
+        Map<String, Object> issue8 = new HashMap<>();
+        issue8.put("issue_id", 8);
+        issue8.put("issue_paragraph_id", 1);
+        issue8.put("issue_type", "법률 위반");
+        issue8.put("issue_content", "누락테스트_법률");
+        issue8.put("issue_reason", "누락테스트2_법률");
+        issue8.put("issue_startIndex", -999);
+        issue8.put("issue_endIndex", -999);
+        issue8.put("issue_guideline", List.of("영차","영치2"));
+        issue8.put("issue_goodCase", "");
+        processIssues.add(issue8);
         return processIssues;
     }
 

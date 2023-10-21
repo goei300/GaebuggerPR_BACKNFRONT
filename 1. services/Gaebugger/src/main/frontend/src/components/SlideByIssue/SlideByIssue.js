@@ -3,14 +3,28 @@ import Slider from 'react-slick';  // 예시로 react-slick 사용
 import { Divider } from '@mui/material';
 import '../../assets/fonts/fonts.css';
 import { StyledPaper } from '../../pages/Start/check/Guideline_detail/styles/ComponentStyles';
-
+import './SlideByIssue.css';
 const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,setSelectedButtonIssue }) => {
     const [currentIssueIndex, setCurrentIssueIndex] = useState(0);
     const [clickedIssueId, setClickedIssueId] = useState(1); // 추가
     const paragraphRef = useRef(null);
     const sliderRef = useRef(null);
+    const [activeIssueId, setActiveIssueId] = useState(null);
+    const [isIconHovered, setIconHovered] = useState(false);
 
-
+    const issueIconStyle = {
+        display: 'inline-block',
+        margin: '0 5px',  // 각 이슈 아이콘 사이의 간격
+        borderRadius: '50%',
+        backgroundColor: '#ff5722',  // 배경색
+        color: 'white',  // 글자색
+        width: '25px',  // 아이콘 크기
+        height: '25px',
+        textAlign: 'center',  // 글자 중앙 정렬
+        lineHeight: '25px',  // 수직 중앙 정렬
+        cursor: 'pointer',  // 마우스 호버 시 포인터 아이콘으로 변경
+        fontSize: '0.9em'  // 폰트 크기
+    };
     const handleIssueClick = (issue) => {
         setClickedIssueId(issue.issue_id);
     
@@ -20,6 +34,12 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
         // 해당 슬라이드로 이동합니다.
         if (issueIndex >= 0) {
             sliderRef.current.slickGoTo(issueIndex);
+        }
+
+        // 해당 문장이 복수의 이슈를 가지고 있는지 확인합니다.
+        const sameStartIndexIssues = issues.filter(item => item.issue_startIndex === issue.issue_startIndex);
+        if (sameStartIndexIssues.length > 1) {
+            setActiveIssueId(issue.issue_id);
         }
     };
 
@@ -70,6 +90,36 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
         slidesToScroll: 1,
         afterChange: handleSlideChange
     };
+
+    const wrapMultipleIssuesWithIcon = (issues) => {
+        issues.sort((a, b) => a.issue_id - b.issue_id);
+
+        const activeIssue = issues.find(issue => issue.issue_id === activeIssueId) || issues[0];
+        const otherIssues = issues.filter(issue => issue.issue_id !== activeIssue.issue_id);
+
+        return (
+            <div className="issueWrapper" >
+                {wrapWithIssueSpan(original.slice(activeIssue.issue_startIndex, activeIssue.issue_endIndex + 1), activeIssue)}
+                <div className="IconHoverEvent" onMouseLeave={() => setIconHovered(false)}>
+                    <h2 style={{margin:'0px'}}>외 {otherIssues.length}건</h2>
+                    &nbsp;
+                    &nbsp;
+                    <span className="issueIcon" onMouseEnter={() => setIconHovered(true)} >+</span>
+                    <div className="popover" style={{ display: isIconHovered ? 'block' : 'none' }}>
+                        {otherIssues.map(issue => (
+                            <div key={issue.issue_id} onClick={() => handleIssueClick(issue)}>
+                                {wrapWithIssueSpan(null, issue)}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+
+    };
+
+
+
 
     // issue를 감싸는 span 생성
     const wrapWithIssueSpan = (text, issue) => {
@@ -122,16 +172,11 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
             </span>
         );
     }
-    const parseText = (text) => {
-        if (!text) return [];  // 이 부분 추가
-        const splitByNewLine = text.split('\n');
-        return splitByNewLine.map(line => line.replace(/\t/g, '    '));
-    };
-
 
     const renderParagraphWithIssues = () => {
         let contentArray = [];
         let lastIndex = 0;
+        let showIssuesBox = false; // 호버 박스 컴포넌트의 표시 여부를 관리하는 state (여기서는 예시로 변수로 처리)
 
         const transformedIssues = issues.map(issue => {
             if (issue.issue_startIndex === -999 && issue.issue_endIndex === -999) {
@@ -175,6 +220,19 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
                 continue;
             }
 
+            if (i + 1 < sortedIssues.length && sortedIssues[i + 1].issue_startIndex === issue.issue_startIndex && issue.issue_startIndex !== -999) {
+                const sameIndexIssues = [issue];
+
+                while (i + 1 < sortedIssues.length && sortedIssues[i + 1].issue_startIndex === issue.issue_startIndex) {
+                    i++;
+                    sameIndexIssues.push(sortedIssues[i]);
+                }
+
+                contentArray.push(original.slice(lastIndex, issue.issue_startIndex));
+                contentArray.push(wrapMultipleIssuesWithIcon(sameIndexIssues));
+                lastIndex = issue.issue_endIndex + 1;
+                continue;
+            }
             contentArray.push(original.slice(lastIndex, issue.issue_startIndex));
             contentArray.push(wrapWithIssueSpan(original.slice(issue.issue_startIndex, issue.issue_endIndex + 1), issue));
             lastIndex = issue.issue_endIndex + 1;

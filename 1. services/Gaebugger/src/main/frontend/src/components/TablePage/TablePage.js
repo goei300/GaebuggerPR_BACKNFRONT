@@ -43,8 +43,8 @@ const StyledTablePagination = styled(TablePagination)(({ theme ,page,count,rowsP
         order: 0,
         position: 'relative',
         right: '70px',
+        marginLeft: 'auto !important',
         margin: '0 auto',
-        marginLeft: 'auto',
         '&::before': {
             content: `"페이지: ${page + 1} / ${Math.ceil(count / rowsPerPage) === 0 ? 1 : Math.ceil(count / rowsPerPage)}"`,
 
