@@ -33,3 +33,41 @@
     width: 23.2px !important;
     margin-right: 0px !important;
 }
+/* styles.css 또는 해당하는 스타일시트 파일 */
+.issueWrapper {
+    position: relative;
+    white-space: normal;
+}
+.issueIcon {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    width: 34px !important;
+    height: 34px !important;
+    align-content: center;
+    align-items: center;
+    margin-bottom: -5px;  /* 아이콘과 popover 사이의 간격을 줄이기 위해 추가 */
+}
+.issueSpan, .issueIcon {
+    white-space: nowrap;
+}
+.popover {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.2);
+    padding: 10px;
+    display: flex;
+    width: 100px;
+}
+.IconHoverEvent {
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 120px;
+    display: flex;  /* inline 요소와 같이 동작하면서 block의 특징을 가짐 */
+}
