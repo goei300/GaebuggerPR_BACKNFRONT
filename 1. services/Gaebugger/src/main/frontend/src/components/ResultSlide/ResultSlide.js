@@ -6,12 +6,15 @@ import { Divider, Paper } from '@mui/material';
 import "../../assets/fonts/fonts.css";
 import "./ResultSlide.css";
 import { StyledPaper } from '../../pages/Start/check/Guideline_detail/styles/ComponentStyles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selectedButtonIssue,setSelectedButtonIssue}) {
 
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
     const [onlyShowIssueParagraphs, setOnlyShowIssueParagraphs] = useState(false);
     const sliderRef = React.useRef(null);
     const [clickedIssueId, setClickedIssueId] = useState(null);
+    const [activeIssueId, setActiveIssueId] = useState(null);
+    const [isIconHovered, setIconHovered] = useState(false);
 
     const getDisplayedParagraphs = () => {
         const issueParagraphIds = getIssueParagraphIds();
@@ -64,6 +67,13 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
     const handleIssueClick = (issue) => {
         console.log("Issue clicked!", issue);
         setClickedIssueId(issue.issue_id); // 클릭된 이슈의 ID 저장
+        
+        // 해당 문장이 복수의 이슈를 가지고 있는지 확인합니다.
+        const sameStartIndexIssues = issues.filter(item => item.issue_startIndex === issue.issue_startIndex);
+        if (sameStartIndexIssues.length > 1) {
+            setActiveIssueId(issue.issue_id);
+        }
+
         onIssueClick(issue);
     }
 
@@ -72,32 +82,32 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
         return issues.filter(issue => issue.issue_paragraph_id === paragraphId);
     }
 
-    // const wrapMultipleIssuesWithIcon = (issues) => {
-    //     issues.sort((a, b) => a.issue_id - b.issue_id);
-    //
-    //     const activeIssue = issues.find(issue => issue.issue_id === activeIssueId) || issues[0];
-    //     const otherIssues = issues.filter(issue => issue.issue_id !== activeIssue.issue_id);
-    //
-    //     return (
-    //         <div className="issueWrapper" >
-    //             {wrapWithIssueSpan(original.slice(activeIssue.issue_startIndex, activeIssue.issue_endIndex + 1), activeIssue)}
-    //             <div className="IconHoverEvent" onMouseLeave={() => setIconHovered(false)}>
-    //                 <h2 style={{margin:'0px'}}>외 {otherIssues.length}건</h2>
-    //                 &nbsp;
-    //                 &nbsp;
-    //                 <ExpandMoreIcon className="issueIcon" onMouseEnter={() => setIconHovered(true)} />
-    //                 <div className="popover" style={{ display: isIconHovered ? 'flex' : 'none' }}>
-    //                     {otherIssues.map(issue => (
-    //                         <div key={issue.issue_id} onClick={() => handleIssueClick(issue)}>
-    //                             {wrapWithIssueSpan(null, issue)}
-    //                         </div>
-    //                     ))}
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     );
-    //
-    // };
+    const wrapMultipleIssuesWithIcon = (issues,paragraphInfo) => {
+        issues.sort((a, b) => a.issue_id - b.issue_id);
+
+        const activeIssue = issues.find(issue => issue.issue_id === activeIssueId) || issues[0];
+        const otherIssues = issues.filter(issue => issue.issue_id !== activeIssue.issue_id);
+
+        return (
+            <div className="issueWrapper" >
+                {wrapWithIssueSpan(paragraphInfo.paragraph_content.slice(activeIssue.issue_startIndex-paragraphInfo.paragraph_startIndex, (activeIssue.issue_endIndex ) - paragraphInfo.paragraph_startIndex), activeIssue)}
+                <div className="IconHoverEvent" onMouseLeave={() => setIconHovered(false)}>
+                    <h2 style={{margin:'0px'}}>외 {otherIssues.length}건</h2>
+                    &nbsp;
+                    &nbsp;
+                    <ExpandMoreIcon className="issueIcon" onMouseEnter={() => setIconHovered(true)} />
+                    <div className="popover" style={{ display: isIconHovered ? 'flex' : 'none' }}>
+                        {otherIssues.map(issue => (
+                            <div key={issue.issue_id} onClick={() => handleIssueClick(issue)}>
+                                {wrapWithIssueSpan(null, issue)}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+
+    };
 
 
     // issue를 감싸는 span 생성
@@ -209,32 +219,32 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
                 );
             }
 
-            // const sortedIssues = transformedIssues.sort((a, b) => a.issue_startIndex - b.issue_startIndex);
             // 누락 아닌 이슈 랜더링
-            for (let issue of normalIssues) {
+            for (let i = 0; i < normalIssues.length; i++) {
+                const issue = normalIssues[i];
                 const relativeStart = issue.issue_startIndex - p.paragraph_startIndex;
                 const relativeEnd = issue.issue_endIndex - p.paragraph_startIndex;
 
-                contentArray.push(wrapWithBreaks(p.paragraph_content.slice(lastIndex, relativeStart)));
-                contentArray.push(wrapWithIssueSpan(p.paragraph_content.slice(relativeStart, relativeEnd + 1), issue));
-                lastIndex = relativeEnd + 1;
+                // 복수 이슈를 가진 문장 wrap 랜더링
+                if (i + 1 < normalIssues.length && normalIssues[i + 1].issue_startIndex === issue.issue_startIndex) {
+                    const sameIndexIssues = [issue];
+
+                    while (i + 1 < normalIssues.length && normalIssues[i + 1].issue_startIndex === issue.issue_startIndex) {
+                        i++;
+                        sameIndexIssues.push(normalIssues[i]);
+                    }
+
+                    contentArray.push(wrapWithBreaks(p.paragraph_content.slice(lastIndex, relativeStart)));
+                    contentArray.push(wrapMultipleIssuesWithIcon(sameIndexIssues,p ));
+                    lastIndex = relativeEnd + 1;
+                }
+                else {
+                    contentArray.push(wrapWithBreaks(p.paragraph_content.slice(lastIndex, relativeStart)));
+                    contentArray.push(wrapWithIssueSpan(p.paragraph_content.slice(relativeStart, relativeEnd + 1), issue));
+                    lastIndex = relativeEnd + 1;
+                }
             }
             contentArray.push(wrapWithBreaks(p.paragraph_content.slice(lastIndex)));
-
-            // 복수 이슈를 가진 문장 wrap 랜더링
-            // if (i + 1 < sortedIssues.length && sortedIssues[i + 1].issue_startIndex === issue.issue_startIndex && issue.issue_startIndex !== -999) {
-            //     const sameIndexIssues = [issue];
-            //
-            //     while (i + 1 < sortedIssues.length && sortedIssues[i + 1].issue_startIndex === issue.issue_startIndex) {
-            //         i++;
-            //         sameIndexIssues.push(sortedIssues[i]);
-            //     }
-            //
-            //     contentArray.push(original.slice(lastIndex, issue.issue_startIndex));
-            //     contentArray.push(wrapMultipleIssuesWithIcon(sameIndexIssues));
-            //     lastIndex = issue.issue_endIndex + 1;
-            //     continue;
-            // }
 
             return (
                 <div key={p.paragraph_id} className="slideContent">
@@ -317,7 +327,7 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
                 <label htmlFor="onlyShowIssueParagraphs" style={{fontFamily:"NotoSansKR-Medium"}}>위반 사항이 있는 항목만 보기</label>
             </div>
             <Divider style={{marginBottom:"10px"}} />
-            <Slider ref={sliderRef} {...settings} key={onlyShowIssueParagraphs ? 'withIssues' : 'all'}>
+            <Slider ref={sliderRef} {...settings} key={onlyShowIssueParagraphs ? 'withIssues' : 'all'} style={{whiteSpace: 'pre-line'}}>
                 {renderSlides()}
             </Slider>
 

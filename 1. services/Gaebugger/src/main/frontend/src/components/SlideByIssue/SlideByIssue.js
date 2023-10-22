@@ -272,7 +272,7 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
             <StyledPaper style={style}>
                 <h2 style={{fontFamily:"NotoSansKR-Medium",textAlign:"center"}}>전체 내용</h2>
                 <Divider style={{marginBottom:"10px",marginTop:"32px"}} />
-                <div ref={paragraphRef} className="paragraph-section" style={{ overflowY: 'auto', maxHeight: '400px', padding: '20px', flex: 1, whiteSpace: 'pre-line'}}>
+                <div ref={paragraphRef} className="paragraph-section" style={{ overflowY: 'auto', maxHeight: '400px', padding: '20px', flex: 1, whiteSpace: 'pre-line', fontFamily:"NotoSansKR-Regular"}}>
                     {renderParagraphWithIssues()}
                 </div>
             </StyledPaper>
@@ -286,18 +286,18 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRight: '1px solid #e0e0e0' }}>
                                     <h4 style={{margin:'10px'}}>번호</h4>
-                                    <body>{issue.issue_id}</body>
+                                    <body style={{fontFamily:"NotoSansKR-Regular"}}>{issue.issue_id}</body>
                                 </div>
                                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                                     <h4 style={{margin:'10px'}}>진단 유형</h4>
-                                    <body>{issue.issue_type}</body>
+                                    <body style={{fontFamily:"NotoSansKR-Regular"}}>{issue.issue_type}</body>
                                 </div>
                             </div>
 
                             <Divider style={{ margin: '10px 0' }} />
 
                             <h4>진단 근거</h4> {/* 여기에 위반 사유를 넣으세요 */}
-                            <body>{issue.issue_reason}</body>
+                            <body style={{fontFamily:"NotoSansKR-Regular"}}>{issue.issue_reason}</body>
                             <Divider style={{ margin: '10px 0' }} />
 
                             <h4>가이드 라인</h4>
