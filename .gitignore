@@ -10,7 +10,7 @@ build/
 services/SolutionModelApi/config.py
 
 ### db info ###
-src/main/resources/application.properties
+services/Pripen/src/main/resources/application.properties
 
 ### STS ###
 .apt_generated
