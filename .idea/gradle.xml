@@ -4,11 +4,11 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/1. services/Gaebugger" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/services/Pripen" />
         <option name="gradleJvm" value="#JAVA_HOME" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/1. services/Gaebugger" />
+            <option value="$PROJECT_DIR$/services/Pripen" />
           </set>
         </option>
       </GradleProjectSettings>
