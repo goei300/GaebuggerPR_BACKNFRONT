@@ -1,9 +1,13 @@
 HELP.md
-.gradle
+services/Pripen/.gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+
+### API KEY###
+services/SolutionModelApi/config.py
 
 ### db info ###
 src/main/resources/application.properties
