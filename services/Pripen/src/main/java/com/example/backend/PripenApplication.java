@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class PripenApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(PripenApplication.class, args);
 	}
