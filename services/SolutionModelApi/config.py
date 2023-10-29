@@ -1,4 +1,0 @@
-import os
-
-OPENAI_API_KEY = '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'
-os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
