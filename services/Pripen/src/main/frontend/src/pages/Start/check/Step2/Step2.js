@@ -99,7 +99,9 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
         }));
         try {
             // 백엔드로 데이터를 전송합니다.
-            const response = await fetch('http://localhost:8080/api/start', {
+            // 로컬:http://localhost:8080/api/start
+            //http://www.pri-pen.com/api/start
+            const response = await fetch('https://www.pri-pen.com/api/start', {
                 method: 'POST',
                 body: formData
             });

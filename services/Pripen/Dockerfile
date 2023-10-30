@@ -1,24 +1,27 @@
-# Multi-stage Dockerfile
-
-# Stage 1: Node.js를 사용하여 React 프론트엔드 빌드
-FROM node:14 AS frontend-build
-WORKDIR /app/frontend
-COPY src/main/frontend/package*.json ./
-RUN npm install
-COPY src/main/frontend/ ./
-RUN npm run build
-
-# Stage 2: Java와 Gradle을 사용하여 Spring Boot 빌드
-FROM gradle:7.3-jdk11 AS backend-build
+# Java와 Gradle을 사용하여 전체 빌드 수행 (프론트엔드 빌드 포함)
+FROM gradle:8.2.1-jdk17 AS build
 WORKDIR /app
-COPY --from=frontend-build /app/frontend/build src/main/resources/static
+
+# npm 설치
+RUN apt-get update && apt-get install -y npm
+
+# 프론트엔드 소스와 패키지 파일 복사
+COPY src/main/frontend/package*.json src/main/frontend/
+COPY src/main/frontend/ src/main/frontend/
+
+# 백엔드 소스와 설정 파일 복사
 COPY build.gradle settings.gradle ./
+COPY gradlew ./
+COPY gradle ./gradle
 COPY src ./src
-RUN gradle clean build
 
-# Stage 3: 빌드된 JAR 파일 실행
-FROM openjdk:11-jre-slim
+# 전체 빌드 수행
+RUN chmod +x ./gradlew
+RUN ./gradlew clean build
+
+# 빌드된 JAR 파일 실행
+FROM openjdk:17-oracle
 WORKDIR /app
-COPY --from=backend-build /app/build/libs/*.jar app.jar
+COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8080
 CMD ["java", "-jar", "app.jar"]
