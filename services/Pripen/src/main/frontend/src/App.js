@@ -6,6 +6,7 @@ import Service from './pages/Services/Service';
 import Guidelines from './pages/Guideline/Guidelines';
 import StartIndex from './pages/Start/StartIndex';
 import Contact from './pages/Contact/Contact';
+import LoginLayout from './pages/account/LoginLayout';
 import LoadingProvider, { LoadingContext } from './LoadingProvider';
 import LoadingPage from './components/LoadingPage/LoadingPage';
 
@@ -20,6 +21,7 @@ function App() {
                 <Route path="/services*" element={<Service />} />
                 <Route path="/start*" element={<StartIndex />} />
                 <Route path="/guidelines" element={<Guidelines />} />
+                <Route path="/login" element={<LoginLayout />} />
             </Routes>
         </div>
       </Router>

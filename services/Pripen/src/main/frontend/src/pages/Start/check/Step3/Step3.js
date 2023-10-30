@@ -18,7 +18,9 @@ function Step3({ nextStep, processId,dispatch,apiResponse }) {
     const [loadingComplete, setLoadingComplete] = useState(false);
     useEffect(() => {
         // SSE 연결 설정
-        const sse = new EventSource(`http://localhost:8080/api/check-response/${processId}`);
+        // 로컬:http://localhost:8080/api/check-response/${processId}
+        //http://www.pri-pen.com/api/check-response/${processId}
+        const sse = new EventSource(`https://www.pri-pen.com/api/check-response/${processId}`);
 
         // data 이벤트를 통해 ApiResponseDTO 데이터 수신
         sse.addEventListener('data', event => {
