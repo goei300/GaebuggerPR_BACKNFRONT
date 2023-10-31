@@ -3,9 +3,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
+import MuiLink from '@mui/material/Link';
+import { Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
-
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -63,11 +63,11 @@ const LoginForm = () => {
                 fullWidth
                 placeholder="nickname@company.com"
                 onChange={(e) => setEmail(e.target.value)}
-                sx={{ marginBottom: '5px' }} 
+                sx={{ marginBottom: '5px' }}
             />
 
             <TextField
-                label="비밀번호" 
+                label="비밀번호"
                 variant="outlined"
                 size="small"
                 fontFamily="NotoSansKR-Regular"
@@ -76,21 +76,21 @@ const LoginForm = () => {
                 fullWidth
             />
 
-            <Typography 
-                color="error" 
-                style={{ 
-                    height: '20px', 
-                    visibility: errorMessage ? 'visible' : 'hidden' 
+            <Typography
+                color="error"
+                style={{
+                    height: '20px',
+                    visibility: errorMessage ? 'visible' : 'hidden'
                 }}
             >
                 {errorMessage}
             </Typography>
 
-            <Button 
+            <Button
                 variant="contained"
-                color="primary" 
-                fontFamily="NotoSansKR-Bold" 
-                fullWidth 
+                color="primary"
+                fontFamily="NotoSansKR-Bold"
+                fullWidth
                 onClick={handleLogin}
                 >
                 로그인
@@ -104,35 +104,37 @@ const LoginForm = () => {
                     marginTop: '20px'
                 }}
             >
-                <Link
-                    href="signup"
+                <MuiLink
+                    component={RouterLink}
+                    to="/signup"
                     color="primary"
                     fontFamily="NotoSansKR-SemiBold"
                     sx={{
+                        textDecoration:"none",
                         '&:hover': {
-                            textDecoration: 'none',  // underline 제거
                             fontWeight: 'bold',     // 폰트 두께 변경
                             color: 'secondary.main' // hover 시 색상 변경 (예: secondary 색상 사용)
                         }
                     }}
                 >
                     회원가입
-                </Link>
+                </MuiLink>
                 |
-                <Link
-                    href="findpass"
+                <MuiLink
+                    component={RouterLink}
+                    to="/findpass"
                     color="primary"
                     fontFamily="NotoSansKR-SemiBold"
                     sx={{
+                        textDecoration:"none",
                         '&:hover': {
-                            textDecoration: 'none',  // underline 제거
                             fontWeight: 'bold',     // 폰트 두께 변경
                             color: 'secondary.main' // hover 시 색상 변경 (예: secondary 색상 사용)
                         }
                     }}
                 >
                     비밀번호 찾기
-                </Link>
+                </MuiLink>
             </Box>
         </Box>
     );
