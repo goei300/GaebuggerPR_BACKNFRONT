@@ -11,7 +11,20 @@ const LoginForm = () => {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
 
+    const getCsrfToken = async () => {
+        const response = await axios.get('https://www.pri-pen.com/csrf-token');
+        console.log("csrftoken is get!");
+        console.log(response);
+        return response.data;
+    }
+
     const handleLogin = async () => {
+
+        const csrfToken = await getCsrfToken();
+        const headers = {
+            'X-CSRF-TOKEN': csrfToken
+        };
+
         if (!email) {
             setErrorMessage("이메일을 입력하세요.");
             return;
@@ -29,9 +42,14 @@ const LoginForm = () => {
 
             // 응답 처리
             if (response.status === 200) {
-                // 로그인 성공 처리
+                // JWT 저장
+                const token = response.data.token;
+                localStorage.setItem('jwt', token); // localStorage에 JWT 저장
+
+                // 상위 도메인으로 리다이렉트
+                window.location.href = "/";
             } else {
-                // 에러 처리
+                setErrorMessage("해당 정보를 찾을 수 없습니다.");
             }
         } catch (error) {
             // 네트워크 오류나 서버 에러 처리

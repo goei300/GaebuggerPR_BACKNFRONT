@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.Set;
 
 @Entity
+@Table(name = "User")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,6 +30,6 @@ public class User {
     @Column(name = "company_id")
     private Long companyId;  // DB에 있는 company_id 컬럼에 해당
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Role> roles;
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    private Set<Role> roles;
 }
