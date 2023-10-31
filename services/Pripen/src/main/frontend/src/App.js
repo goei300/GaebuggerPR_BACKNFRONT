@@ -9,6 +9,7 @@ import Contact from './pages/Contact/Contact';
 import LoginLayout from './pages/account/LoginLayout';
 import LoadingProvider, { LoadingContext } from './LoadingProvider';
 import LoadingPage from './components/LoadingPage/LoadingPage';
+import Signup from './pages/account/Signup/Signup';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/start*" element={<StartIndex />} />
                 <Route path="/guidelines" element={<Guidelines />} />
                 <Route path="/login" element={<LoginLayout />} />
+                <Route path="/signup" element={<Signup />} />
             </Routes>
         </div>
       </Router>

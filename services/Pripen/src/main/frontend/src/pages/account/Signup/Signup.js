@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 const Signup = () => {
 
     const [formData, setFormData] = useState({
@@ -18,8 +17,17 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // TODO: 서버에 데이터 전송 로직
-        console.log(formData);
+        
+        // 서버에 데이터 전송 로직
+        axios.post('https://www.pri-pen.com/userAuthentication/signup', formData)
+            .then(response => {
+                console.log('Success:', response);
+                // 추가적인 응답 처리 로직 (예: 응답 메시지 표시, 페이지 리디렉션 등)
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // 오류 처리 로직 (예: 오류 메시지 표시)
+            });
     }
 
     return (
