@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-const Signup = () => {
+import { useNavigate } from 'react-router-dom';
 
+const Signup = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -16,20 +18,39 @@ const Signup = () => {
         }));
     }
 
-    const handleSubmit = (e) => {
+    // 1. CSRF 토큰 받아오는 함수
+    const getCsrfToken = async () => {
+        const response = await axios.get('https://www.pri-pen.com/csrf-token');
+        console.log("csrftoken is get!");
+        console.log(response);
+        return response.data;
+    }
+
+    // 2. handleSubmit 함수에서 CSRF 토큰 포함하여 POST 요청
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        // 서버에 데이터 전송 로직
-        axios.post('https://www.pri-pen.com/userAuthentication/signup', formData)
+
+        const csrfToken = await getCsrfToken();
+        const headers = {
+            'X-CSRF-TOKEN': csrfToken
+        };
+        console.log("my csrftoken is :");
+        console.log(csrfToken);
+        axios.post('https://www.pri-pen.com/userAuthentication/signup', formData, { headers })
             .then(response => {
                 console.log('Success:', response);
-                // 추가적인 응답 처리 로직 (예: 응답 메시지 표시, 페이지 리디렉션 등)
+                alertPopup();
             })
             .catch(error => {
                 console.error('Error:', error);
-                // 오류 처리 로직 (예: 오류 메시지 표시)
             });
     }
+    const alertPopup = () => {
+        const result = window.confirm("회원가입 성공! OK를 누르면 로그인 페이지로 이동합니다.");
+        if (result) {
+          navigate('/login');
+        }
+    };
 
     return (
         <div className="signup-container">

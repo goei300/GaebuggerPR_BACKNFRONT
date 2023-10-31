@@ -21,7 +21,7 @@ public class UserService {
         Optional<User> foundUser = userRepository.findByEmail(email);
 
         // 사용자가 존재하고 비밀번호가 일치하는 경우
-        if (foundUser.isPresent() && passwordEncoder.matches(password, foundUser.get().getPassword())) {
+        if (foundUser.isPresent() && passwordEncoder.matches(password, foundUser.get().getPasswordHash())) {
             return foundUser;
         }
 
@@ -33,7 +33,7 @@ public class UserService {
     }
 
     public User save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
         return userRepository.save(user);
     }
 
