@@ -37,7 +37,9 @@ const LoginForm = () => {
         try {
             const response = await axios.post('https://www.pri-pen.com/userAuthentication/login', {
                 email: email,
-                password: password
+                passwordHash: password
+            }, {
+                headers: headers
             });
 
             // 응답 처리
@@ -50,6 +52,7 @@ const LoginForm = () => {
                 window.location.href = "/";
             } else {
                 setErrorMessage("해당 정보를 찾을 수 없습니다.");
+                return;
             }
         } catch (error) {
             // 네트워크 오류나 서버 에러 처리

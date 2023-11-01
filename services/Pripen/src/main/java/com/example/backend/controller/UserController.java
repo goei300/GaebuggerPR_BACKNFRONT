@@ -9,6 +9,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.example.backend.service.JWTService;
@@ -31,19 +36,34 @@ public class UserController {
     @Autowired
     private JWTService jwtService;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @CrossOrigin(origins = "https://www.pri-pen.com")
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody User loginUser) {
-        Optional<User> user = userService.authenticate(loginUser.getEmail(), loginUser.getPasswordHash());
-        if (user.isPresent()) {
-            String jwt = jwtService.generateJWT(user.get().getEmail());
+        try {
+            // Spring Security 인증 과정 실행
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginUser.getEmail(), loginUser.getPasswordHash())
+            );
+            System.out.println("my login info is:");
+            System.out.println(loginUser);
+            // 인증된 사용자 세션에 저장
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // JWT 토큰 생성
+            String jwt = jwtService.generateJWT(loginUser.getEmail());
+
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("token", jwt);
+
             return ResponseEntity.ok(responseBody); // JWT 응답으로 전송
-        } else {
+        } catch (AuthenticationException e) {
             return ResponseEntity.status(401).body("Authentication failed");
         }
     }
+
 
     @CrossOrigin(origins = "https://www.pri-pen.com")
     @PostMapping("/signup")
@@ -58,8 +78,10 @@ public class UserController {
         }
         // 비밀번호 암호화하여 저장
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        User user = modelMapper.map(userDto, User.class);
 
+        User user = modelMapper.map(userDto, User.class);
+        System.out.println("my signup password hash is:");
+        System.out.println(user.getPasswordHash());
         System.out.println("user's info is:");
         System.out.println(user);
         // CompanyId를 1로 고정
