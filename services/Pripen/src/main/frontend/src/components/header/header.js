@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import '../../assets/fonts/fonts.css';
 import './header.css';
 import logoImage from '../../assets/images/pripen_logo.png';
-
+import {useAuth} from '../../contexts/AuthContext';
 import { Button } from '@mui/material';
 
 const Header = ({ active }) => {
