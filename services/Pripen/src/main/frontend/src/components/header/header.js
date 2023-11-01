@@ -9,7 +9,7 @@ import { Button } from '@mui/material';
 const Header = ({ active }) => {
     const [showContactDropdown, setShowContactDropdown] = useState(false);
     const [showServicesDropdown, setShowServicesDropdown] = useState(false);
-
+    const { isLoggedIn, logout } = useAuth();
     const CustomDropdown = ({ isOpen, items, onClose }) => {
         if (!isOpen) return null;
 
@@ -94,10 +94,17 @@ const Header = ({ active }) => {
                     </li>
                 </ul>
             </nav>
-            <div className="authentication">
-                <Link to="/login">로그인</Link>
-                <Link to="/mypage">마이 페이지</Link>
-            </div>
+            {/* 로그인 상태에 따른 UI 변경 */}
+            {isLoggedIn() ? (
+                <div className="authentication">
+                    <Link to="/mypage">마이 페이지</Link>
+                    <button onClick={logout}>로그아웃</button>
+                </div>
+            ) : (
+                <div className="authentication">
+                    <Link to="/login">로그인</Link>
+                </div>
+            )}
         </header>
     );
 }

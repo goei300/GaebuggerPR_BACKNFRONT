@@ -7,28 +7,30 @@ import Guidelines from './pages/Guideline/Guidelines';
 import StartIndex from './pages/Start/StartIndex';
 import Contact from './pages/Contact/Contact';
 import LoginLayout from './pages/account/LoginLayout';
-import LoadingProvider, { LoadingContext } from './LoadingProvider';
+import LoadingProvider, { LoadingContext } from './contexts/LoadingProvider';
+import { AuthProvider } from './contexts/AuthContext';
 import LoadingPage from './components/LoadingPage/LoadingPage';
 import Signup from './pages/account/Signup/Signup';
 
 function App() {
   return (
-    <LoadingProvider>
-      <Router>
-        <div> 
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/services*" element={<Service />} />
-                <Route path="/start*" element={<StartIndex />} />
-                <Route path="/guidelines" element={<Guidelines />} />
-                <Route path="/login" element={<LoginLayout />} />
-                <Route path="/signup" element={<Signup />} />
-            </Routes>
-        </div>
-      </Router>
-    </LoadingProvider>
+    <AuthProvider> {/* AuthProvider로 감싸주기 */}
+      <LoadingProvider>
+        <Router>
+          <div> 
+              <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/services*" element={<Service />} />
+                  <Route path="/start*" element={<StartIndex />} />
+                  <Route path="/guidelines" element={<Guidelines />} />
+                  <Route path="/login" element={<LoginLayout />} />
+                  <Route path="/signup" element={<Signup />} />
+              </Routes>
+          </div>
+        </Router>
+      </LoadingProvider>
+    </AuthProvider>
   );
 }
-
 export default App;
