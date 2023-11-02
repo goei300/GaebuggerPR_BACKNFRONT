@@ -3,8 +3,10 @@ import DropdownComponent from '../../../../components/select/select';
 import { Box, Typography, Divider, Container,Paper, Button  } from '@mui/material';
 import CustomizedSteppers from '../../../../components/StepIndicator/StepIndicator';
 import {styled} from '@mui/material/styles';
+import axios from 'axios';
 import '../../../../assets/fonts/fonts.css';
 import './Step2.css';
+import axiosInstance from '../../../../api/axiosInstance';
 function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId,infoObject,file  }) {
 
 
@@ -14,7 +16,14 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
         boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)', // 부드러운 그림자
         borderRadius: '10px', // 둥근 모서리
     });
-    
+
+    const getCsrfToken = async () => {
+        const response = await axios.get('https://www.pri-pen.com/csrf-token');
+        console.log("csrftoken is get!");
+        console.log(response);
+        return response.data;
+    }
+
     const StyledButton = styled(Button)({
         backgroundColor: '#007BFF', // 버튼의 주색상
         '&:hover': {
@@ -27,8 +36,6 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
             ...prevState,
             [item.id]: selectedOption.value
         }));
-
-
     };
 
     const items = [
@@ -67,49 +74,39 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
         return items.filter(item => item.type === 'checkbox' && !checkedItems[item.id]);
     }
     const handleNextStep = async () => {
-        // 체크박스가 아닌 항목의 id를 모두 포함시킨다.
-        const nonCheckboxIds = items.filter(item => item.type !== 'checkbox').map(item => item.id);
     
-        // 체크박스 기능이 있고, '기재'로 선택된 항목의 id만 추출한다.
+        // const csrfToken = await getCsrfToken();
+        // const headers = {
+        //     'X-CSRF-TOKEN': csrfToken,
+        //     'Content-Type': 'multipart/form-data' // formData를 사용할 때 필요합니다.
+        // };
+        
+        // 체크박스가 아닌 항목의 id와 '기재'로 선택된 체크박스 항목의 id를 합쳐서 새로운 배열을 생성합니다.
+        const nonCheckboxIds = items.filter(item => item.type !== 'checkbox').map(item => item.id - 1);
         const checkedIds = Object.keys(checkedItems)
             .filter(key => checkedItems[key] === '기재')
-            .map(key => parseInt(key));
+            .map(key => parseInt(key) - 1);
     
-        // 두 리스트를 합쳐준다.
         let combinedIds = [...nonCheckboxIds, ...checkedIds];
-
-        // 각 ID의 값을 1씩 빼준다.
-        combinedIds = combinedIds.map(id => id - 1);
-        
         combinedIds.sort((a, b) => a - b);
-
+    
         console.log("Combined IDs are:", combinedIds);
-        console.log("infoObject is:",infoObject);
-        console.log("file is:",file);
-
+        console.log("infoObject is:", infoObject);
+        console.log("file is:", file);
+    
         const formData = new FormData();
-
-        // 파일 추가
         formData.append('file', file);
-
-        // JSON 데이터 추가
         formData.append('data', JSON.stringify({
             checkedItems: combinedIds,
             infoData: infoObject
         }));
+    
         try {
-            // 백엔드로 데이터를 전송합니다.
-            // 로컬:http://localhost:8080/api/start
-            //http://www.pri-pen.com/api/start
-            const response = await fetch('https://www.pri-pen.com/api/start', {
-                method: 'POST',
-                body: formData
-            });
-
+            const response = await axiosInstance.post('/api/start', formData);
+            //const response = await axios.post('https://www.pri-pen.com/api/start', formData, { headers });
             if (response.status === 200) {
-                const data = await response.json();
-                console.log("my process id is:", data.processID);
-                setProcessId(data.processID);
+                console.log("my process id is:", response.data.processID);
+                setProcessId(response.data.processID);
                 nextStep();
             } else {
                 console.error("Failed to send data to the backend.");
@@ -117,7 +114,6 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
         } catch (error) {
             console.error("An error occurred:", error);
         }
-
     };
     return (
         <Container className="compact-container" style={{padding:"0px"}}>

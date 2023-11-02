@@ -20,7 +20,7 @@ public class JWTService {
     private String secretKey;
 
     // Token의 유효시간을 설정합니다. 여기서는 1시간으로 설정하였습니다.
-    private final long expirationTime = 3600000L;
+    private final long accessTokenInMilliSeconds = 3600000L;
 
     public String generateJWT(String email) {
         byte[] apiKeySecretBytes = secretKey.getBytes(StandardCharsets.UTF_8);
@@ -29,9 +29,13 @@ public class JWTService {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .setExpiration(new Date(System.currentTimeMillis() + accessTokenInMilliSeconds))
                 .signWith(SignatureAlgorithm.HS512, signingKey)
                 .compact();
+    }
+
+    public long getAccessTokenValidityInSeconds(){
+        return accessTokenInMilliSeconds;
     }
 
     public Claims validateJWT(String token) {

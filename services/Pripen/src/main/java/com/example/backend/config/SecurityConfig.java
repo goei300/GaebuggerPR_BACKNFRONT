@@ -51,13 +51,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-//                .csrf().disable()
+                .csrf().disable()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/**").authenticated() // /api/** 경로는 인증 필요
+                        //.requestMatchers("/api/**").authenticated() // /api/** 경로는 인증 필요
                         .anyRequest().permitAll()) // 그 외 모든 요청은 인증 없이 허용
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
