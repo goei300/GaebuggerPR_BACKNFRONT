@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from "../../../api/axiosInstance";
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -30,13 +31,13 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const csrfToken = await getCsrfToken();
-        const headers = {
-            'X-CSRF-TOKEN': csrfToken
-        };
-        console.log("my csrftoken is :");
-        console.log(csrfToken);
-        axios.post('https://www.pri-pen.com/userAuthentication/signup', formData, { headers })
+        // const csrfToken = await getCsrfToken();
+        // const headers = {
+        //     'X-CSRF-TOKEN': csrfToken
+        // };
+        // console.log("my csrftoken is :");
+        // console.log(csrfToken);
+        axiosInstance.post('/userAuthentication/signup', formData)
             .then(response => {
                 console.log('Success:', response);
                 alertPopup();

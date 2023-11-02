@@ -4,13 +4,16 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MuiLink from '@mui/material/Link';
+import {useAuth} from '../../contexts/AuthContext';
 import { Link as RouterLink } from 'react-router-dom';
+import axiosInstance from '../../api/axiosInstance';
 import axios from 'axios';
 const LoginForm = () => {
+    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
-
+    const { login } = useAuth();
     const getCsrfToken = async () => {
         const response = await axios.get('https://www.pri-pen.com/csrf-token');
         console.log("csrftoken is get!");
@@ -20,10 +23,10 @@ const LoginForm = () => {
 
     const handleLogin = async () => {
 
-        const csrfToken = await getCsrfToken();
-        const headers = {
-            'X-CSRF-TOKEN': csrfToken
-        };
+        // const csrfToken = await getCsrfToken();
+        // const headers = {
+        //     'X-CSRF-TOKEN': csrfToken
+        // };
 
         if (!email) {
             setErrorMessage("이메일을 입력하세요.");
@@ -35,19 +38,20 @@ const LoginForm = () => {
         }
         setErrorMessage(null); // 오류 메시지 초기화
         try {
-            const response = await axios.post('https://www.pri-pen.com/userAuthentication/login', {
+            const response = await axiosInstance('/userAuthentication/login', {
                 email: email,
                 passwordHash: password
-            }, {
-                headers: headers
             });
 
             // 응답 처리
             if (response.status === 200) {
-                // JWT 저장
-                const token = response.data.token;
-                localStorage.setItem('jwt', token); // localStorage에 JWT 저장
+                // // JWT 저장
+                // const token = response.data.token;
+                // localStorage.setItem('jwt', token); // localStorage에 JWT 저장
 
+                // 쿠키에 저장하는 방식으로 변경.
+                login(); //` AuthContext의 login 함수를 호출하여 쿠키와 상태를 업데이트합니다.
+                
                 // 상위 도메인으로 리다이렉트
                 window.location.href = "/";
             } else {
