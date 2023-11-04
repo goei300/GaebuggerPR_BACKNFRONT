@@ -27,6 +27,22 @@ const axiosInstance = axios.create({
     },
     async error => {
       const originalRequest = error.config;
+    // 로그인 요청에서 401 에러가 발생했다면
+    if (originalRequest.url === "/userAuthentication/login" && error.response.status === 401) {
+      // 여기에서 원하는 형태의 response 객체를 생성하고 반환할 수 있습니다.
+      // 예: 사용자에게 표시할 에러 메시지가 담긴 객체를 생성하여 반환
+      const customResponse = {
+        data: {
+          message: 'Login failed: Incorrect credentials or user not found',
+        },
+        status: error.response.status,
+        statusText: error.response.statusText,
+        headers: error.response.headers,
+        config: error.config,
+        request: error.request,
+      };
+      return Promise.resolve(customResponse); // 에러 대신 커스텀 응답을 반환합니다.
+    }
       if (error.response.status === 401 && !originalRequest._retry) {
         // AccessToken 만료 시 처리 로직
         originalRequest._retry = true;
