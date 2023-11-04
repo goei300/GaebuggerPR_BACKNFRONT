@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.246978ce.css",
-    "main.js": "/static/js/main.62b34cf3.js",
+    "main.css": "/static/css/main.685b5127.css",
+    "main.js": "/static/js/main.a38c15ad.js",
     "static/js/651.a75c34e7.chunk.js": "/static/js/651.a75c34e7.chunk.js",
     "static/media/NotoSansKR-Thin.ttf": "/static/media/NotoSansKR-Thin.3c76aeeeb0d5302e0042.ttf",
     "static/media/NotoSansKR-ExtraLight.ttf": "/static/media/NotoSansKR-ExtraLight.a8d29999646a399fbca4.ttf",
@@ -16,17 +16,18 @@
     "static/media/pripen_logo.png": "/static/media/pripen_logo.a5d5f0047df1923f6754.png",
     "static/media/Blocks-1s-200px.gif": "/static/media/Blocks-1s-200px.ebf686c9fe73fc9a28aa.gif",
     "static/media/pripen.png": "/static/media/pripen.e15e6fa35c478b28a414.png",
+    "static/media/PriPen-Logo-512.svg": "/static/media/PriPen-Logo-512.f37bc399192b92e15130550166d75195.svg",
     "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/index.html",
-    "main.246978ce.css.map": "/static/css/main.246978ce.css.map",
-    "main.62b34cf3.js.map": "/static/js/main.62b34cf3.js.map",
+    "main.685b5127.css.map": "/static/css/main.685b5127.css.map",
+    "main.a38c15ad.js.map": "/static/js/main.a38c15ad.js.map",
     "651.a75c34e7.chunk.js.map": "/static/js/651.a75c34e7.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.246978ce.css",
-    "static/js/main.62b34cf3.js"
+    "static/css/main.685b5127.css",
+    "static/js/main.a38c15ad.js"
   ]
 }

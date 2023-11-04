@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext,useState } from 'react';
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home/Home';
@@ -11,8 +11,10 @@ import LoadingProvider, { LoadingContext } from './contexts/LoadingProvider';
 import { AuthProvider } from './contexts/AuthContext';
 import LoadingPage from './components/LoadingPage/LoadingPage';
 import Signup from './pages/account/Signup/Signup';
+import ChatBotBubbleButton from './components/chatbot/ChatBotBubbleButton';
 
 function App() {
+
   return (
     <AuthProvider> {/* AuthProvider로 감싸주기 */}
       <LoadingProvider>
@@ -27,6 +29,7 @@ function App() {
                   <Route path="/login" element={<LoginLayout />} />
                   <Route path="/signup" element={<Signup />} />
               </Routes>
+              <ChatBotBubbleButton /> {/* ChatBotBubbleButton 렌더링 */}
           </div>
         </Router>
       </LoadingProvider>

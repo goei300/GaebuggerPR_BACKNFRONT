@@ -1,4 +1,4 @@
-import React,{ useState } from 'react';
+import React,{ useState,useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -13,14 +13,20 @@ const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
-    const { login } = useAuth();
+    const { isLoggedIn, login } = useAuth();
     const getCsrfToken = async () => {
         const response = await axios.get('https://www.pri-pen.com/csrf-token');
         console.log("csrftoken is get!");
         console.log(response);
         return response.data;
     }
-
+    // 로그인 후 페이지 리다이렉션 처리
+    useEffect(() => {
+        if (isLoggedIn) {
+            console.log("logged in!!");
+            window.location.href = "/";
+        }
+    }, [isLoggedIn]);
     const handleLogin = async () => {
 
         // const csrfToken = await getCsrfToken();
@@ -38,27 +44,20 @@ const LoginForm = () => {
         }
         setErrorMessage(null); // 오류 메시지 초기화
         try {
-            const response = await axiosInstance('/userAuthentication/login', {
+            const response = await axiosInstance.post('/userAuthentication/login', {
                 email: email,
                 passwordHash: password
             });
-
             // 응답 처리
             if (response.status === 200) {
-                // // JWT 저장
-                // const token = response.data.token;
-                // localStorage.setItem('jwt', token); // localStorage에 JWT 저장
-
-                // 쿠키에 저장하는 방식으로 변경.
                 login(); //` AuthContext의 login 함수를 호출하여 쿠키와 상태를 업데이트합니다.
-                
-                // 상위 도메인으로 리다이렉트
-                window.location.href = "/";
             } else {
                 setErrorMessage("해당 정보를 찾을 수 없습니다.");
                 return;
             }
         } catch (error) {
+            setErrorMessage("서버와의 연결이 불안정합니다.");
+            return;
             // 네트워크 오류나 서버 에러 처리
         }
     };
