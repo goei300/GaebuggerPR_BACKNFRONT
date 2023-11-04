@@ -30,8 +30,8 @@ issue_id=0
 
 # 2> 위반한 이슈의 내용을 약속된 JSON형태로 정제해주는 함수
     #: 한번 결과에는 규칙1, 규칙2, 규칙 3 이게 다있음
-def Make_Issues(ans, issue_paragraph_id, text, df):
-    global issue_id
+def Make_Issues(ans, issue_paragraph_id, text, df, issue_id_start):
+    issue_id = issue_id_start
 
     process_Law_Violate = 0
     process_Law_Danger = 0
@@ -143,10 +143,6 @@ def Make_Issues(ans, issue_paragraph_id, text, df):
 
         issue_id += 1  # 유니크값(고유값) 계속 증가
 
-    return process_Issues, process_Law_Violate, process_Law_Danger, process_Guide_Violate
-
-
-
-
+    return process_Issues, process_Law_Violate, process_Law_Danger, process_Guide_Violate, issue_id
 
 
