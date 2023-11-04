@@ -9,8 +9,8 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 # Module
 from .User_Input_Check.User_Input_Check import *
-from .Search_Title.Search_ToT import Search_ToT
-from .Match_Title.Match_ToT import Match_ToT
+from .Search_Title.Search_Frame import Search_Frame
+from .Match_Title.Match_Frame import Match_Frame
 
 # Get Variable
 from .Search_Title.Search_Title import table
@@ -40,23 +40,21 @@ def Search_Match_Omission_Model(user_input):
     docs = text_splitter.split_documents(documents)
 
     # 1> Search
-    #   1) 대제목 추출을 ToT 방식으로 구현예정(랭체인 적용한 체이닝)
-    #   2) 고유한 대제목까지 만든다.(나중에 Cutting위함): unique_title_list
+    #  고유한 대제목까지 만든다.(나중에 Cutting위함): unique_title_list
 
-    title_list, unique_title_list = Search_ToT(documents[0].page_content, docs, rule)
+    title_list, unique_title_list = Search_Frame(documents[0].page_content, docs, rule)
 
     print("Search Match Omission의 Search 파트입니다.\n")
     print("title_list:", title_list,"\n")
     print("unique_title_list", unique_title_list, "\n")
 
     # 2> Match
-    # 추출한 대제목을 매칭하는 것을 ToT 방식으로 구현예정(랭체인 적용한 체이닝)
     # title_dict뽑은거로 unique_title도 따로 딕셔너리 생성 -> cutting을 위한 딕셔너리
     # title_dict의 출력형태 {'방침대제목1': ['규칙대제목1', '규칙대제목2'], '방침대제목2': []}
         ### title_dict = {방침의 대제목: 지침의 대제목}
         ### title_dict2 = {지침의 대제목: 방침의 대제목}
 
-    title_dict = Match_ToT(title_list, rule)
+    title_dict = Match_Frame(title_list, rule)
     title_dict2 = {value: key for key, values in title_dict.items() for value in values}
 
     unique_title_dict = {}
