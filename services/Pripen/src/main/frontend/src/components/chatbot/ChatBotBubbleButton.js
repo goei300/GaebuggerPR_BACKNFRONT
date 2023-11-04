@@ -82,7 +82,6 @@ const ChatBotBubbleButton = () => {
       >
         <img src={PriPenSvg} alt="ChatBot 버튼" style={{ width: '50px', height: 'auto' }} />
       </button>
-        <p>개인정보 비서봇</p>
       {/* iframe을 조건부 렌더링 대신 항상 렌더링하되 위치를 변경합니다. */}
       <div style={iframeStyle}>
         <iframe
