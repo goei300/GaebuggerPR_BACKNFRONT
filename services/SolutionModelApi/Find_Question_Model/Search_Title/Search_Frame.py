@@ -9,7 +9,7 @@ print(api_key)
 from .Rule_Validation.Rule_Validation import checking_list
 from .Search_Title import Search_Title, Search_Unique_Title, Make_Unique_Title
 
-def Search_ToT(documents, docs, rule):
+def Search_Frame(documents, docs, rule):
 
     title_list = Search_Title(documents, docs, rule)
     unique_title_list = Make_Unique_Title(title_list)

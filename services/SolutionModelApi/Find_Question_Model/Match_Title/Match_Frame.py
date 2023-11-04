@@ -3,5 +3,5 @@
 from .Match_Title import Match_Title
 from .Rule_Validation.Rule_Validation import checking_dict
 
-def Match_ToT(title_list, rule):
+def Match_Frame(title_list, rule):
     return Match_Title(title_list, rule)
