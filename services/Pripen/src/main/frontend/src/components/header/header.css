@@ -102,14 +102,10 @@ nav.menu-structure li {
 
 .authentication {
     justify-content: flex-end; 
-    padding-right: 8rem;
+    padding-right: 6rem;
     right: 0;
     position: absolute;
 }
-.authentication > * {
-    padding-right: 2rem;
-}
-
 
 .active-link{
     position: relative; /* Establish a stacking context for pseudo-elements */
