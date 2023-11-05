@@ -1,0 +1,17 @@
+/* ChatBotBubbleButton.css 파일 내용 */
+.button {
+    /* 기존 스타일 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, max-width 0.3s ease;
+    /* ...기타 스타일... */
+  }
+  
+  .buttonText {
+    display: none;
+    /* 기타 텍스트 스타일 */
+  }
+  
+  .button:hover .buttonText {
+    display: block;
+    /* 호버 시 텍스트가 나타나도록 display 속성 변경 */
+  }
+  
