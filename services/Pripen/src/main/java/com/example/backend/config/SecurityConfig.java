@@ -52,6 +52,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                .headers()
+                    .frameOptions().disable() // 이 부분이 X-Frame-Options 헤더를 비활성화합니다.
+                    .and()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()

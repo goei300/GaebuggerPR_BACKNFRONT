@@ -37,7 +37,9 @@ function AnimatedSection({ className, title, content }) {
             <div ref={ref} className={`section-content ${inView ? 'is-visible' : ''}`}>
                 <h2 style={{fontFamily:'NotoSansKR-Bold'}} className={inView ? 'animated fadeInText' : ''}>{title}</h2>
                 <p style={{fontFamily:'NotoSansKR-SemiBold'}} className={inView ? 'animated fadeInText' : ''}>{content}</p>
-                <StyledButton variant="contained" color="primary" href="/start/check" className={inView ? 'animated fadeInText' : ''}>바로 시작하기</StyledButton>
+                <Link to="/start/check">
+                    <StyledButton variant="contained" color="primary"className={inView ? 'animated fadeInText' : ''}>바로 시작하기</StyledButton>
+                </Link>
             </div>
             <div className="image-container">
                 <img src={solutionImage} alt="Illustration" className={inView ? 'animated fadeInImage' : ''}/>

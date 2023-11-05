@@ -13,7 +13,15 @@ function StartIndex() {
             <Header active="start"/>
             <main className='startIndex-content'>
                 <Routes>
-                    <Route path="/" element={<div><p>안녕안녕</p><Button href="/start/check">시작하기</Button></div>} />
+                    <Route path="/" element={
+                        <div>
+                            <p>안녕안녕</p>
+                            <Link to="/start/check">
+                                <Button>시작하기</Button>
+                            </Link>
+                        </div>
+                        }
+                    />
                     <Route path="/check" element={<CheckEvaluate />} />
                 </Routes>
             </main>

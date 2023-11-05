@@ -12,6 +12,11 @@ services/SolutionModelApi/config.py
 ### db info ###
 services/Pripen/src/main/resources/application.properties
 
+
+### FRONT API URL ###
+services/Pripen/src/main/frontend/.env
+
+
 ### STS ###
 .apt_generated
 .classpath
