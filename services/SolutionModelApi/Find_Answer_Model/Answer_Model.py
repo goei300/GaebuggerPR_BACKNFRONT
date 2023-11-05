@@ -21,16 +21,19 @@ import asyncio
 
 from langchain.llms import OpenAI
 
-answer = []
-async def async_generate(llm, policy, instruction):
-    global answer
+# 이제 async_generate는 인덱스와 함께 결과를 반환
+async def async_generate(llm, policy, instruction, index):
     resp = await llm.agenerate([Answer_Template(policy, instruction)])
-    answer.append(resp.generations[0][0].text)
+    return index, resp.generations[0][0].text
 
-async def generate_concurrently(df, n):
-    llm = OpenAI(temperature=0, model_name = 'gpt-4')
-    tasks = [async_generate(llm, df['matched_part'][i], df['instruction'][i]) for i in range(n)]
-    await asyncio.gather(*tasks)
+# 결과를 인덱스와 함께 수집하고, 이를 다시 정렬
+async def generate_concurrently(df):
+    llm = OpenAI(temperature=0, model_name='gpt-4')
+    tasks = [async_generate(llm, df['matched_part'][i], df['instruction'][i], i) for i in range(len(df))]
+    results = await asyncio.gather(*tasks)
+    # 인덱스를 기준으로 결과를 정렬합니다.
+    sorted_results = sorted(results, key=lambda x: x[0])
+    return [result[1] for result in sorted_results]
 
 # 최종 답변 주는 함수
 # 1. 최종 답변 주는 LLM질의
@@ -45,13 +48,10 @@ def Answer_Model(df, text):
     # 계속 위반한 규칙들이 들어갈 리스트
     process_Issues = []
 
-
     ans = ""
-
-    asyncio.run(generate_concurrently(df, len(df)))
-
-    global answer
-    print(answer)
+    answer = asyncio.run(generate_concurrently(df))
+    print("비동기로 전부 뽑은 값", answer)
+    ## 비동기로 뽑은 answer들은 먼저 끝내는대로 들어감, 순서가 일정하지 않음, 다시 순서 맞춰줘야함
 
     issue_id_num = 0
     for i in range(len(df)):

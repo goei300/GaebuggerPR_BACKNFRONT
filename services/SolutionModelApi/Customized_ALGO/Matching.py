@@ -9,23 +9,26 @@ import pandas as pd
 
 
 def Matching(text, result_dict, df):
-    # 필터링과 정렬을 한번에 수행
-    df = df[df['user_input'] == '1'].copy()
+    df['matched_part'] = ''
+    df['matched_startIndex']=9999999
+    for key, value in result_dict.items():
+        df.loc[df['part'] == key, 'matched_part'] = value
+        df.loc[df['part'] == key, 'matched_startIndex'] = text.find(value)
 
-    # matched_part와 matched_startIndex를 설정
-    df['matched_part'] = df['part'].apply(lambda x: result_dict.get(x, ''))
-    df['matched_startIndex'] = df['matched_part'].apply(lambda x: text.find(x) if x != '' else 9999999)
+    # 파트가 있는거랑, 유저가 체크한 값(검사 대상) 만으로 데이터프레임 컷팅
 
-    # '제목 및 서문' 처리
-    title_section_index = df['matched_startIndex'].min()
-    df.loc[df['part'] == "제목 및 서문", 'matched_part'] = text[:title_section_index]
+    df = df[(df['user_input'] == '1')]
+    df = df.sort_values(by='matched_startIndex')
+    df.reset_index(drop=True, inplace=True)
+    df.loc[df['part'] == "제목 및 서문", 'matched_part'] = text[0:df.iloc[0]['matched_startIndex']]
     df.loc[df['part'] == "제목 및 서문", 'matched_startIndex'] = 0
 
-    # 비어 있지 않은 matched_part를 가진 행만 필터링
-    df = df[df['matched_part'] != '']
-
-    # 최종 데이터프레임 정렬
-    df.sort_values(by='matched_startIndex', inplace=True)
+    df = df[(df['matched_part'] != '')]
+    df = df.sort_values(by='matched_startIndex')
     df.reset_index(drop=True, inplace=True)
+
+
+    print("최종 완성된 데이터프레임입니다!")
+    print(df[['user_input', 'part', 'matched_part', 'matched_startIndex']])
 
     return df
