@@ -30,7 +30,7 @@ public class ReceiveDataController {
     public ReceiveDataController(DataProcessingService dataProcessingService) {
         this.dataProcessingService = dataProcessingService;
     }
-    @CrossOrigin(origins = "https://www.pri-pen.com")
+    @CrossOrigin(origins = "*")
     @PostMapping("/start")
     public ResponseEntity<Map<String, UUID>> receiveData(
             @RequestPart("file") MultipartFile file,
@@ -56,7 +56,7 @@ public class ReceiveDataController {
     }
 
 
-    @CrossOrigin(origins = "https://www.pri-pen.com")
+    @CrossOrigin(origins = "*")
     @GetMapping("/check-response/{processId}")
     public SseEmitter checkResponse(@PathVariable String processId) throws Exception {
         UUID parsedProcessId;
@@ -79,7 +79,7 @@ public class ReceiveDataController {
     // test endpoint
 //    @CrossOrigin(origins = "http://localhost:3000")
 
-    @CrossOrigin(origins = "https://www.pri-pen.com")
+    @CrossOrigin(origins = "*")
     @PostMapping("/test-mock")
     public ResponseEntity<Map<String, Object>> getMockData(@RequestBody String process_ID) {
         // 임의의 데이터 생성
@@ -197,6 +197,7 @@ public class ReceiveDataController {
         issue3.put("issue_reason", "각 항목의 해당 법률");
         issue3.put("issue_startIndex", 860);
         issue3.put("issue_endIndex", 905);
+        issue3.put("issue_case",3);
         issue3.put("issue_guideline", List.of("법률에 따른 특정 기록의 보유 기간을 준수해야 합니다.", "해당 기록의 보유 기간이 개인정보처리방침에 명시되어야 합니다."));
         issue3.put("issue_goodCase", "");
         processIssues.add(issue3);
@@ -210,6 +211,7 @@ public class ReceiveDataController {
         issue4.put("issue_reason", "각 항목의 해당 법률");
         issue4.put("issue_startIndex", 860);
         issue4.put("issue_endIndex", 905);
+        issue4.put("issue_case",3);
         issue4.put("issue_guideline", List.of("어떤걸 위바했네요", "그리 살지마라"));
         issue4.put("issue_goodCase", "");
         processIssues.add(issue4);
@@ -223,6 +225,7 @@ public class ReceiveDataController {
         issue5.put("issue_reason", "개인정보 보호법 으악");
         issue5.put("issue_startIndex", 860);
         issue5.put("issue_endIndex", 905);
+        issue5.put("issue_case",4);
         issue5.put("issue_guideline", List.of("쪼까위험하내", "뭘바임마"));
         issue5.put("issue_goodCase", "");
         processIssues.add(issue5);
@@ -236,6 +239,7 @@ public class ReceiveDataController {
         issue6.put("issue_reason", "작성지침 6.개인정보의 제3자 제공에 관한 사항");
         issue6.put("issue_startIndex", -999);
         issue6.put("issue_endIndex", -999);
+        issue6.put("issue_case",6);
         issue6.put("issue_guideline", List.of("긴급 상황 발생 시 정보주체의 동의 없이 개인정보를 제공할 수 있다는 내용을 기재해야 합니다.","재난, 감염병 등의 긴급 상황에 대비한 개인정보 제공 방안을 기재해야 합니다."));
         issue6.put("issue_goodCase", "");
         processIssues.add(issue6);
@@ -248,6 +252,7 @@ public class ReceiveDataController {
         issue7.put("issue_reason", "누락테스트2");
         issue7.put("issue_startIndex", -999);
         issue7.put("issue_endIndex", -999);
+        issue7.put("issue_case",8);
         issue7.put("issue_guideline", List.of("영차","영치2"));
         issue7.put("issue_goodCase", "");
         processIssues.add(issue7);
@@ -261,6 +266,7 @@ public class ReceiveDataController {
         issue8.put("issue_reason", "누락테스트2_법률");
         issue8.put("issue_startIndex", -999);
         issue8.put("issue_endIndex", -999);
+        issue8.put("issue_case",4);
         issue8.put("issue_guideline", List.of("영차","영치2"));
         issue8.put("issue_goodCase", "");
         processIssues.add(issue8);

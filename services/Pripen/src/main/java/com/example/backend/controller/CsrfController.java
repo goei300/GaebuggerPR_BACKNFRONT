@@ -13,7 +13,7 @@ import java.util.Map;
 public class CsrfController {
 
 
-    @CrossOrigin(origins = "https://www.pri-pen.com")
+    //@CrossOrigin(origins = "https://www.pri-pen.com")
     @GetMapping("/csrf-token")
     public ResponseEntity<Map<String, String>> getCsrfToken(CsrfToken csrfToken) {
         Map<String, String> tokenMap = new HashMap<>();

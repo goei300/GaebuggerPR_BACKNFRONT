@@ -16,20 +16,22 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn(true);
     };
 
-    // 로그아웃 함수
-    const logout = () => {
-        setIsLoggedIn(false);
+    const logout = async () => {
         try {
-            // 백엔드 로그아웃 API 호출
-            axios.post('https://www.pri-pen.com/userAuthentication/logout');
-            
-            // 로그아웃 후 처리, 예를 들어 홈페이지로 리다이렉션
-            window.location.href = "/";
+            // 백엔드 로그아웃 API 호출, withCredentials을 true로 설정하여 쿠키를 함께 보냅니다.
+            await axios.delete('https://www.pri-pen.com/userAuthentication/logout', {
+                withCredentials: true
+            });
+
+            setIsLoggedIn(false); // 로그아웃 성공 후 상태 변경
+            window.location.href = "/"; // 홈페이지로 리다이렉션
         } catch (error) {
             console.error('Logout failed', error);
             // 에러 처리 로직
         }
     };
+
+
 
     // AuthContext에 전달할 값
     const authContextValue = {
