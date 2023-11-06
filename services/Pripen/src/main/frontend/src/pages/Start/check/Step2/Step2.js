@@ -102,7 +102,7 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
         }));
     
         try {
-            const response = await axiosInstance.post('/api/start', formData);
+            const response = await axios.post('http://localhost:8080/api/start', formData);
             //const response = await axios.post('https://www.pri-pen.com/api/start', formData, { headers });
             if (response.status === 200) {
                 console.log("my process id is:", response.data.processID);

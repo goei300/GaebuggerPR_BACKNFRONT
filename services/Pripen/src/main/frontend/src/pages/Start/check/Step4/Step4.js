@@ -30,19 +30,29 @@ function Step4({ processId, nextStep,responseData,infoObject }) {
         lawViolate: responseData.process_Law_Violate,
         lawDanger: responseData.process_Law_Danger,
         guideViolate: responseData.process_Guide_Violate,
+        omissionParagraph: responseData.process_Omission_Paragraph,
+        omissionParagraphScore: responseData.process_Issues.reduce((acc, issue) => {
+            if (issue.issue_type === "기재 항목 누락") {
+              return acc + issue.issue_score;
+            }
+            return acc;
+          }, 0), 
         type: infoObject['industryType'],
         score: responseData.process_Score
     };
     console.log("mockServerData is:");
     console.log(mockServerData);
-    const transformedIssues = responseData.process_Issues.map(issue => {
-        return {
-            id: issue.issue_id,
-            type: issue.issue_type,  // "제조"
-            startIndex: issue.issue_startIndex,
-            endIndex: issue.issue_endIndex
-        };
-    });
+    const transformedIssues = responseData.process_Issues
+        .filter(issue => issue.issue_type !== "기재 항목 누락")  // "기재 항목 누락"이 아닌 이슈만 필터링
+        .map(issue => {  
+            return {
+                id: issue.issue_id,
+                type: issue.issue_type,  
+                startIndex: issue.issue_startIndex,
+                endIndex: issue.issue_endIndex
+            };
+        });
+
 
     const extractedData = {
         content: responseData.process_Original,
@@ -180,6 +190,11 @@ function Step4({ processId, nextStep,responseData,infoObject }) {
             "id": "작성지침 미준수",
             "label": "작성지침 미준수",
             "value": serverData['guideViolate']
+        },
+        {
+            "id" : "기재 항목 누락",
+            "label": "기재 항목 누락",
+            "value": serverData['omissionParagraphScore']
         }
     ];
 

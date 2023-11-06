@@ -4,7 +4,6 @@ import '../../assets/fonts/fonts.css';
 import PriPenSvg from '../../assets/images/chatbotIcon.png'; // SVG 파일을 React 컴포넌트로 불러옵니다.
 import Spinner from './Spinner'; // 실제 경로로 교체해야 합니다.
 
-
 function useWindowSize() {
   const [size, setSize] = useState([0, 0]);
   useEffect(() => {
@@ -143,17 +142,19 @@ const ChatBotBubbleButton = () => {
         <iframe
           src={process.env.REACT_APP_CHATBOT_URL}
           style={{
-            width: width > 768 ? '400px' : '100%', // 768px 이상인 경우 350px, 미만인 경우 전체 너비
-            height: width > 768 ? '550px' : '300px', // 768px 이상인 경우 510px, 미만인 경우 300px
-            border: '2px solid black',
+            width: width > 768 ? '400px' : '100%', // 768px 이상인 경우 400px, 미만인 경우 전체 너비
+            height: width > 768 ? '550px' : '300px', // 768px 이상인 경우 550px, 미만인 경우 300px
+            border: '2px solid #d9d9d9',
             marginRight: '30px',
             borderRadius: '20px',
             frameBorder: '0',
             allowTransparency: 'true',
             allow: 'encrypted-media',
+            boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)' // 여기에 그림자 스타일을 추가합니다.
           }}
           onLoad={handleIframeLoad}
         ></iframe>
+
       </div>
     </>
   );

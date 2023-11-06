@@ -30,7 +30,7 @@ public class ReceiveDataController {
     public ReceiveDataController(DataProcessingService dataProcessingService) {
         this.dataProcessingService = dataProcessingService;
     }
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = {"https://www.pri-pen.com","http://localhost:3000"})
     @PostMapping("/start")
     public ResponseEntity<Map<String, UUID>> receiveData(
             @RequestPart("file") MultipartFile file,
@@ -56,7 +56,7 @@ public class ReceiveDataController {
     }
 
 
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = {"https://www.pri-pen.com","http://localhost:3000","http://localhost:8080"})
     @GetMapping("/check-response/{processId}")
     public SseEmitter checkResponse(@PathVariable String processId) throws Exception {
         UUID parsedProcessId;
@@ -79,7 +79,7 @@ public class ReceiveDataController {
     // test endpoint
 //    @CrossOrigin(origins = "http://localhost:3000")
 
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = {"https://www.pri-pen.com","http://localhost:3000","http://localhost:8080"})
     @PostMapping("/test-mock")
     public ResponseEntity<Map<String, Object>> getMockData(@RequestBody String process_ID) {
         // 임의의 데이터 생성
@@ -152,10 +152,12 @@ public class ReceiveDataController {
         issue0.put("issue_id", 0);
         issue0.put("issue_paragraph_id", 1);
         issue0.put("issue_type", "작성지침 미준수");
+        issue0.put("issue_score",3);
         issue0.put("issue_content", "개인정보 처리방침의 수집 목적은 ‘~ 등’으로 추상적으로 기재하지 않고, 구체적으로 기재해야 해.");
         issue0.put("issue_reason", "작성지침 2. 개인정보의 처리 목적");
         issue0.put("issue_startIndex", 345);
         issue0.put("issue_endIndex", 489);
+        issue0.put("issue_case",5);
         issue0.put("issue_guideline", List.of("'등'이라는 표현은 추상적이므로 사용하지 않아야 합니다.", "수집 목적이 구체적으로 기재되어야 합니다."));
         issue0.put("issue_goodCase", "");
         processIssues.add(issue0);
@@ -165,10 +167,12 @@ public class ReceiveDataController {
         issue1.put("issue_id", 1);
         issue1.put("issue_paragraph_id", 3);
         issue1.put("issue_type", "작성지침 미준수");
+        issue1.put("issue_score",3);
         issue1.put("issue_content", "정보주체로부터 동의 받은 ‘보유·이용 기간’ 또는 법령에 따른 ‘보유·이용기간’에 따라 개인정보를 보유할 수 있다는 내용을 기재함**");
         issue1.put("issue_reason", "작성지침 3. 개인정보의 처리 및 보유 기간");
         issue1.put("issue_startIndex", 703);
         issue1.put("issue_endIndex", 783);
+        issue1.put("issue_case",9);
         issue1.put("issue_guideline", List.of("개인정보의 보유 및 이용기간은 정보주체의 동의를 받거나 법령에 따라 결정되어야 합니다.", "이 기간은 개인정보처리방침에 명시되어야 합니다."));
         issue1.put("issue_goodCase", "");
         processIssues.add(issue1);
@@ -180,10 +184,12 @@ public class ReceiveDataController {
         issue2.put("issue_id", 2);
         issue2.put("issue_paragraph_id", 3);
         issue2.put("issue_type", "작성지침 미준수");
+        issue2.put("issue_score",3);
         issue2.put("issue_content", "‘개인정보의 처리 목적’에서 기재한 해당 사무에 따른 구체적인 처리·보유 기간을 기재함. '목적 달성시'와 같이 추상적으로 기재하지 않아야 해.**");
         issue2.put("issue_reason", "작성지침 3. 개인정보의 처리 및 보유 기간");
         issue2.put("issue_startIndex", 784);
         issue2.put("issue_endIndex", 859);
+        issue2.put("issue_case",4);
         issue2.put("issue_guideline", List.of("개인정보의 처리 목적에 따른 구체적인 처리 및 보유 기간을 명시해야 합니다.", "'목적 달성시'와 같은 추상적인 표현은 사용하지 않아야 합니다."));
         issue2.put("issue_goodCase", "");
         processIssues.add(issue2);
@@ -193,6 +199,7 @@ public class ReceiveDataController {
         issue3.put("issue_id", 3);
         issue3.put("issue_paragraph_id", 3);
         issue3.put("issue_type", "법률 위반");
+        issue3.put("issue_score",15);
         issue3.put("issue_content", "아래에 해당하는 부분이 있으면 검사해.**");
         issue3.put("issue_reason", "각 항목의 해당 법률");
         issue3.put("issue_startIndex", 860);
@@ -207,6 +214,7 @@ public class ReceiveDataController {
         issue4.put("issue_id", 4);
         issue4.put("issue_paragraph_id", 3);
         issue4.put("issue_type", "법률 위반");
+        issue4.put("issue_score",15);
         issue4.put("issue_content", "아래에 해당하는 부분이 있으면 검사해.**");
         issue4.put("issue_reason", "각 항목의 해당 법률");
         issue4.put("issue_startIndex", 860);
@@ -221,6 +229,7 @@ public class ReceiveDataController {
         issue5.put("issue_id", 5);
         issue5.put("issue_paragraph_id", 3);
         issue5.put("issue_type", "법률 위반 위험");
+        issue5.put("issue_score",7);
         issue5.put("issue_content", "아래에 해당하는 부분이 있으면 검사해.**");
         issue5.put("issue_reason", "개인정보 보호법 으악");
         issue5.put("issue_startIndex", 860);
@@ -235,6 +244,7 @@ public class ReceiveDataController {
         issue6.put("issue_id", 6);
         issue6.put("issue_paragraph_id", 1);
         issue6.put("issue_type", "작성지침 미준수");
+        issue6.put("issue_score",3);
         issue6.put("issue_content", "재난, 감염병 등 긴급 상황 발생 시 정보주체의 동의가 없어도 관련 기관에 개인정보를 제공할 수 있다'는 내용을 기재해야 해. 해당 내용이 기재되어있지 않으면, 지침 미준수야.");
         issue6.put("issue_reason", "작성지침 6.개인정보의 제3자 제공에 관한 사항");
         issue6.put("issue_startIndex", -999);
@@ -248,6 +258,7 @@ public class ReceiveDataController {
         issue7.put("issue_id", 7);
         issue7.put("issue_paragraph_id", 1);
         issue7.put("issue_type", "작성지침 미준수");
+        issue7.put("issue_score",3);
         issue7.put("issue_content", "누락테스트");
         issue7.put("issue_reason", "누락테스트2");
         issue7.put("issue_startIndex", -999);
@@ -262,6 +273,7 @@ public class ReceiveDataController {
         issue8.put("issue_id", 8);
         issue8.put("issue_paragraph_id", 1);
         issue8.put("issue_type", "법률 위반");
+        issue8.put("issue_score",15);
         issue8.put("issue_content", "누락테스트_법률");
         issue8.put("issue_reason", "누락테스트2_법률");
         issue8.put("issue_startIndex", -999);
@@ -270,6 +282,21 @@ public class ReceiveDataController {
         issue8.put("issue_guideline", List.of("영차","영치2"));
         issue8.put("issue_goodCase", "");
         processIssues.add(issue8);
+
+        Map<String, Object> issue9 = new HashMap<>();
+        issue9.put("issue_id",9);
+        issue9.put("issue_paragraph_id",-1);
+        issue9.put("issue_type","기재 항목 누락");
+        issue9.put("issue_score",51);
+        issue9.put("issue_content","제목 및 서문");
+        issue9.put("issue_reason","개인정보 보호법");
+        issue9.put("issue_startIndex",-100);
+        issue9.put("issue_endIndex",-100);
+        issue8.put("issue_case",3);
+        issue9.put("issue_guideline",List.of("제목은쓰셔야죠","부제목도필수임"));
+        issue9.put("issue_goodcase","");
+        processIssues.add(issue9);
+
         return processIssues;
     }
 

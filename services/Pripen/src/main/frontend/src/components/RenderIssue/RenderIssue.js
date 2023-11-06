@@ -4,6 +4,7 @@ import { Typography, Divider } from '@mui/material';
 import { StyledPaper } from '../../pages/Start/check/Guideline_detail/styles/ComponentStyles';
 import './RenderIssue.css';
 import '../../assets/fonts/fonts.css';
+import BestPractice from '../bestpractice/BestPractice';
 function RenderIssue({issuelist,highlightIssue, style}){
 
 
@@ -88,7 +89,10 @@ useEffect(() => {
                                 </li>
                             ))}
                         </ul>
-
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                            <h4 style={{margin:'10px'}}>모범 사례</h4>
+                            <BestPractice issue_case={issue.issue_case} />
+                        </div>
                     </div>
                 ))}
             </div>
