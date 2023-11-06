@@ -44,7 +44,7 @@ const LoginForm = () => {
         }
         setErrorMessage(null); // 오류 메시지 초기화
         try {
-            const response = await axiosInstance.post('/userAuthentication/login', {
+            const response = await axios.post('https://www.pri-pen.com/userAuthentication/login', {
                 email: email,
                 passwordHash: password
             });

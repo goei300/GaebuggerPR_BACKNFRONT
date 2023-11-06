@@ -5,6 +5,7 @@ import com.example.backend.dto.ResponseMessage;
 import com.example.backend.dto.UserDto;
 import com.example.backend.model.User;
 import com.example.backend.model.redis.RefreshToken;
+import com.example.backend.repository.redis.RefreshTokenRepository;
 import com.example.backend.service.RefreshTokenService;
 import com.example.backend.service.UserService;
 import jakarta.servlet.http.Cookie;
@@ -32,23 +33,33 @@ import java.util.Optional;
 @RequestMapping("/userAuthentication")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private ModelMapper modelMapper;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
+    private final JWTService jwtService;
+    private final AuthenticationManager authenticationManager;
+    private final RefreshTokenService refreshTokenService;
+    private final RefreshTokenRepository refreshTokenRepository;
 
-    @Autowired
-    private JWTService jwtService;
+    public UserController(
+            UserService userService,
+            PasswordEncoder passwordEncoder,
+            ModelMapper modelMapper,
+            JWTService jwtService,
+            AuthenticationManager authenticationManager,
+            RefreshTokenService refreshTokenService,
+            RefreshTokenRepository refreshTokenRepository) {
 
-    @Autowired
-    private RefreshTokenService refreshTokenService;
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+        this.modelMapper = modelMapper;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+        this.refreshTokenService = refreshTokenService;
+        this.refreshTokenRepository = refreshTokenRepository;
+    }
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @CrossOrigin(origins = "https://www.pri-pen.com")
+    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://59.5.38.67:3000"})
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody User loginUser, HttpServletResponse response) {
         try {
@@ -94,7 +105,7 @@ public class UserController {
         }
     }
 
-    @CrossOrigin(origins = "https://www.pri-pen.com")
+    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://59.5.38.67:3000"})
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshAccessToken(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
@@ -126,7 +137,7 @@ public class UserController {
         }
     }
 
-    @CrossOrigin(origins = "https://www.pri-pen.com")
+    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://59.5.38.67:3000"})
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
         if (userService.existsByEmail(userDto.getEmail())) {
@@ -151,5 +162,27 @@ public class UserController {
         userService.save(user);
 
         return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://59.5.38.67:3000"})
+    @DeleteMapping("/userAuthentication/logout")
+    public ResponseEntity<?> logoutUser(HttpServletRequest request,HttpServletResponse response) {
+        // 클라이언트로부터 받은 리프레시 토큰 쿠키 가져오기
+        Optional<String> refreshTokenOpt = refreshTokenService.extractRefreshTokenFromRequest(request);
+
+        refreshTokenOpt.ifPresent(refreshToken -> {
+            // 리프레시 토큰 존재 여부 확인 후 삭제
+            Optional<RefreshToken> refreshTokenOptional = refreshTokenRepository.findByToken(refreshToken);
+            refreshTokenOptional.ifPresent(refreshTokenRepository::delete);
+
+            // 쿠키를 만료시키기 위한 'Set-Cookie' 헤더를 추가합니다.
+            Cookie cookie = new Cookie("refreshToken", null); // refreshToken 쿠키를 null로 설정
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(0); // 쿠키의 만료 시간을 0으로 설정하여 즉시 만료되게 합니다.
+            response.addCookie(cookie);
+        });
+
+        return ResponseEntity.ok().build(); // 성공적인 응답
     }
 }

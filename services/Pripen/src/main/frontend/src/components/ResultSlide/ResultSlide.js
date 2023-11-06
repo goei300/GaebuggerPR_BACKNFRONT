@@ -304,10 +304,10 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
 
 
                 
-            }, 100);
+            }, 300);
             setTimeout(()=>{
                 handleIssueClick(selectedButtonIssue);
-            },650)
+            },1000)
 
 
         }

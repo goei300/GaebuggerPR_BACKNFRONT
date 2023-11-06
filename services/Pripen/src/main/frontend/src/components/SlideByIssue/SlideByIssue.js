@@ -6,6 +6,7 @@ import { StyledPaper } from '../../pages/Start/check/Guideline_detail/styles/Com
 import './SlideByIssue.css';
 import MoreIcon from '@mui/icons-material/More';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import BestPractice from '../bestpractice/BestPractice';
 const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,setSelectedButtonIssue }) => {
     const [currentIssueIndex, setCurrentIssueIndex] = useState(0);
     const [clickedIssueId, setClickedIssueId] = useState(1); // 추가
@@ -90,10 +91,10 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
             <div className="issueWrapper" >
                 {wrapWithIssueSpan(original.slice(activeIssue.issue_startIndex, activeIssue.issue_endIndex + 1), activeIssue)}
                 <div className="IconHoverEvent" onMouseLeave={() => setIconHovered(false)}>
-                    <h2 style={{margin:'0px'}}>외 {otherIssues.length}건</h2>
+                    <body style={{marginTop:'5px', fontFamily:"NotoSansKR-Bold"}}>외 {otherIssues.length}건</body>
                     &nbsp;
                     &nbsp;
-                    <ExpandMoreIcon className="issueIcon" onMouseEnter={() => setIconHovered(true)} />
+                    <ExpandMoreIcon className="issueIcon" onMouseEnter={() => setIconHovered(true)}/>
                     <div className="popover" style={{ display: isIconHovered ? 'flex' : 'none' }}>
                         {otherIssues.map(issue => (
                             <div key={issue.issue_id} onClick={() => handleIssueClick(issue)}>
@@ -278,6 +279,7 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
             </StyledPaper>
             
             <StyledPaper style={{ ...style, textAlign: 'center',fontFamily:"NotoSansKR-Regular",display:"flex",flexDirection:"column",overflow: "hidden"}}>
+                {/*여기에 bp 아이콘 넣기 */}
                 <h2 style={{fontFamily:"NotoSansKR-Medium"}}>위반 문장</h2>
                 <Divider style={{marginBottom:"10px",marginTop:"1px"}} />
                 <Slider {...sliderSettings} ref={sliderRef} style={{alignItems: "center", display:"flex",height:"100%",justifyContent:"center"}}>
@@ -308,6 +310,10 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
                                     </li>
                                 ))}
                             </ul>
+                            <div style={{ flex: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                <h4 style={{margin:'10px'}}>모범 사례</h4>
+                                <BestPractice issue_case={issue.issue_case} />
+                            </div>
                         </div>
                     ))}
                 </Slider>

@@ -3,7 +3,7 @@ import { Button, Typography, Box, ToggleButtonGroup, ToggleButton, Paper, Divide
 import "../../assets/fonts/fonts.css";
 import { makeStyles } from '@mui/styles';
 
-const NonConformityCheck = ({ data }) => {
+const NonConformityCheck = ({ data, omissionData }) => {
   const [selectedViolations, setSelectedViolations] = useState(['법률 위반','법률 위반 위험','작성지침 미준수']);
   console.log("data is?");
   console.log(data);
@@ -49,7 +49,21 @@ const NonConformityCheck = ({ data }) => {
         </div>
     );
   };
+  const getOmissionParagraph = () => {
 
+
+    return (
+      <div className="omissionParagraph" style={{ border: "2px solid black" }}>
+        <p>누락된 항목</p>
+        {/* omissionData의 omissionData.content만 ul로 보여주기 */}
+        <ul>
+          {omissionData.map((data, index) => (
+            <li key={index}>{data.content}</li>
+          ))}
+        </ul>
+    </div>
+    );
+  };
   const getHighlightedContent = () => {
     let lastIndex = 0;
 
@@ -160,10 +174,11 @@ const classes = useStyles();
         </ToggleButton>
       </ToggleButtonGroup>
       <Paper style={{maxHeight: '450px', overflowY: 'scroll', padding: '16px', border: "2px solid #d9d9d9"}}>
-        {getMissingIssue()}
+        {getOmissionParagraph}
         {getHighlightedContent().map((item, index) => (
           <Typography key={index} variant="body1" display="inline" style={{fontFamily:"NotoSansKR-Regular"}}>{item}</Typography>
         ))}
+        {getMissingIssue()}
       </Paper>
     </Box>
   );

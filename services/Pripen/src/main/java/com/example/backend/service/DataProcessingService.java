@@ -136,10 +136,17 @@ public class DataProcessingService {
     private void handleApiResponse(ApiResponseDTO responseDTO, ProcessingStatus status, SseEmitter emitter) throws Exception {
         System.out.println("handleApiResponse is on!!");
 
+        int omissionParagraphScore = responseDTO.getProcess_Issues().stream()
+                .filter(issue -> "기재 항목 누락".equals(issue.getIssue_type()))
+                .mapToInt(issue -> issue.getIssue_score()) // 람다 표현식 사용
+                .sum();
+
         // process_Score를 계산하여 업데이트합니다.
         int score = 100 - ((responseDTO.getProcess_Law_Violate() * 15)
                 + (responseDTO.getProcess_Law_Danger() * 7)
-                + (responseDTO.getProcess_Guide_Violate() * 3));
+                + (responseDTO.getProcess_Guide_Violate() * 3)
+                + (omissionParagraphScore));
+
         responseDTO.setProcess_Score(score);
 
         if(responseDTO.getProcess_Paragraph() != null) {

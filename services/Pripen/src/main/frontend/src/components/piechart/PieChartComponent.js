@@ -15,6 +15,8 @@ const PieChartComponent = ({ pieData, total }) => {
           additionalValue = data.value * 7;
         } else if (data.label === "작성지침 미준수") {
           additionalValue = data.value * 3;
+        } else if (data.label === "기재 항목 누락") {
+            additionalValue = data.value;
         }
         return sum + additionalValue;
       }, 0);
@@ -31,6 +33,8 @@ const PieChartComponent = ({ pieData, total }) => {
             newValue = data.value * 7;
           } else if (data.label === "작성지침 미준수") {
             newValue = data.value * 3;
+          } else if(data.label === "기재 항목 누락"){
+            newValue = data.value;
           }
           return { ...data, value: newValue };
         }),
@@ -112,7 +116,6 @@ const PieChartComponent = ({ pieData, total }) => {
             }}>
                 {total}건
             </div>
-
         </div>
     );
 };

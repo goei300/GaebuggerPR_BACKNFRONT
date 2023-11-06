@@ -3,11 +3,13 @@ package com.example.backend.service;
 import com.example.backend.exception.TokenNotFoundException;
 import com.example.backend.model.redis.RefreshToken;
 import com.example.backend.repository.redis.RefreshTokenRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
+import jakarta.servlet.http.Cookie;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -80,5 +82,14 @@ public class RefreshTokenService {
         // 예시: UUID.randomUUID().toString();
         return UUID.randomUUID().toString();
     }
+    public Optional<String> extractRefreshTokenFromRequest(HttpServletRequest request) {
+        if (request.getCookies() == null) {
+            return Optional.empty();
+        }
 
+        return Arrays.stream(request.getCookies())
+                .filter(cookie -> "refreshToken".equals(cookie.getName()))
+                .findFirst()
+                .map(Cookie::getValue);
+    }
 }
