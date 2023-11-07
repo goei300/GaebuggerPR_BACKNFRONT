@@ -30,6 +30,7 @@ public class ReceiveDataController {
     public ReceiveDataController(DataProcessingService dataProcessingService) {
         this.dataProcessingService = dataProcessingService;
     }
+
     @CrossOrigin(origins = {"https://www.pri-pen.com","http://localhost:3000"})
     @PostMapping("/start")
     public ResponseEntity<Map<String, UUID>> receiveData(
@@ -89,6 +90,7 @@ public class ReceiveDataController {
         responseData.put("process_Law_Violate",1);
         responseData.put("process_Law_Danger",5);
         responseData.put("process_Guide_Violate",7);
+        responseData.put("process_Omission_Paragraph",2);
 
         List<Map<String, Object>> paragraphs = new ArrayList<>();
 

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button, Typography, Box, ToggleButtonGroup, ToggleButton, Paper, Divider } from '@mui/material';
 import "../../assets/fonts/fonts.css";
 import { makeStyles } from '@mui/styles';
+import BookIcon from '@mui/icons-material/Book';
+import CustomTooltip from './CustomToolTip';
 
 const NonConformityCheck = ({ data, omissionData }) => {
   const [selectedViolations, setSelectedViolations] = useState(['법률 위반','법률 위반 위험','작성지침 미준수']);
@@ -29,7 +31,7 @@ const NonConformityCheck = ({ data, omissionData }) => {
 
     return (
         <div key="missingIssue" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: "3px", borderRadius: "3px", margin: "5px 0", border: "1px solid black" }}>
-          <h3 style={{ marginRight: '10px', marginTop:"5px", marginBottom:"5px", fontFamily:"NotoSansKR-SemiBold" }}>누락된 항목</h3>
+          <h3 style={{ marginRight: '10px', marginTop:"5px", marginBottom:"5px", fontFamily:"NotoSansKR-SemiBold" }}>누락된 내용</h3>
           <Divider style={{marginBottom:"10px"}} />
           {countByIssueType["법률 위반"] > 0 && (
               <span style={{fontWeight:"bold", marginRight: '10px',fontFamily:"NotoSansKR-Regular"}}>
@@ -49,51 +51,134 @@ const NonConformityCheck = ({ data, omissionData }) => {
         </div>
     );
   };
+
+  
   const getOmissionParagraph = () => {
 
 
     return (
-      <div className="omissionParagraph" style={{ border: "2px solid black" }}>
-        <p>누락된 항목</p>
+      <div className="omissionParagraph" style={{ border: "2px solid black",display:"flex", justifyContent:"center" ,flexDirection:"column", alignContent:"center", alignItems:"center", marginBottom:"30px"}}>
+        <h2 style={{fontFamily:"NotosansKR-SemiBold"}}>누락된 항목</h2>
         {/* omissionData의 omissionData.content만 ul로 보여주기 */}
-        <ul>
+        <ul style={{marginRight:"30px", fontSize:"1.2rem", }}>
           {omissionData.map((data, index) => (
-            <li key={index}>{data.content}</li>
+            <li key={index} style={{fontFamily:"NotoSansKR-Regular"}}>{data.content}</li>
           ))}
         </ul>
     </div>
     );
   };
+    // 각 타입별 설명 문자열 생성
+    const getIssueDescription = (issueTypes) => {
+      // 먼저 각 타입별로 개수를 계산
+      const issueCounts = issueTypes.reduce((acc, type) => {
+        acc[type] = (acc[type] || 0) + 1;
+        return acc;
+      }, {});
+
+      // 개수가 0이 아닌 타입들만 문자열로 만든다
+      return Object.entries(issueCounts)
+        .filter(([type, count]) => count > 0)
+        .map(([type, count]) => `${type}: ${count}건`)
+        .join('\n'); // 줄바꿈 문자로 각 타입을 구분
+    };
+
+    // 데이터 처리 과정에서 각 startIndex에 대한 issueTypes를 업데이트한다.
+    // 이 예시에서는 각 type의 개수를 저장하는 배열을 가정합니다.
+    // issueTypesByStartIndex[issue.startIndex] = ['법률 위반', '법률 위반 위험', ...];
+
+    // TooltipTitle 생성
+    const createTooltipTitle = (issueCount, issueTypes) => {
+      // issueTypes는 각 타입을 포함하는 배열이어야 합니다.
+      const issuesDescription = getIssueDescription(issueTypes);
+      return `이 문장은 외 ${issueCount - 1}건의 위반 유형을 가지고 있습니다.\n${issuesDescription}`;
+    };
   const getHighlightedContent = () => {
     let lastIndex = 0;
+    const contentPieces = [];
+    const displayedStartIndexes = new Set();
+    const issueCountsByStartIndex = {};
+    const issueTypesByStartIndex = {};
 
-
+    // 이슈 처리 및 개수 카운트
     data.issues.forEach((issue) => {
       if (selectedViolations.includes(issue.type)) {
         if (issue.startIndex === -999) {
-          return; // 이 issue는 이미 처리되었으므로 다음 issue로 넘어갑니다.
+          return; // 이미 처리된 issue
         }
-        // 중간 문자열을 처리
-        const midContent = data.content.slice(lastIndex, issue.startIndex);
-        contentPieces.push(parseText(midContent));
+  
+        const issueContent = data.content.slice(issue.startIndex, issue.endIndex) +
+                             (data.content[issue.endIndex] === '\n' ? '\n' : '');
+  
+        if (!displayedStartIndexes.has(issue.startIndex)) {
+          // 중복되지 않은 경우, 내용을 표시
+          const midContent = data.content.slice(lastIndex, issue.startIndex);
+          issueTypesByStartIndex[issue.startIndex] = [issue.type];
+          contentPieces.push(midContent);
 
-        // issue 부분을 처리 (끝나는 부분에 \n이 있으면 <br /> 추가)
-        let issueContent = data.content.slice(issue.startIndex, issue.endIndex);
-        if (data.content[issue.endIndex] === '\n') {
-          issueContent += '\n';
+          contentPieces.push(
+            <span key={issue.startIndex} style={{ backgroundColor: getColorByType(issue.type), borderRadius: "10px", fontFamily: "NotoSansKR-Medium", fontSize: "1.15em" }}>
+              <h3 style={{ color: "black", marginLeft: "5px", fontSize: "18px", fontWeight: "bold" }}>위반 문장</h3>
+              {issueContent}
+            </span>
+          );
+  
+          displayedStartIndexes.add(issue.startIndex);
+          issueCountsByStartIndex[issue.startIndex] = 1;
+        } else {
+          // 이미 표시된 startIndex인 경우, 개수만 카운트
+          if (!issueTypesByStartIndex[issue.startIndex].includes(issue.type)) {
+            issueTypesByStartIndex[issue.startIndex].push(issue.type);
+          }
+          issueCountsByStartIndex[issue.startIndex] += 1;
         }
-        contentPieces.push(
-          <span key={issue.startIndex} style={{ backgroundColor: getColorByType(issue.type) ,borderRadius:"10px", fontFamily:"NotoSansKR-Medium", fontSize:"1.15em" }}>
-            <h3 style={{ color: "black", marginLeft: "5px" , fontSize:"18px",fontWeight:"bold"}}>위반 문장</h3>
-            {parseText(issueContent)}
-          </span>
-        );
         lastIndex = issue.endIndex + (data.content[issue.endIndex] === '\n' ? 1 : 0);
       }
     });
-    contentPieces.push(parseText(data.content.slice(lastIndex)));
-    return contentPieces;
+  
+    // 이슈 처리가 완료된 후, contentPieces에 아이콘 추가
+    const newContentPieces = [];
+
+    contentPieces.forEach((contentPiece, index) => {
+      // 아이콘을 붙여야 하는 경우 확인
+      if (React.isValidElement(contentPiece) && contentPiece.key != null) {
+        const issueCount = issueCountsByStartIndex[contentPiece.key];
+        if (issueCount > 1) {
+
+          
+          // 복수 이슈의 경우, 툴팁과 아이콘을 함께 렌더링
+          const issueTypes = issueTypesByStartIndex[contentPiece.key];
+          // 실제 컴포넌트에서 TooltipTitle을 사용하는 부분
+          const tooltipTitle = createTooltipTitle(issueCountsByStartIndex[contentPiece.key], issueTypesByStartIndex[contentPiece.key]);
+          
+          // 내용과 아이콘을 하나의 span 안에 넣어서 추가
+          newContentPieces.push(
+            <>
+              {contentPiece}
+              <CustomTooltip title={tooltipTitle} key={`${contentPiece.key}-tooltip`}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', whiteSpace: 'pre-line' }}>
+                  <BookIcon />
+                </span>
+              </CustomTooltip>
+              <br/>
+            </>
+          );
+        } else {
+          // 단일 이슈의 경우, 내용만 추가
+          newContentPieces.push(contentPiece);
+        }
+      } else {
+        // React 요소가 아닌 경우 (즉, 일반 텍스트인 경우), 그냥 추가
+        newContentPieces.push(contentPiece);
+      }
+    });
+
+    // 마지막으로 남은 텍스트를 추가합니다.
+    newContentPieces.push(data.content.slice(lastIndex));
+  
+    return newContentPieces;
   };
+  
 
   const getColorByType = (type) => {
     switch (type) {
@@ -102,15 +187,6 @@ const NonConformityCheck = ({ data, omissionData }) => {
       case "작성지침 미준수": return 'gold';
       default: return 'transparent';
     }
-  };
-  const parseText = (text) => {
-    const splitByNewLine = text.split('\n');
-    return splitByNewLine.map((line, index) => (
-        <React.Fragment key={index}>
-            {line.replace(/\t/g, '    ')} {/* 탭을 4개의 공백으로 변경. 필요에 따라 조정 가능 */}
-            {index !== splitByNewLine.length - 1 && <br />}
-        </React.Fragment>
-    ));
   };
 const useStyles = makeStyles({
   lawViolation: {
@@ -173,8 +249,10 @@ const classes = useStyles();
           작성지침 미준수
         </ToggleButton>
       </ToggleButtonGroup>
-      <Paper style={{maxHeight: '450px', overflowY: 'scroll', padding: '16px', border: "2px solid #d9d9d9"}}>
-        {getOmissionParagraph}
+      <Paper style={{maxHeight: '450px', overflowY: 'scroll', padding: '16px', border: "2px solid #d9d9d9",whiteSpace:"pre-line"}}>
+        {
+          omissionData && omissionData.length > 0 && getOmissionParagraph()
+        }
         {getHighlightedContent().map((item, index) => (
           <Typography key={index} variant="body1" display="inline" style={{fontFamily:"NotoSansKR-Regular"}}>{item}</Typography>
         ))}
