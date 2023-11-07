@@ -294,7 +294,7 @@ public class ReceiveDataController {
         issue9.put("issue_reason","개인정보 보호법");
         issue9.put("issue_startIndex",-100);
         issue9.put("issue_endIndex",-100);
-        issue8.put("issue_case",3);
+        issue9.put("issue_case",3);
         issue9.put("issue_guideline",List.of("제목은쓰셔야죠","부제목도필수임"));
         issue9.put("issue_goodcase","");
         processIssues.add(issue9);

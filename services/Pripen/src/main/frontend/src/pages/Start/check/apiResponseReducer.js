@@ -7,6 +7,7 @@ export const initialState={
     process_Law_Violate: 0,
     process_Law_Danger: 0,
     process_Guide_Violate: 0,
+    process_Omission_Paragraph: 0,
     process_Score: 0,
     process_Paragraph: [],
     process_Issues: [],

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import CustomizedSteppers from "../../../../components/StepIndicator/StepIndicator";
 import {    Select, MenuItem, InputLabel, FormControl, Typography,  Box, Divider, Container, Button, IconButton,Table, TableBody, TableCell, TableHead, TableRow,TablePagination  } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -23,7 +23,7 @@ function Guideline_detail({processId, prevStep,responseData}){
     const [solutionTypes,setSolutionTypes] = useState([1,2,3]);
     const modifiedTxt = guidelineDetail.modifiedText;
     const modifiedText_component = guidelineDetail.modifiedText_component;
-
+    const [selectedBpIssue, setSelectedBpIssue] = useState(null);
     const [selectedIssueList, setSelectedIssueList] = useState(null);
     const [selectedIssue, setSelectedIssue] = useState(null);
     const [selectedButtonIssue, setSelectedButtonIssue] = useState(null);
@@ -34,6 +34,16 @@ function Guideline_detail({processId, prevStep,responseData}){
         if (selectedIssueType === "모든 유형") return true;
         return issue.issue_type === selectedIssueType;
     });
+
+    const omissionParagraphIssues = responseData.process_Issues
+        .filter(issue => issue.issue_type === "기재 항목 누락")
+        .map(issue =>{
+            return{
+                id: issue.issue_id,
+                type: issue.issue_type,
+                content: issue.issue_content,
+            };
+        });
 
     console.log("process_Issues is:");
     console.log(responseData.process_Issues);
@@ -55,7 +65,6 @@ function Guideline_detail({processId, prevStep,responseData}){
     const handleButtonClick = (issue) => {
         setSelectedButtonIssue(null);
         setTimeout(() => {
-
 
             console.log(selectedButtonIssue);
             setSelectedButtonIssue(issue);
