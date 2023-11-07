@@ -5,7 +5,7 @@ import ast
 import re
 
 # Module
-from .Search_Title_Prompt import get_table, title_create_prompt_only, title_create_prompt_part_first, title_create_prompt_part, unique_title_create_prompt_part, unique_title_create_prompt_only, title_create_prompt_only_with_table, title_create_prompt_part_with_table
+from .Search_Title_Prompt import get_table, title_create_prompt_only, title_create_prompt_part_first, title_create_prompt_part, title_create_prompt_only_with_table, title_create_prompt_part_with_table
 from .Rule_Validation.Rule_Validation import *
 
 import sys
@@ -201,56 +201,3 @@ def Make_Unique_Title(title_list):
     for i in title_list:
         unique_title_list.append(i+"\r\n")
     return unique_title_list
-
-########################################################################################################
-# 유니크란 값 뽑아서 나중에 Cutting하기 위한 리스트 추출 -> (쓸지말지 고민중... 성능 안좋고 토큰 소모 큼)
-def Search_Unique_Title(docs, title_list):
-    unique_title_list = []
-    print("컷팅할 테이블입니다", table)
-    docs[0].page_content = docs[0].page_content.replace(table, "")
-    for i in range(0, len(docs)):
-        #chunk가 여러개면(토큰수 많음)
-        if (len(docs) > 1):
-            print(i,"번째 페이지입니다.")
-            print(docs[i].page_content)
-            if not title_list:
-                break
-            gpt_prompt = unique_title_create_prompt_part(docs[i].page_content, title_list)
-
-            message = [{"role": "user", "content": gpt_prompt}]
-            response = openai.ChatCompletion.create(
-                    model="gpt-4",
-                    messages=message,
-                    temperature=0,
-                    max_tokens=1000,
-                    frequency_penalty=0.0
-                )
-            time.sleep(30)
-            unique_title_list += ast.literal_eval((response['choices'][0]['message']['content']))
-            extract_title=[]
-            # 중복제거위해 unique_title_list로 추출해온 오리지널값들을 title_list에서 뺀다.
-            for unique_title in unique_title_list:
-                original = re.findall(r'.+?(?=\n|$)', unique_title)
-                extract_title.append(original[0])
-
-            # title_list에서 뺸다.
-            title_list = [item for item in title_list if item not in extract_title]
-            print("다음번에 들어갈 Title_list", title_list)
-            print("뽑힌 unique_title", unique_title_list)
-        # chunk가 한개면(토큰수 적음)
-        else:
-            gpt_prompt = unique_title_create_prompt_only(docs[i].page_content, title_list)
-            message = [{"role": "user", "content": gpt_prompt}]
-            response = openai.ChatCompletion.create(
-                model="gpt-4",
-                messages=message,
-                temperature=0,
-                max_tokens=1000,
-                frequency_penalty=0.0
-            )
-            unique_title_list = ast.literal_eval((response['choices'][0]['message']['content']))
-    return unique_title_list
-
-
-
-
