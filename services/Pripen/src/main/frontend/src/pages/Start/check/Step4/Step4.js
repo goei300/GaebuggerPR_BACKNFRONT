@@ -52,7 +52,15 @@ function Step4({ processId, nextStep,responseData,infoObject }) {
                 endIndex: issue.issue_endIndex
             };
         });
-
+    const omissionParagraphIssues = responseData.process_Issues
+        .filter(issue => issue.issue_type === "기재 항목 누락")
+        .map(issue =>{
+            return{
+                id: issue.issue_id,
+                type: issue.issue_type,
+                content: issue.issue_content,
+            };
+        });
 
     const extractedData = {
         content: responseData.process_Original,
@@ -194,7 +202,8 @@ function Step4({ processId, nextStep,responseData,infoObject }) {
         {
             "id" : "기재 항목 누락",
             "label": "기재 항목 누락",
-            "value": serverData['omissionParagraphScore']
+            "value": serverData['omissionParagraph'],
+            "score": serverData['omissionParagraphScore']
         }
     ];
 
@@ -252,7 +261,7 @@ function Step4({ processId, nextStep,responseData,infoObject }) {
                             <IssuePopover />
                         </div> */}
                     </div>
-                    <NonConformityCheck data={extractedData} />
+                    <NonConformityCheck data={extractedData} omissionData={omissionParagraphIssues} />
                 </div>
                 <Divider style={{margin: "100px", opacity:0}} />
 

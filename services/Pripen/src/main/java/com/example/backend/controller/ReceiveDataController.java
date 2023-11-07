@@ -30,6 +30,7 @@ public class ReceiveDataController {
     public ReceiveDataController(DataProcessingService dataProcessingService) {
         this.dataProcessingService = dataProcessingService;
     }
+
     @CrossOrigin(origins = {"https://www.pri-pen.com","http://localhost:3000"})
     @PostMapping("/start")
     public ResponseEntity<Map<String, UUID>> receiveData(
@@ -89,6 +90,7 @@ public class ReceiveDataController {
         responseData.put("process_Law_Violate",1);
         responseData.put("process_Law_Danger",5);
         responseData.put("process_Guide_Violate",7);
+        responseData.put("process_Omission_Paragraph",2);
 
         List<Map<String, Object>> paragraphs = new ArrayList<>();
 
@@ -292,7 +294,7 @@ public class ReceiveDataController {
         issue9.put("issue_reason","개인정보 보호법");
         issue9.put("issue_startIndex",-100);
         issue9.put("issue_endIndex",-100);
-        issue8.put("issue_case",3);
+        issue9.put("issue_case",3);
         issue9.put("issue_guideline",List.of("제목은쓰셔야죠","부제목도필수임"));
         issue9.put("issue_goodcase","");
         processIssues.add(issue9);
