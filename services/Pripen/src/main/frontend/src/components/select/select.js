@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import Select from 'react-select';
 
 const options = [
@@ -14,14 +14,15 @@ const customStyles = {
     }),
   };
 
-  function DropdownComponent({ onChange, value, options }) {
+  function DropdownComponent({ onChange, value, options}) {
+      // 컴포넌트가 마운트될 때 한 번만 실행
+ 
     return (
         <Select
             options={options}
             isSearchable={false}
-            placeholder="선택해주세요..."
             onChange={onChange}
-            value={value}   // 현재 선택된 값을 표시하도록 설정합니다.
+            value={value}
             styles={customStyles}
         />
     );

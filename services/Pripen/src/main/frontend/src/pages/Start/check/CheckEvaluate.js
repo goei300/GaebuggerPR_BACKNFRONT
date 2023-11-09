@@ -13,7 +13,14 @@ function CheckEvaluate() {
     const [step, setStep] = useState(1);
     const [slideDirection, setSlideDirection] = useState('left');
     const [file,setFile] =useState(null);
-    const [checkedItems, setCheckedItems] = useState({});
+
+    const itemIds = [5, 6, 7, 8, 10, 13, 14, 15, 16, 18, 19, 20, 21];
+
+    const initialItems = itemIds.reduce((acc, id) => {
+    acc[id] = '기재안함';
+    return acc;
+    }, {});
+    const [checkedItems, setCheckedItems] = useState(initialItems);
     const [processId, setProcessId] = useState(null);
     const [infoObject, setInfoObject] = useState({
         companyName: '',

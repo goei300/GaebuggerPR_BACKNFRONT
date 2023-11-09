@@ -8,8 +8,6 @@ import '../../../../assets/fonts/fonts.css';
 import './Step2.css';
 import axiosInstance from '../../../../api/axiosInstance';
 function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId,infoObject,file  }) {
-
-
     console.log("infoObject is:",infoObject);
     const StyledPaper = styled(Paper)({
         padding: '30px',
@@ -51,9 +49,9 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
         { id: 10, text: '미이용자의 개인정보 파기 등에 관한 조치', type: 'checkbox', options: ['기재', '기재안함'] },
         { id: 11, text: '정보주체와 법정대리인의 권리·의무 및 행사방법에 관한 사항', type: 'text', default: '필수기재' },
         { id: 12, text: '개인정보의 안전성 확보조치에 관한 사항', type: 'text', default: '필수기재' },
-        { id: 13, text: '개인정보를 자동으로 수집하는 장치의 설치·운영 및 그 거부에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 13, text: '개인정보를 자동으로 수집하는 장치의 설치·운영 및 그 거부에 관한 사항',type: 'checkbox', options: ['기재', '기재안함'] },
         { id: 14, text: '행태정보의 수집·이용·제공 및 거부 등에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
-        { id: 15, text: '추가적인 이용·제공 관련 판단 기준', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 15, text: '추가적인 이용·제공 관련 판단 기준', type: 'checkbox',options: ['기재', '기재안함'] },
         { id: 16, text: '가명정보 처리에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
         { id: 17, text: '개인정보 보호책임자에 관한 사항', type: 'text', default: '필수기재' },
         { id: 18, text: '국내대리인 지정에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
@@ -72,7 +70,9 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
     const uncheckedItemsList = () => {
         // 선택되지 않은 항목들을 반환합니다.
         return items.filter(item => item.type === 'checkbox' && !checkedItems[item.id]);
+
     }
+
     const handleNextStep = async () => {
     
         // const csrfToken = await getCsrfToken();
@@ -102,8 +102,8 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
         }));
     
         try {
-            const response = await axios.post('http://localhost:8080/api/start', formData);
-            //const response = await axios.post('https://www.pri-pen.com/api/start', formData, { headers });
+            //const response = await axios.post('http://localhost:8080/api/start', formData);
+            const response = await axios.post('https://www.pri-pen.com/api/start', formData);
             if (response.status === 200) {
                 console.log("my process id is:", response.data.processID);
                 setProcessId(response.data.processID);
@@ -154,6 +154,8 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
                                     options={item.options.map(opt => ({ label: opt, value: opt }))}
                                     onChange={(selectedOption) => handleDropdownChange(selectedOption, item)}
                                     value={checkedItems[item.id] ? { label: checkedItems[item.id], value: checkedItems[item.id] } : null}
+                                    setCheckedItems={setCheckedItems}
+                                    item={item}
                                 />
                             </Box>
                         </Box>
