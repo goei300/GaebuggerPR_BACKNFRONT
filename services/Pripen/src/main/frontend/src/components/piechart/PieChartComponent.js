@@ -70,8 +70,9 @@ const PieChartComponent = ({ pieData, total }) => {
             if (containerRef.current) {
                 observer.unobserve(containerRef.current);
             }
-        };
+        }
     }, []);
+
     const filteredPieData = transformedPieData.filter(item => item.value > 0);
         // 부모 컨테이너의 크기에서 마진을 빼고 최소값의 절반을 반지름으로 사용합니다.
     const parentWidth = 450; // 부모 컴포넌트의 너비
