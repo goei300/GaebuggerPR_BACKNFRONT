@@ -22,7 +22,7 @@ function Step3({ nextStep, processId,dispatch,apiResponse }) {
         // 로컬:http://localhost:8080/api/check-response/${processId}
         //http://www.pri-pen.com/api/check-response/${processId}
         //const sse = new EventSource(`http://localhost:8080/api/check-response/${processId}`);
-        const sse = new EventSource(`https://www.pri-pen.com/api/check-response/${processId}`);
+        const sse = new EventSource(`https://backapi.pri-pen.com/api/check-response/${processId}`);
 
         // data 이벤트를 통해 ApiResponseDTO 데이터 수신
         sse.addEventListener('data', event => {

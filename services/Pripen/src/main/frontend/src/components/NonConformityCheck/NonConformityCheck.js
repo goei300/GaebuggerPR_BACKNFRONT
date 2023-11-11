@@ -87,12 +87,21 @@ const NonConformityCheck = ({ data, omissionData }) => {
     // 이 예시에서는 각 type의 개수를 저장하는 배열을 가정합니다.
     // issueTypesByStartIndex[issue.startIndex] = ['법률 위반', '법률 위반 위험', ...];
 
-    // TooltipTitle 생성
-    const createTooltipTitle = (issueCount, issueTypes) => {
-      // issueTypes는 각 타입을 포함하는 배열이어야 합니다.
-      const issuesDescription = getIssueDescription(issueTypes);
-      return `이 문장은 외 ${issueCount - 1}건의 위반 유형을 가지고 있습니다.\n${issuesDescription}`;
+    const getUniqueIssues = (issues) => {
+      const uniqueIssues = new Set();
+      issues.forEach(issue => {
+        // 이 예제에서는 issue의 고유 식별자로 issue.id를 사용합니다.
+        // 실제 구현에서는 이슈를 고유하게 식별할 수 있는 속성을 사용해야 합니다.
+        uniqueIssues.add(issue.id);
+      });
+      return Array.from(uniqueIssues);
     };
+
+    const createTooltipTitle = (issueCount, issueTypes) => {
+      const issuesDescription = issueTypes.join(', ');
+      return `이 문장은 ${issueCount}건의 위반 유형을 가지고 있습니다.\n${issuesDescription}`;
+    };
+
   const getHighlightedContent = () => {
     let lastIndex = 0;
     const contentPieces = [];
@@ -106,6 +115,7 @@ const NonConformityCheck = ({ data, omissionData }) => {
         if (issue.startIndex === -999) {
           return; // 이미 처리된 issue
         }
+
   
         const issueContent = data.content.slice(issue.startIndex, issue.endIndex) +
                              (data.content[issue.endIndex] === '\n' ? '\n' : '');
@@ -139,19 +149,15 @@ const NonConformityCheck = ({ data, omissionData }) => {
     // 이슈 처리가 완료된 후, contentPieces에 아이콘 추가
     const newContentPieces = [];
 
-    contentPieces.forEach((contentPiece, index) => {
-      // 아이콘을 붙여야 하는 경우 확인
+    contentPieces.forEach((contentPiece) => {
       if (React.isValidElement(contentPiece) && contentPiece.key != null) {
         const issueCount = issueCountsByStartIndex[contentPiece.key];
+        const issueTypes = issueTypesByStartIndex[contentPiece.key];
+    
         if (issueCount > 1) {
-
-          
           // 복수 이슈의 경우, 툴팁과 아이콘을 함께 렌더링
-          const issueTypes = issueTypesByStartIndex[contentPiece.key];
-          // 실제 컴포넌트에서 TooltipTitle을 사용하는 부분
-          const tooltipTitle = createTooltipTitle(issueCountsByStartIndex[contentPiece.key], issueTypesByStartIndex[contentPiece.key]);
-          
-          // 내용과 아이콘을 하나의 span 안에 넣어서 추가
+          const tooltipTitle = createTooltipTitle(issueCount, issueTypes);
+    
           newContentPieces.push(
             <>
               {contentPiece}
@@ -164,15 +170,14 @@ const NonConformityCheck = ({ data, omissionData }) => {
             </>
           );
         } else {
-          // 단일 이슈의 경우, 내용만 추가
+          // 단일 이슈 또는 이슈 없음의 경우, 내용만 추가
           newContentPieces.push(contentPiece);
         }
       } else {
-        // React 요소가 아닌 경우 (즉, 일반 텍스트인 경우), 그냥 추가
+        // React 요소가 아닌 경우, 그냥 추가
         newContentPieces.push(contentPiece);
       }
     });
-
     // 마지막으로 남은 텍스트를 추가합니다.
     newContentPieces.push(data.content.slice(lastIndex));
   

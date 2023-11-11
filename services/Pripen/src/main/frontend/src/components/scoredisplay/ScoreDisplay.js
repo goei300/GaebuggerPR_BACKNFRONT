@@ -65,7 +65,8 @@ const ScoreDisplay = ({ data}) => {
                 진단 점수
             </Typography>
             <Typography variant="h2" style={{ margin:"20px", fontFamily: "NotoSansKR-Bold", fontWeight: 'bold' }}>
-                {displayedScore}
+                {/*{displayedScore}*/}
+                {data.score}
             </Typography>
             <br/>
             {showComment && (

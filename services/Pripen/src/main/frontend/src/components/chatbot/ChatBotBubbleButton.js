@@ -154,7 +154,6 @@ const ChatBotBubbleButton = () => {
           }}
           onLoad={handleIframeLoad}
         ></iframe>
-
       </div>
     </>
   );

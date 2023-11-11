@@ -122,7 +122,6 @@ const TablePage = ({ selectedIssueType,setSelectedIssueType,filteredIssues, hand
                             <TableCell style={{width:"10%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_id}</TableCell>
                             <TableCell style={{width:"10%", fontFamily:"NotoSansKR-Regular"}}>
                                 {issue.issue_type}
-                                {issue.issue_case}
                                 {issue.issue_type === "법률 위반" && <span style={{color: "red", fontWeight: "bold", marginLeft: "7px"}}>(-15)</span>}
                                 {issue.issue_type === "법률 위반 위험" && <span style={{color: "orange", fontWeight: "bold", marginLeft: "7px"}}>(-7)</span>}
                                 {issue.issue_type === "작성지침 미준수" && <span style={{color: "gold", fontWeight: "bold", marginLeft: "7px"}}>(-3)</span>}

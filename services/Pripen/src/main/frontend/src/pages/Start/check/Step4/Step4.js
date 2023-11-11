@@ -16,6 +16,7 @@ import { StyledPaper } from '../Guideline_detail/styles/ComponentStyles';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import Tooltip from '@mui/material/Tooltip';
 import IssuePopover from '../../../../components/IssuePopover/IssuePopover';
+import Daegu from '../../../../components/daegu_map/Daegu';
 
 function Step4({ processId, nextStep,responseData,infoObject }) {
     const [open, setOpen] = useState(false);
@@ -236,15 +237,15 @@ function Step4({ processId, nextStep,responseData,infoObject }) {
                     <Divider style={{marginBottom:"20px",opacity:0}} />
                 </div>
 
-                <div className="average-bargraph">
-                    <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>업종별 평균 비교 그래프</h1>
+                <div className="average-bargraph" style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
+                    <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>대구 광역시 내 개인정보 처리방침 현황</h1>
                     <Divider style={{marginBottom:'10px'}} />
                     <h3 style={{ marginLeft: "25px", fontFamily: "NotoSansKR-Medium", color: "#999" }}>
-                            <span style={{ fontWeight: "bold", fontSize: "1.2em",color:"black" }}>{serverData['industryType']}</span>님의 유형별 진단 결과와 업종별 평균 결과를 비교해보세요
+                            <span style={{ fontWeight: "bold", fontSize: "1.2em",color:"black" }}>{serverData['industryType']}</span>님의 결과와 대구시 내의 평균 값과 비교해 보세요
                     </h3>
                     <Divider style={{marginBottom:'20px',opacity:0}} />
-                    <BarChartComponent data={graphData} />      
-
+                    {/* <BarChartComponent data={graphData} />       */}
+                    <Daegu />
                 </div>
                 <Divider style={{margin: "100px", opacity:0}} />
 
