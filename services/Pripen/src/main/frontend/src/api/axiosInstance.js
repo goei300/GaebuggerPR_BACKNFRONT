@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Axios 인스턴스 생성
 const axiosInstance = axios.create({
-    baseURL: 'https://www.pri-pen.com/',
+    baseURL: 'https://backapi.pri-pen.com/',
     withCredentials: true
   });
 
@@ -48,7 +48,7 @@ const axiosInstance = axios.create({
         originalRequest._retry = true;
         try {
           // RefreshToken으로 새 AccessToken을 요청합니다.
-          const rs = await axiosInstance.post('https://www.pri-pen.com/userAuthentication/refresh');
+          const rs = await axiosInstance.post('https://backapi.pri-pen.com/userAuthentication/refresh');
 
           // 실패했던 요청을 다시 시도합니다.
           return axiosInstance(originalRequest);

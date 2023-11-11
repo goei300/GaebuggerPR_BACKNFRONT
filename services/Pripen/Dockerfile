@@ -2,18 +2,21 @@
 FROM gradle:8.2.1-jdk17 AS build
 WORKDIR /app
 
-# npm 설치
-RUN apt-get update && apt-get install -y npm
-
-# 프론트엔드 소스와 패키지 파일 복사
-COPY src/main/frontend/package*.json src/main/frontend/
-COPY src/main/frontend/ src/main/frontend/
+## npm 설치
+#RUN apt-get update && apt-get install -y npm
+#
+## 프론트엔드 소스와 패키지 파일 복사
+#COPY src/main/frontend/package*.json src/main/frontend/
+#COPY src/main/frontend/ src/main/frontend/
 
 # 백엔드 소스와 설정 파일 복사
 COPY build.gradle settings.gradle ./
 COPY gradlew ./
 COPY gradle ./gradle
-COPY src ./src
+
+# src 폴더 내의 java와 resources 폴더만 복사
+COPY src/main/java ./src/main/java
+COPY src/main/resources ./src/main/resources
 
 # 전체 빌드 수행
 RUN chmod +x ./gradlew

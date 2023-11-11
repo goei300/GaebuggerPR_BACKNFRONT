@@ -41,7 +41,8 @@ export default function CategoryPopover() {
             <ul style={{fontFamily:"NotoSansKR-Regular"}}>
                 <li><strong style={{color:"red"}}>법률 위반:</strong> '개인정보 보호법 제30조'와 그 시행령 및 관련 법령을 위반한 사항</li>
                 <li><strong style={{color:"orange"}}> 법률 위반 위험:</strong> 법률에 명시된 내용이 처리방침 상에 모호하게 기재되어 법률 위반의 위험이 있는 경우를 지칭</li>
-                <li><strong style={{color:"gold"}}>작성지침 미준수:</strong> '개인정보처리방침 작성지침'의 권고사항을 준수하지 않은 경우</li>
+                <li><strong style={{color:"gold"}}>작성지침 미준수:</strong>'개인정보 처리방침 작성지침' 상의 내용을 준수하지 않은 경우</li>
+                <li><strong style={{color:"purple"}}>기재 항목 누락:</strong>'개인정보 처리방침 작성지침' 상의 항목 자체를 누락한 경우</li>
             </ul>
         </div>
       </Popover>

@@ -54,6 +54,7 @@ const ResultBoxSection = ({ serverData }) => {
                     { key: 'lawViolate', label: '법률 위반', color: '#D32F2F', icon:<WarningIcon fontSize="large"/> },
                     { key: 'lawDanger', label: '법률 위반 위험', color: '#FF9800', icon: <FmdBadIcon fontSize="large"/> },
                     { key: 'guideViolate', label: '작성지침 미준수', color: 'gold', icon: <RuleFolderIcon fontSize="large"/>},
+                    { key: 'omissionParagraph', label: '기재 항목 누락', color: 'purple', icon: <RuleFolderIcon fontSize="large"/>},
                 ].map(({ key, label, color, icon }) => (
                     <Box key={key} p={3} borderRadius={15}  boxShadow={3} backgroundColor="#FFFFFF" textAlign="center" flexGrow={1} mx={2} width="200px" height="150px">
                         <Icon style={{ color: color, display:'inline'}}>{icon}</Icon>

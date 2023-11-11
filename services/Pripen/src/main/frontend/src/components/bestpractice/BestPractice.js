@@ -36,7 +36,7 @@ const BestPractice = ({ issue_case }) => {
     };
 
     // 이미지 파일의 경로를 생성합니다.
-    const imagePath = `/assets/images/bestpractice/${issue_case}.png`;
+    const imagePath = `/assets/images/BestPractice/${issue_case+1}.png`;
 
     const boxStyle = {
         ...style,

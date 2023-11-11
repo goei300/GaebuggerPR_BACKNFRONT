@@ -15,7 +15,7 @@ const LoginForm = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const { isLoggedIn, login } = useAuth();
     const getCsrfToken = async () => {
-        const response = await axios.get('https://www.pri-pen.com/csrf-token');
+        const response = await axios.get('https://backapi.pri-pen.com/csrf-token');
         console.log("csrftoken is get!");
         console.log(response);
         return response.data;
@@ -44,7 +44,7 @@ const LoginForm = () => {
         }
         setErrorMessage(null); // 오류 메시지 초기화
         try {
-            const response = await axios.post('https://www.pri-pen.com/userAuthentication/login', {
+            const response = await axios.post('https://backapi.pri-pen.com/userAuthentication/login', {
                 email: email,
                 passwordHash: password
             });

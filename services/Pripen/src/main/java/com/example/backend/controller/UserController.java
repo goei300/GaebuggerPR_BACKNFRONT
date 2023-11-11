@@ -59,7 +59,7 @@ public class UserController {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://59.5.38.67:3000"})
+    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://localhost:3000"})
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody User loginUser, HttpServletResponse response) {
         try {

@@ -33,7 +33,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class DataProcessingService {
     private final ObjectMapper objectMapper = new ObjectMapper();
-
     private final ConcurrentHashMap<UUID, ProcessingStatus> statusMap = new ConcurrentHashMap<>();
 
     public UUID initializeProcessingStatus(List<Integer> checkedItems, MultipartFile file) {
@@ -51,7 +50,7 @@ public class DataProcessingService {
         return uuid;
     }
     private final Object lock = new Object();
-    private final WebClient webClient = WebClient.create("http://localhost:5000");
+    private final WebClient webClient = WebClient.create("https://aiapi.pri-pen.com");
     private final WebClient webClient_test = WebClient.create("http://localhost:8080/api");
     @Async
     @Transactional
@@ -68,8 +67,6 @@ public class DataProcessingService {
                         "user_input", status.getCheckedItems(),
                         "text", status.getProcessedFileContent()
                 );
-
-
                 // ApiResponseDTO 형태로 응답을 받습니다.
                 ApiResponseDTO responseDTO = webClient.post()
                         .uri("/process-text")

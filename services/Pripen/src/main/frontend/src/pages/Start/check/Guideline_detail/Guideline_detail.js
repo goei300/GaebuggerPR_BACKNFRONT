@@ -34,6 +34,9 @@ function Guideline_detail({processId, prevStep,responseData}){
         if (selectedIssueType === "모든 유형") return true;
         return issue.issue_type === selectedIssueType;
     });
+    const transformedIssues = responseData.process_Issues
+    .filter(issue => issue.issue_type !== "기재 항목 누락");
+
 
     const omissionParagraphIssues = responseData.process_Issues
         .filter(issue => issue.issue_type === "기재 항목 누락")
@@ -171,11 +174,11 @@ function Guideline_detail({processId, prevStep,responseData}){
                         <div className="showingIssue" style={{ border:"1px solid #d9d9d9",marginLeft:"20px",borderRadius:"10px",padding:"30px"}}>
                             {selectedOption === "paragraph" ? (
                                 <div className="paragraph" style={{display:"flex",justifyContent:"space-between"}}>
-                                    <ResultSlide issues={responseData.process_Issues} paragraph={responseData.process_Paragraph} style={{flex:"1",margin:"0 10px",width: "10%"}} onIssueRender={handleIssueRender} onIssueClick={handleIssueClick} selectedButtonIssue={selectedButtonIssue} setSelectedButtonIssue={setSelectedButtonIssue}/>
+                                    <ResultSlide issues={transformedIssues} paragraph={responseData.process_Paragraph} style={{flex:"1",margin:"0 10px",width: "10%"}} onIssueRender={handleIssueRender} onIssueClick={handleIssueClick} selectedButtonIssue={selectedButtonIssue} setSelectedButtonIssue={setSelectedButtonIssue}/>
                                     <RenderIssue issuelist={selectedIssueList} highlightIssue={selectedIssue} style={{flex:"1",margin:"0 10px"}}/>
                                 </div>
                             ) : (
-                                <SlideByIssue original={responseData.process_Original} issues={responseData.process_Issues} paragraphs={responseData.process_Paragraph} selectedButtonIssue={selectedButtonIssue} setSelectedButtonIssue={setSelectedButtonIssue} style={{flex:"1",margin:"0 10px",width: "10%"}} />
+                                <SlideByIssue original={responseData.process_Original} issues={transformedIssues} paragraphs={responseData.process_Paragraph} selectedButtonIssue={selectedButtonIssue} setSelectedButtonIssue={setSelectedButtonIssue} style={{flex:"1",margin:"0 10px",width: "10%"}} />
 
                             )}
                         </div>
