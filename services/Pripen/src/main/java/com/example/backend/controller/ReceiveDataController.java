@@ -23,7 +23,6 @@ import java.util.concurrent.ConcurrentMap;
 @RequestMapping("/api")
 public class ReceiveDataController {
 
-
     private ConcurrentMap<String, Boolean> processStatus = new ConcurrentHashMap<>();
     private final DataProcessingService dataProcessingService;
 
@@ -31,7 +30,7 @@ public class ReceiveDataController {
         this.dataProcessingService = dataProcessingService;
     }
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com","http://localhost:3000"})
+    @CrossOrigin(origins = {"https://www.pri-pen.com","http://localhost:3000,"})
     @PostMapping("/start")
     public ResponseEntity<Map<String, UUID>> receiveData(
             @RequestPart("file") MultipartFile file,
@@ -69,10 +68,10 @@ public class ReceiveDataController {
         SseEmitter emitter = new SseEmitter();
 
         // real-mode
-       // CompletableFuture<Void> future = dataProcessingService.processData(parsedProcessId, emitter);
+        CompletableFuture<Void> future = dataProcessingService.processData(parsedProcessId, emitter);
 
         // test-mode
-        CompletableFuture<Void> future = dataProcessingService.processData_test(parsedProcessId,emitter);
+        //CompletableFuture<Void> future = dataProcessingService.processData_test(parsedProcessId,emitter);
 
         return emitter;
     }
@@ -161,7 +160,6 @@ public class ReceiveDataController {
         issue0.put("issue_endIndex", 489);
         issue0.put("issue_case",5);
         issue0.put("issue_guideline", List.of("'등'이라는 표현은 추상적이므로 사용하지 않아야 합니다.", "수집 목적이 구체적으로 기재되어야 합니다."));
-        issue0.put("issue_goodCase", "");
         processIssues.add(issue0);
 
         // Issue 1
@@ -176,7 +174,6 @@ public class ReceiveDataController {
         issue1.put("issue_endIndex", 783);
         issue1.put("issue_case",9);
         issue1.put("issue_guideline", List.of("개인정보의 보유 및 이용기간은 정보주체의 동의를 받거나 법령에 따라 결정되어야 합니다.", "이 기간은 개인정보처리방침에 명시되어야 합니다."));
-        issue1.put("issue_goodCase", "");
         processIssues.add(issue1);
 
         // ... (나머지 이슈들도 위와 같은 방식으로 추가)
@@ -193,7 +190,6 @@ public class ReceiveDataController {
         issue2.put("issue_endIndex", 859);
         issue2.put("issue_case",4);
         issue2.put("issue_guideline", List.of("개인정보의 처리 목적에 따른 구체적인 처리 및 보유 기간을 명시해야 합니다.", "'목적 달성시'와 같은 추상적인 표현은 사용하지 않아야 합니다."));
-        issue2.put("issue_goodCase", "");
         processIssues.add(issue2);
 
         // Issue 3
@@ -208,7 +204,6 @@ public class ReceiveDataController {
         issue3.put("issue_endIndex", 905);
         issue3.put("issue_case",3);
         issue3.put("issue_guideline", List.of("법률에 따른 특정 기록의 보유 기간을 준수해야 합니다.", "해당 기록의 보유 기간이 개인정보처리방침에 명시되어야 합니다."));
-        issue3.put("issue_goodCase", "");
         processIssues.add(issue3);
 
         // Issue 4
@@ -223,7 +218,6 @@ public class ReceiveDataController {
         issue4.put("issue_endIndex", 905);
         issue4.put("issue_case",3);
         issue4.put("issue_guideline", List.of("어떤걸 위바했네요", "그리 살지마라"));
-        issue4.put("issue_goodCase", "");
         processIssues.add(issue4);
 
         // Issue 5
@@ -238,7 +232,6 @@ public class ReceiveDataController {
         issue5.put("issue_endIndex", 905);
         issue5.put("issue_case",4);
         issue5.put("issue_guideline", List.of("쪼까위험하내", "뭘바임마"));
-        issue5.put("issue_goodCase", "");
         processIssues.add(issue5);
 
         // Issue 6
@@ -253,7 +246,6 @@ public class ReceiveDataController {
         issue6.put("issue_endIndex", -999);
         issue6.put("issue_case",6);
         issue6.put("issue_guideline", List.of("긴급 상황 발생 시 정보주체의 동의 없이 개인정보를 제공할 수 있다는 내용을 기재해야 합니다.","재난, 감염병 등의 긴급 상황에 대비한 개인정보 제공 방안을 기재해야 합니다."));
-        issue6.put("issue_goodCase", "");
         processIssues.add(issue6);
         // Issue 7
         Map<String, Object> issue7 = new HashMap<>();
@@ -267,7 +259,6 @@ public class ReceiveDataController {
         issue7.put("issue_endIndex", -999);
         issue7.put("issue_case",8);
         issue7.put("issue_guideline", List.of("영차","영치2"));
-        issue7.put("issue_goodCase", "");
         processIssues.add(issue7);
 
         // Issue 6
@@ -282,7 +273,6 @@ public class ReceiveDataController {
         issue8.put("issue_endIndex", -999);
         issue8.put("issue_case",4);
         issue8.put("issue_guideline", List.of("영차","영치2"));
-        issue8.put("issue_goodCase", "");
         processIssues.add(issue8);
 
         Map<String, Object> issue9 = new HashMap<>();
@@ -292,12 +282,24 @@ public class ReceiveDataController {
         issue9.put("issue_score",51);
         issue9.put("issue_content","제목 및 서문");
         issue9.put("issue_reason","개인정보 보호법");
-        issue9.put("issue_startIndex",-100);
-        issue9.put("issue_endIndex",-100);
+        issue9.put("issue_startIndex",-500);
+        issue9.put("issue_endIndex",-500);
         issue9.put("issue_case",3);
         issue9.put("issue_guideline",List.of("제목은쓰셔야죠","부제목도필수임"));
-        issue9.put("issue_goodcase","");
         processIssues.add(issue9);
+
+        Map<String, Object> issue10 = new HashMap<>();
+        issue10.put("issue_id",10);
+        issue10.put("issue_paragraph_id",-1);
+        issue10.put("issue_type","기재 항목 누락");
+        issue10.put("issue_score",51);
+        issue10.put("issue_content","개인정보 어떤거 그 긴거 출력하는거");
+        issue10.put("issue_reason","개인정보 보호법29조");
+        issue10.put("issue_startIndex",-500);
+        issue10.put("issue_endIndex",-500);
+        issue10.put("issue_case",21);
+        issue10.put("issue_guideline",List.of("테스트입니다","부제목도필수임"));
+        processIssues.add(issue10);
 
         return processIssues;
     }

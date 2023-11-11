@@ -21,7 +21,7 @@ const Signup = () => {
 
     // 1. CSRF 토큰 받아오는 함수
     const getCsrfToken = async () => {
-        const response = await axios.get('https://www.pri-pen.com/csrf-token');
+        const response = await axios.get('https://backapi.pri-pen.com/csrf-token');
         console.log("csrftoken is get!");
         console.log(response);
         return response.data;

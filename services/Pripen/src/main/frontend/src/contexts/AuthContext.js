@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         try {
             // 백엔드 로그아웃 API 호출, withCredentials을 true로 설정하여 쿠키를 함께 보냅니다.
-            await axios.delete('https://www.pri-pen.com/userAuthentication/logout', {
+            await axios.delete('https://backapi.pri-pen.com/userAuthentication/logout', {
                 withCredentials: true
             });
 

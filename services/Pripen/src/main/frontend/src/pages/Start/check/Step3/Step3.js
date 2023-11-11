@@ -7,6 +7,7 @@ import './Step3.css';
 import axios from "axios";
 import Loading from '../../../../components/animation/Loading';
 import apiResponseReducer from "../apiResponseReducer";
+import LoadingEnd from '../../../../components/animation/LoadingEnd';
 
 const StyledPaper = styled(Paper)({
     padding: '30px',
@@ -20,8 +21,8 @@ function Step3({ nextStep, processId,dispatch,apiResponse }) {
         // SSE 연결 설정
         // 로컬:http://localhost:8080/api/check-response/${processId}
         //http://www.pri-pen.com/api/check-response/${processId}
-        const sse = new EventSource(`http://localhost:8080/api/check-response/${processId}`);
-        //const sse = new EventSource(`https://www.pri-pen.com/api/check-response/${processId}`);
+        //const sse = new EventSource(`http://localhost:8080/api/check-response/${processId}`);
+        const sse = new EventSource(`https://backapi.pri-pen.com/api/check-response/${processId}`);
 
         // data 이벤트를 통해 ApiResponseDTO 데이터 수신
         sse.addEventListener('data', event => {
@@ -62,7 +63,7 @@ function Step3({ nextStep, processId,dispatch,apiResponse }) {
         <Container className="compact-container" style={{padding:"0px"}}>
             <CustomizedSteppers activeStep={2} />
             <StyledPaper elevation={3}>
-                <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="400px">
+                <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" >
                     {!loadingComplete ? (
                         <>
                             <Loading />
@@ -71,7 +72,11 @@ function Step3({ nextStep, processId,dispatch,apiResponse }) {
                             </Typography>
                         </>
                     ) : (
-                        <div className="after-acting" style={{display:"flex", justifyContent:"center", alignContent: "center"}}>
+                        <div className="after-acting" style={{display:"flex", justifyContent:"center", alignContent: "center",alignItems:"center", flexDirection:"column"}}>
+                            <LoadingEnd />
+                            <Typography variant="h6" style={{ height:'100px' , marginTop: '1px', color: '#333', fontFamily: 'NotoSansKR-Black', animation: 'blink 3s infinite' }}>
+                                진단이 완료되었습니다. 결과를 바로 확인해보세요!
+                            </Typography>
                             <Button variant="contained" color="primary" onClick={nextStep}>
                                 결과 확인
                             </Button>
