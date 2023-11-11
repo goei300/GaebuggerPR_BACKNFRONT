@@ -11,9 +11,9 @@ from .Rule_Validation.Rule_Validation import *
 import sys
 import os
 import time
-sys.path.append("C://Users//scw10//PycharmProjects//rest_test//venv//config")
 import config
 api_key = os.getenv("OPENAI_API_KEY")
+
 
 # 컷팅할 목차 저장하는 전역변수(한번 컷팅하면 계속 이거로 씀)
 table = ""
@@ -199,5 +199,9 @@ def Search_Title_With_Rule(docs, rule):
 def Make_Unique_Title(title_list):
     unique_title_list=[]
     for i in title_list:
-        unique_title_list.append(i+"\r\n")
+        unique_title_list.append(i+"\n")
     return unique_title_list
+
+
+
+

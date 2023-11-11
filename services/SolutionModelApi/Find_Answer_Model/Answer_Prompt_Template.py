@@ -6,6 +6,7 @@ import os
 import config
 api_key = os.getenv("OPENAI_API_KEY")
 
+
 '''
 from langchain.chains import LLMChain
 from langchain.chat_models import ChatOpenAI

@@ -2,11 +2,13 @@ import pandas as pd
 import sys
 import os
 
-
 import config
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
+
+# sys.path.append("../config")
 api_key = os.getenv("OPENAI_API_KEY")
+print(api_key)
 
 # Module
 # from .Answer_Prompt_Template import chatchain
@@ -38,7 +40,7 @@ async def generate_concurrently(df):
 # 최종 답변 주는 함수
 # 1. 최종 답변 주는 LLM질의
 # 2. 백엔드로 넘길 JSON 데이터의 중요한 부분 반환
-def Answer_Model(df, text):
+def Answer_Model(df, text, issue_id_num):
 
     # 최종 위반 결과(법률위반, 법률위반가능, 지침위반, 권장사항)
     process_Law_Violate = 0
@@ -53,7 +55,6 @@ def Answer_Model(df, text):
     print("비동기로 전부 뽑은 값", answer)
     ## 비동기로 뽑은 answer들은 먼저 끝내는대로 들어감, 순서가 일정하지 않음, 다시 순서 맞춰줘야함
 
-    issue_id_num = 0
     for i in range(len(df)):
 
         # 최종 질의 프롬프트가 LLM에 Input으로 들어감 -> answer에서 결과 나옴
@@ -72,7 +73,6 @@ def Answer_Model(df, text):
 
         # 계속 리스트에 추가해감
         process_Issues += issue_json
-
 
     process_Paragraph = Make_Paragraph(df, text)
 

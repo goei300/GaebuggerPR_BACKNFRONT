@@ -1,8 +1,6 @@
 import openai
 import ast
 
-
-
 # Langchain
 from langchain.document_loaders import TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -18,8 +16,10 @@ from .Search_Title.Search_Title import table
 import sys
 import os
 
+# sys.path.append(os.path.abspath('../config'))
 import config
 openai.api_key = os.getenv("OPENAI_API_KEY")
+print("Search Match", openai.api_key)
 
 import pandas as pd
 
@@ -30,14 +30,15 @@ def Search_Match_Omission_Model(user_input):
 
     # 사용자가 체크한 Rule들을 후보군으로 매칭하기 위한 rule 리스트 생성
     rule = []
-    df = pd.read_csv("./test_instruction_1104.csv", encoding='cp949')
+    df = pd.read_csv("./test_instruction_1106.csv", encoding='cp949')
     for i in range (1, len(user_input)):
         rule.append(df["part"][user_input[i]])
+
 
     # 저장한 txt파일(사용자 인풋) 불러옴(경로 및 이름 수정필요!!!)
     loader = TextLoader("./policy.txt", encoding='utf-8')
     documents = loader.load()
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=5000, chunk_overlap=800)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=6000, chunk_overlap=800)
     docs = text_splitter.split_documents(documents)
 
     # 1> Search
@@ -86,10 +87,10 @@ def Search_Match_Omission_Model(user_input):
     for_omission_title_dict = inverted_dict
 
         # 2) 누락항목체크(Omission Check) 해서 그 결과 반환
-    omission_text= Alert_Omission(for_omission_title_dict2, user_input_text)
+    omission_text, process_Omission_Paragraph, omission_Issues, issue_id = Alert_Omission(for_omission_title_dict2, user_input_text)
     print("Search Match Omission의 Omission 파트입니다.\n")
     print("누락된 파트는 이렇습니다", omission_text)
 
-    return title_dict, title_dict2, omission_text, unique_title_dict, unique_title_dict2, df
+    return title_dict, title_dict2, omission_text, unique_title_dict, unique_title_dict2, df, process_Omission_Paragraph, omission_Issues, issue_id
 
 
