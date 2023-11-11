@@ -30,7 +30,7 @@ issue_id=0
 
 # 2> 위반한 이슈의 내용을 약속된 JSON형태로 정제해주는 함수
     #: 한번 결과에는 규칙1, 규칙2, 규칙 3 이게 다있음
-def Make_Issues(ans, issue_paragraph_id, text, df, issue_id_start):
+def Make_Issues(ans, issue_paragraph_id, text, df, original_index, issue_id_start):
     issue_id = issue_id_start
 
     process_Law_Violate = 0
@@ -127,6 +127,7 @@ def Make_Issues(ans, issue_paragraph_id, text, df, issue_id_start):
         issue["issue_paragraph_id"] = issue_paragraph_id
         issue["issue_type"] = issue_type
 
+
         df = df.fillna("NO_REASON")
         if(df[issue_reason][issue_paragraph_id]!="NO_REASON"):
             print("근거가 있습니다")
@@ -134,6 +135,7 @@ def Make_Issues(ans, issue_paragraph_id, text, df, issue_id_start):
             issue["issue_reason"] = df[issue_reason][issue_paragraph_id]
 
         issue["issue_content"] = issue_content
+        issue["issue_case"] = original_index
         issue["issue_guideline"] = issue_guideline.split('/////')
 
         print("issue", issue_id, "입니다.", issue)
