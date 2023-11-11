@@ -73,13 +73,13 @@ def process_text():
     print("룰과 파트내용 매칭된 딕셔너리 {rule:파트}\n")
     print(result_dict)
 
-    df = Matching(text, result_dict, df)
+    df, original_df = Matching(text, result_dict, df)
     print("Matching에서 완성된 데이터프레임입니다!")
     print(df[['user_input', 'part', 'matched_part', 'matched_startIndex']])
 
     ### Answer 주는 부분
 
-    answer_text, process_Paragraph,process_Issues, process_Law_Violate, process_Law_Danger, process_Guide_Violate = Answer_Frame(df, text, issue_id)
+    answer_text, process_Paragraph,process_Issues, process_Law_Violate, process_Law_Danger, process_Guide_Violate = Answer_Frame(df, text, issue_id, original_df)
     
     # <출력사항>
     omission_text = "*<누락 관련 사항>*\n" + omission_text+"\n\n"
