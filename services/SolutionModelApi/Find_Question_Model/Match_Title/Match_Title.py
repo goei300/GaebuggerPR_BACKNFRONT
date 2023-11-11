@@ -8,7 +8,7 @@ from .Match_Title_Prompt import match_create_prompt
 import sys
 import os
 
-import config
+# import config
 api_key = os.getenv("OPENAI_API_KEY")
 
 # LLM 기반으로 추출한 대제목과 룰셋의 대제목 매칭해서 딕셔너리 형태로 출력
