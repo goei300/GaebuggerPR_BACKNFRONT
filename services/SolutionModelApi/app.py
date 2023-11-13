@@ -19,6 +19,8 @@ from Find_Answer_Model.Answer_Model import *
 from Find_Answer_Model.Answer_Frame import *
 from Find_Question_Model.User_Input_Check import *
 
+from Text_Preprocessing.Text_Preprocessing import *
+
 # 벡터 DB관련
 from llama_index import SimpleDirectoryReader
 import pinecone
@@ -46,8 +48,8 @@ def process_text():
     # 들어온 두번째 데이터(text) : 회사의 처리방침
     text = request.json.get('text')
 
-    text = text.replace("'","") # 안에 작은따옴표들 전부제거
-    text = text.replace('"', "") # 안에 큰따옴표들 전부제거
+    # 전처리 모듈로 전처리
+    text = Text_Preprocessing(text)
 
     print("들어온 처리방침: ", text)
 
