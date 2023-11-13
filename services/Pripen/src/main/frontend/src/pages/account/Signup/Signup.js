@@ -37,7 +37,7 @@ const Signup = () => {
         // };
         // console.log("my csrftoken is :");
         // console.log(csrfToken);
-        axiosInstance.post('/userAuthentication/signup', formData)
+        axios.post('https://backapi.pri-pen.com/userAuthentication/signup', formData)
             .then(response => {
                 console.log('Success:', response);
                 alertPopup();

@@ -9,14 +9,14 @@ WORKDIR /app
 #COPY src/main/frontend/package*.json src/main/frontend/
 #COPY src/main/frontend/ src/main/frontend/
 
+# src 폴더 내의 java와 resources 폴더만 복사
+COPY src/main/java ./src/main/java
+COPY src/main/resources ./src/main/resources
+
 # 백엔드 소스와 설정 파일 복사
 COPY build.gradle settings.gradle ./
 COPY gradlew ./
 COPY gradle ./gradle
-
-# src 폴더 내의 java와 resources 폴더만 복사
-COPY src/main/java ./src/main/java
-COPY src/main/resources ./src/main/resources
 
 # 전체 빌드 수행
 RUN chmod +x ./gradlew
