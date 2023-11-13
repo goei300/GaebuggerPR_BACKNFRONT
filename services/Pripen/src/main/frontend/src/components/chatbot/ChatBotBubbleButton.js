@@ -39,7 +39,6 @@ const ChatBotBubbleButton = () => {
     padding: '10px 20px', // 패딩을 조정합니다.
     textAlign: 'center',
     textDecoration: 'none',
-    display: 'inline-block',
     fontSize: '16px',
     margin: '4px 2px',
     borderRadius: '10px',

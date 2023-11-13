@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import '../../assets/fonts/fonts.css';
 import './header.css';
 import logoImage from '../../assets/images/pripen_logo.png';
 import {useAuth} from '../../contexts/AuthContext';
 import { Button } from '@mui/material';
-
+import { useEffect } from 'react';
 const Header = ({ active }) => {
     const [showContactDropdown, setShowContactDropdown] = useState(false);
     const [showServicesDropdown, setShowServicesDropdown] = useState(false);
     const { isLoggedIn, logout } = useAuth();
+    const navigate = useNavigate();
     const CustomDropdown = ({ isOpen, items, onClose }) => {
         if (!isOpen) return null;
 
@@ -23,6 +24,13 @@ const Header = ({ active }) => {
             </div>
         );
     };
+    const handleLogout = () => {
+
+        logout();
+        navigate('/');
+
+    };
+
 
     return (
         <header className="header-container">
@@ -98,7 +106,7 @@ const Header = ({ active }) => {
             {isLoggedIn? (
                 <div className="authentication">
                     <Link to="/mypage">마이 페이지</Link>
-                    <button onClick={logout}>로그아웃</button>
+                    <button onClick={handleLogout}>로그아웃</button>
                 </div>
             ) : (
                 <div className="authentication">

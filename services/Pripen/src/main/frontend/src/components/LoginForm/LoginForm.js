@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MuiLink from '@mui/material/Link';
 import {useAuth} from '../../contexts/AuthContext';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
 import axios from 'axios';
 const LoginForm = () => {
@@ -14,19 +14,14 @@ const LoginForm = () => {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
     const { isLoggedIn, login } = useAuth();
+    const navigate = useNavigate();
     const getCsrfToken = async () => {
         const response = await axios.get('https://backapi.pri-pen.com/csrf-token');
         console.log("csrftoken is get!");
         console.log(response);
         return response.data;
     }
-    // 로그인 후 페이지 리다이렉션 처리
-    useEffect(() => {
-        if (isLoggedIn) {
-            console.log("logged in!!");
-            window.location.href = "/";
-        }
-    }, [isLoggedIn]);
+
     const handleLogin = async () => {
 
         // const csrfToken = await getCsrfToken();
@@ -47,10 +42,13 @@ const LoginForm = () => {
             const response = await axios.post('https://backapi.pri-pen.com/userAuthentication/login', {
                 email: email,
                 passwordHash: password
+            }, {
+                withCredentials: true
             });
             // 응답 처리
             if (response.status === 200) {
                 login(); //` AuthContext의 login 함수를 호출하여 쿠키와 상태를 업데이트합니다.
+                navigate('/'); // 홈페이지로 이동
             } else {
                 setErrorMessage("해당 정보를 찾을 수 없습니다.");
                 return;

@@ -59,7 +59,8 @@ public class UserController {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://localhost:3000"})
+    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://localhost:3000"},allowCredentials = "true")
+    //@CrossOrigin(origins = "*")
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody User loginUser, HttpServletResponse response) {
         try {
@@ -106,6 +107,7 @@ public class UserController {
     }
 
     @CrossOrigin(origins = {"https://www.pri-pen.com", "http://59.5.38.67:3000"})
+    //@CrossOrigin(origins = "*")
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshAccessToken(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
@@ -138,6 +140,7 @@ public class UserController {
     }
 
     @CrossOrigin(origins = {"https://www.pri-pen.com", "http://59.5.38.67:3000"})
+    //@CrossOrigin(origins = "*")
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
         if (userService.existsByEmail(userDto.getEmail())) {
@@ -164,12 +167,12 @@ public class UserController {
         return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://59.5.38.67:3000"})
-    @DeleteMapping("/userAuthentication/logout")
+    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://59.5.38.67", "http://59.5.38.67:443"},allowCredentials = "true")
+    @DeleteMapping("/logout")
     public ResponseEntity<?> logoutUser(HttpServletRequest request,HttpServletResponse response) {
         // 클라이언트로부터 받은 리프레시 토큰 쿠키 가져오기
         Optional<String> refreshTokenOpt = refreshTokenService.extractRefreshTokenFromRequest(request);
-
+        System.out.println("your token is~" + refreshTokenOpt);
         refreshTokenOpt.ifPresent(refreshToken -> {
             // 리프레시 토큰 존재 여부 확인 후 삭제
             Optional<RefreshToken> refreshTokenOptional = refreshTokenRepository.findByToken(refreshToken);
@@ -182,7 +185,7 @@ public class UserController {
             cookie.setMaxAge(0); // 쿠키의 만료 시간을 0으로 설정하여 즉시 만료되게 합니다.
             response.addCookie(cookie);
         });
-
+        System.out.println("delete your token from redis");
         return ResponseEntity.ok().build(); // 성공적인 응답
     }
 }

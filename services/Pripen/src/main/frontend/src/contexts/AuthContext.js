@@ -10,7 +10,6 @@ export const AuthProvider = ({ children }) => {
     
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
     // 로그인 함수
     const login = () => {
         setIsLoggedIn(true);
@@ -24,7 +23,7 @@ export const AuthProvider = ({ children }) => {
             });
 
             setIsLoggedIn(false); // 로그아웃 성공 후 상태 변경
-            window.location.href = "/"; // 홈페이지로 리다이렉션
+
         } catch (error) {
             console.error('Logout failed', error);
             // 에러 처리 로직
@@ -38,6 +37,7 @@ export const AuthProvider = ({ children }) => {
         isLoggedIn,
         login,
         logout
+
     };
 
     return (
