@@ -5,15 +5,16 @@ import '../../assets/fonts/fonts.css';
 import { StyledPaper } from '../../pages/Start/check/Guideline_detail/styles/ComponentStyles';
 import './SlideByIssue.css';
 import MoreIcon from '@mui/icons-material/More';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 import BestPractice from '../bestpractice/BestPractice';
+import IconHoverEvent from './IconHoverEvent';
 const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,setSelectedButtonIssue }) => {
     const [currentIssueIndex, setCurrentIssueIndex] = useState(0);
     const [clickedIssueId, setClickedIssueId] = useState(1); // 추가
     const paragraphRef = useRef(null);
     const sliderRef = useRef(null);
     const [activeIssueId, setActiveIssueId] = useState(null);
-    const [isIconHovered, setIconHovered] = useState(false);
+    let lastClickedIssueId = null; // 마지막으로 클릭된 이슈의 ID를 추적하는 변수
 
     const handleIssueClick = (issue) => {
         setClickedIssueId(issue.issue_id);
@@ -34,38 +35,72 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
     };
 
     const handleSlideChange = (newIndex) => {
-        setCurrentIssueIndex(newIndex);
-        scrollToIssueAndClick(newIndex);
-        console.log(newIndex);
+        if (currentIssueIndex !== newIndex) {
+            setCurrentIssueIndex(newIndex);
+            scrollToIssueAndClick(newIndex);
+        }
     };
 
     const scrollToIssueAndClick = (issueIndex) => {
         console.log("im on!");
         console.log("issueindex is :", issueIndex);
-        
-        // 원하는 이슈의 ID를 가져옵니다.
-        const issueId = issues[issueIndex].issue_id;
     
+        // 현재 활성화된 이슈 ID를 가져옵니다.
+        const currentIssueId = issues[issueIndex].issue_id;
+
         // 클래스가 'highlighted-issue'이면서 data-issue-id 속성이 원하는 이슈 ID와 일치하는 요소를 찾습니다.
-        const spanElement = document.querySelector(`.highlighted-issue[data-issue-id="${issueId}"]`);
-        console.log("spanElement is: ",spanElement);
-        if (spanElement) {
-            console.log("final on!");
-    
-            // 해당 요소를 스크롤하도록 합니다.
-            spanElement.scrollIntoView({
-                behavior: 'smooth', // 스무스 스크롤 효과를 추가할 수 있습니다.
-                block: 'center', // 중앙 정렬
-                inline: 'center', // 가로 중앙 정렬
+        const spanElement = document.querySelector(`.highlighted-issue[data-issue-id="${currentIssueId}"]`);
+        const containerElement = document.querySelector('.paragraph-section');
+        if (spanElement && currentIssueId !== lastClickedIssueId) {
+
+            let elementRect = spanElement.getBoundingClientRect();
+            const containerRect = containerElement.getBoundingClientRect();
+            let parentElement = spanElement.parentElement;
+
+            // 부모 요소를 탐색하며 'issuewrapper' 클래스를 가진 요소를 찾습니다.
+            while (parentElement && !parentElement.classList.contains('issueWrapper')) {
+                parentElement = parentElement.parentElement;
+            }
+        
+            if (parentElement) {
+                elementRect = parentElement.getBoundingClientRect();
+                // parentRect를 사용하여 위치 및 크기 정보를 얻을 수 있습니다.
+            }
+            const relativeTop = elementRect.top - containerRect.top + containerElement.scrollTop;
+            const scrollPosition = relativeTop - containerElement.offsetHeight / 2 + elementRect.height / 2;
+
+            containerElement.scrollTo({
+                top: scrollPosition,
+                behavior: 'smooth'
             });
-            window.scrollTo({
-                top: window.scrollY, // 원하는 Y 좌표
-                behavior: 'smooth', // 스무스 스크롤 효과를 추가할 수 있습니다.
-            });
-            // 해당 요소에 클릭 이벤트를 수동으로 호출합니다.
+
+            // const rect = spanElement.getBoundingClientRect();
+            // const absoluteTop = rect.top + window.scrollY;
+            // const absoluteLeft = rect.left + window.scrollX;
+            // console.log(`spanElement 절대 좌표: top: ${absoluteTop}, left: ${absoluteLeft}`);
+
+            // setTimeout(()=> {
+            //     spanElement.scrollIntoView({
+            //         block: 'center', // 중앙 정렬
+            //         inline: 'center', // 가로 중앙 정렬
+            //     });
+            // },500);
+            
+
             spanElement.click();
+
+            // window.scrollTo({
+            //     top: window.scrollY, // 원하는 Y 좌표
+            //     behavior: 'smooth', // 스무스 스크롤 효과를 추가할 수 있습니다.
+            // });
+            // 해당 요소에 클릭 이벤트를 수동으로 호출합니다.
+
+            // 스크롤 이후 일정 시간(예: 500ms) 기다린 후 클릭 이벤트 발생
+
+            lastClickedIssueId = currentIssueId; // 마지막으로 클릭된 이슈 ID를 업데이트
         }
     };
+
     const getIssuesLength = () => {
         return issues.length;
     };
@@ -89,20 +124,10 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
 
         return (
             <div className="issueWrapper" >
+
                 {wrapWithIssueSpan(original.slice(activeIssue.issue_startIndex, activeIssue.issue_endIndex + 1), activeIssue)}
-                <div className="IconHoverEvent" onMouseLeave={() => setIconHovered(false)}>
-                    <body style={{marginTop:'5px', fontFamily:"NotoSansKR-Bold"}}>외 {otherIssues.length}건</body>
-                    &nbsp;
-                    &nbsp;
-                    <ExpandMoreIcon className="issueIcon" onMouseEnter={() => setIconHovered(true)}/>
-                    <div className="popover" style={{ display: isIconHovered ? 'flex' : 'none' }}>
-                        {otherIssues.map(issue => (
-                            <div key={issue.issue_id} onClick={() => handleIssueClick(issue)}>
-                                {wrapWithIssueSpan(null, issue)}
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <IconHoverEvent otherIssues={otherIssues} handleIssueClick={handleIssueClick} wrapWithIssueSpan={wrapWithIssueSpan} />
+
             </div>
         );
 
@@ -113,7 +138,7 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
 
     // issue를 감싸는 span 생성
     const wrapWithIssueSpan = (text, issue) => {
-        console.log('wrapWithIssueSpan called with issue_id:', issue.issue_id);
+        //console.log('wrapWithIssueSpan called with issue_id:', issue.issue_id);
         let className;
         let style = {};
         let issueNumberStyle = {
