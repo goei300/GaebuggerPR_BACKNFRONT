@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react';
+import React,{useEffect, useState,useRef} from 'react';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
@@ -11,11 +11,11 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
 
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
     const [onlyShowIssueParagraphs, setOnlyShowIssueParagraphs] = useState(false);
-    const sliderRef = React.useRef(null);
+    const sliderRef = useRef(null);
     const [clickedIssueId, setClickedIssueId] = useState(null);
     const [activeIssueId, setActiveIssueId] = useState(null);
     const [isIconHovered, setIconHovered] = useState(false);
-
+    const prevSlideIndexRef = useRef(); // 이전 슬라이드 인덱스를 저장할 ref
     const getDisplayedParagraphs = () => {
         const issueParagraphIds = getIssueParagraphIds();
         return onlyShowIssueParagraphs ? paragraph.filter(p => issueParagraphIds.includes(p.paragraph_id)) : paragraph;
@@ -26,14 +26,17 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
     };
     // 현재 슬라이드의 index가 변경될 때 호출되는 함수
     const handleAfterChange = (currentIndex) => {
-        setCurrentSlideIndex(currentIndex);
-        
-        const displayedParagraphs = getDisplayedParagraphs();
-        const currentParagraphId = displayedParagraphs[currentIndex].paragraph_id;
-        const relevantIssues = getRelevantIssues(currentParagraphId);
-        // 현재 paragraph와 관련된 모든 issue들을 onIssueRender에 전달
-        console.log("handleAfterChange is on!!");
-        onIssueRender(relevantIssues);
+        if(currentIndex !==prevSlideIndexRef.current){
+            setCurrentSlideIndex(currentIndex);
+            prevSlideIndexRef.current = currentIndex; // 현재 인덱스를 저장
+
+            const displayedParagraphs = getDisplayedParagraphs();
+            const currentParagraphId = displayedParagraphs[currentIndex].paragraph_id;
+            const relevantIssues = getRelevantIssues(currentParagraphId);
+            // 현재 paragraph와 관련된 모든 issue들을 onIssueRender에 전달
+            console.log("handleAfterChange is on!!");
+            onIssueRender(relevantIssues);
+        }
     };
     
     // 위반사항이 있는 paragraph_id 목록을 가져옵니다.
@@ -254,6 +257,7 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
         });
     }
     useEffect(() => {
+        console.log("hihi im firsteffect");
         setCurrentSlideIndex(0);
 
         const currentParagraphId = paragraph[0].paragraph_id;
@@ -263,6 +267,7 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
         onIssueRender(relevantIssues);
     }, []);   //초기 설정
     useEffect(() => {
+        console.log("hihi im 2effect");
         // 체크박스의 상태가 변경될 때마다 첫 번째 슬라이드로 이동
         setCurrentSlideIndex(0);
         // 미세한 딜레이 후에 슬라이드 이동
@@ -278,10 +283,10 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
         const relevantIssues = getRelevantIssues(firstParagraphId);
         onIssueRender(relevantIssues);
 
-    }, [onlyShowIssueParagraphs, paragraph, issues]);
+    }, [onlyShowIssueParagraphs, paragraph,issues]);  //onlyShowIssueParagraphs = 체크박스(이슈있는 항목만)
 
     useEffect(() => {
-
+        console.log("hihi im it");
         if (selectedButtonIssue) {
             setOnlyShowIssueParagraphs(false);
             console.log("checkbox false!");

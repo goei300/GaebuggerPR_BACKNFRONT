@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState,useMemo} from "react";
 import CustomizedSteppers from "../../../../components/StepIndicator/StepIndicator";
 import {    Select, MenuItem, InputLabel, FormControl, Typography,  Box, Divider, Container, Button, IconButton,Table, TableBody, TableCell, TableHead, TableRow,TablePagination  } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -34,9 +34,10 @@ function Guideline_detail({processId, prevStep,responseData}){
         if (selectedIssueType === "모든 유형") return true;
         return issue.issue_type === selectedIssueType;
     });
-    const transformedIssues = responseData.process_Issues
-    .filter(issue => issue.issue_type !== "기재 항목 누락");
-
+    const transformedIssues = useMemo(() => {
+        return responseData.process_Issues
+            .filter(issue => issue.issue_type !== "기재 항목 누락");
+    }, [responseData.process_Issues]);
 
     const omissionParagraphIssues = responseData.process_Issues
         .filter(issue => issue.issue_type === "기재 항목 누락")
