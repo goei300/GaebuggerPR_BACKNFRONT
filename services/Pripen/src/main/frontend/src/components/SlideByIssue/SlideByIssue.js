@@ -74,28 +74,9 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
                 behavior: 'smooth'
             });
 
-            // const rect = spanElement.getBoundingClientRect();
-            // const absoluteTop = rect.top + window.scrollY;
-            // const absoluteLeft = rect.left + window.scrollX;
-            // console.log(`spanElement 절대 좌표: top: ${absoluteTop}, left: ${absoluteLeft}`);
-
-            // setTimeout(()=> {
-            //     spanElement.scrollIntoView({
-            //         block: 'center', // 중앙 정렬
-            //         inline: 'center', // 가로 중앙 정렬
-            //     });
-            // },500);
             
 
             spanElement.click();
-
-            // window.scrollTo({
-            //     top: window.scrollY, // 원하는 Y 좌표
-            //     behavior: 'smooth', // 스무스 스크롤 효과를 추가할 수 있습니다.
-            // });
-            // 해당 요소에 클릭 이벤트를 수동으로 호출합니다.
-
-            // 스크롤 이후 일정 시간(예: 500ms) 기다린 후 클릭 이벤트 발생
 
             lastClickedIssueId = currentIssueId; // 마지막으로 클릭된 이슈 ID를 업데이트
         }
@@ -259,34 +240,73 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
         return contentArray;
     }
 
-
-
-
     useEffect(() => {
 
-        if (selectedButtonIssue) {
-            const targetSlide = selectedButtonIssue.issue_id - 1;
-            sliderRef.current.slickGoTo(targetSlide);
-
-            var element = document.querySelector('.slick-list'); // 요소를 선택
-            var rect = element.getBoundingClientRect();
-            console.log("slider~~~~offsetTop is:", rect.top);
-
-            var absoluteY = rect.top + window.scrollY-250;  // 절대적인 y좌표 계산
-            console.log("Absolute Y position of .slick-list is:", absoluteY);
-
-            window.scrollTo({
-                top: absoluteY,  // 절대적인 y좌표로 스크롤
-                behavior: 'smooth'
-            });
+        // if (selectedButtonIssue) {
 
 
-            setTimeout(()=>{
-                handleIssueClick(selectedButtonIssue);
-            },650)
+
+        //     setTimeout(()=>{
+        //         handleIssueClick(selectedButtonIssue);
+        //     },800)
 
 
+        // }
+        if(selectedButtonIssue){
+            // 현재 활성화된 이슈 ID를 가져옵니다.
+            console.log("selectedButtonIssue is :" , selectedButtonIssue);
+            const currentIssueId = selectedButtonIssue.issue_id;
+
+            // 클래스가 'highlighted-issue'이면서 data-issue-id 속성이 원하는 이슈 ID와 일치하는 요소를 찾습니다.
+            const spanElement = document.querySelector(`.highlighted-issue[data-issue-id="${currentIssueId}"]`);
+            const containerElement = document.querySelector('.paragraph-section');
+            if (spanElement && currentIssueId !== lastClickedIssueId) {
+                // 윈도우 스크롤입니다.
+                const targetSlide = selectedButtonIssue.issue_id - 1;
+                sliderRef.current.slickGoTo(targetSlide);
+    
+                var element = document.querySelector('.slick-list'); // 요소를 선택
+                var rect = element.getBoundingClientRect();
+                console.log("slider~~~~offsetTop is:", rect.top);
+    
+                var absoluteY = rect.top + window.scrollY-250;  // 절대적인 y좌표 계산
+                console.log("Absolute Y position of .slick-list is:", absoluteY);
+    
+                window.scrollTo({
+                    top: absoluteY,  // 절대적인 y좌표로 스크롤
+                    behavior: 'smooth'
+                });
+
+                // 내부 컨테이너 스크롤입니다.
+                let elementRect = spanElement.getBoundingClientRect();
+                const containerRect = containerElement.getBoundingClientRect();
+                let parentElement = spanElement.parentElement;
+
+                // 부모 요소를 탐색하며 'issuewrapper' 클래스를 가진 요소를 찾습니다.
+                while (parentElement && !parentElement.classList.contains('issueWrapper')) {
+                    parentElement = parentElement.parentElement;
+                }
+            
+                if (parentElement) {
+                    elementRect = parentElement.getBoundingClientRect();
+                    // parentRect를 사용하여 위치 및 크기 정보를 얻을 수 있습니다.
+                }
+                const relativeTop = elementRect.top - containerRect.top + containerElement.scrollTop;
+                const scrollPosition = relativeTop - containerElement.offsetHeight / 2 + elementRect.height / 2;
+
+                containerElement.scrollTo({
+                    top: scrollPosition,
+                    behavior: 'smooth'
+                });
+
+                
+
+                spanElement.click();
+
+                lastClickedIssueId = currentIssueId; // 마지막으로 클릭된 이슈 ID를 업데이트
+            }
         }
+
     }, [selectedButtonIssue]);
 
 

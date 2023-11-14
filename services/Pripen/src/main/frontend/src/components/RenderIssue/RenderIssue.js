@@ -25,11 +25,8 @@ function RenderIssue({issuelist,highlightIssue, style}){
 
             if (highlightedIssueRef.current) {
                 console.log("move highlight!");
+                // 내부 컨테이너 스크롤
                 highlightedIssueRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                // window.scrollTo({
-                //     top: window.scrollY,
-                //     behavior: 'smooth',
-                // });
             }
     
             // 현재 highlightIssue ID를 저장

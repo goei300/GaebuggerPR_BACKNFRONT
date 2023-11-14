@@ -7,6 +7,7 @@ import "../../assets/fonts/fonts.css";
 import "./ResultSlide.css";
 import { StyledPaper } from '../../pages/Start/check/Guideline_detail/styles/ComponentStyles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import IconHoverEvent from '../SlideByIssue/IconHoverEvent';
 function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selectedButtonIssue,setSelectedButtonIssue}) {
 
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -94,19 +95,7 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
         return (
             <div className="issueWrapper" >
                 {wrapWithIssueSpan(paragraphInfo.paragraph_content.slice(activeIssue.issue_startIndex-paragraphInfo.paragraph_startIndex, (activeIssue.issue_endIndex ) - paragraphInfo.paragraph_startIndex), activeIssue)}
-                <div className="IconHoverEvent" onMouseLeave={() => setIconHovered(false)}>
-                    <h2 style={{margin:'0px'}}>외 {otherIssues.length}건</h2>
-                    &nbsp;
-                    &nbsp;
-                    <ExpandMoreIcon className="issueIcon" onMouseEnter={() => setIconHovered(true)} />
-                    <div className="popover" style={{ display: isIconHovered ? 'flex' : 'none' }}>
-                        {otherIssues.map(issue => (
-                            <div key={issue.issue_id} onClick={() => handleIssueClick(issue)}>
-                                {wrapWithIssueSpan(null, issue)}
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <IconHoverEvent otherIssues={otherIssues} handleIssueClick={handleIssueClick} wrapWithIssueSpan={wrapWithIssueSpan}/>
             </div>
         );
 
@@ -309,10 +298,10 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
 
 
                 
-            }, 300);
+            }, 100);
             setTimeout(()=>{
                 handleIssueClick(selectedButtonIssue);
-            },1000)
+            },800)
 
 
         }
