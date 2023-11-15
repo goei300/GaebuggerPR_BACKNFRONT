@@ -57,7 +57,7 @@ def Answer_Template(policy, instruction):
     위반 사항: (있음 or 없음)
     위반 유형: (법률 위반 or 법률 위반 위험 or 작성지침 미준수 or 없음)
     위반 문장: (위반문장 or 없음)
-    
+
     최종 결과
     
     법률 위반: 0건
@@ -82,6 +82,7 @@ def Answer_Template(policy, instruction):
     위반문장: 제 4조 개인정보처리목적\n이 개인정보처리목적은 잘 처리합니다.
     '''
     return template
+
 
 '''
 #시스템 메시지로

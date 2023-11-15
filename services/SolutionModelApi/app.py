@@ -76,7 +76,7 @@ def process_text():
     print(df[['user_input', 'part', 'matched_part', 'matched_startIndex']])
 
     ### Answer 주는 부분
-    '''
+
     answer_text, process_Paragraph,process_Issues, process_Law_Violate, process_Law_Danger, process_Guide_Violate = Answer_Frame(df, text, issue_id, original_df)
     
     # <출력사항>
@@ -85,7 +85,7 @@ def process_text():
     print(final_answer_text)
 
     # 벡터 DB 파트 주석처리 실제 정확한 Answer만 insert
-    
+    '''
     # 벡터 DB에 answer_text를 insert
     ## 1. answer를 {process_Id}.txt로 data폴더에 저장 후 모든 파일 재업로드
     answer_text="이렇게 하시오."
@@ -120,7 +120,6 @@ def process_text():
     backend_json["process_Issues"] = omission_Issues
     backend_json["process_Issues"] += process_Issues
     # backend_json["process_Modified"] = process_Modified
-
 
     # paragraph_id 순으로 정렬
     sorted_Issues = sorted(backend_json["process_Issues"], key=lambda x: x['issue_paragraph_id'])
