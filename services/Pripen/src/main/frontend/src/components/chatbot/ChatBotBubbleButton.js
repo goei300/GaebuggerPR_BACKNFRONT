@@ -91,12 +91,20 @@ const ChatBotBubbleButton = () => {
 
   // iframe의 로딩이 완료됐을 때 호출되는 함수
   const handleIframeLoad = () => {
+    console.log("loading end!");
     setIframeLoading(false); // 로딩 상태를 false로 설정
   };
 
   // 버튼 클릭 이벤트 핸들러
   const handleClick = () => {
-    setShowIframe(!showIframe); // iframe 표시 상태 토글
+    if(!showIframe){
+      console.log("button active!");
+      setShowIframe(true);
+    }
+    else{
+      console.log("button inactive!");
+      setShowIframe(false);
+    }
     // 기타 onClick 이벤트 관련 로직이 있다면 여기에 추가
   };
   const iframeStyle = {
@@ -126,7 +134,7 @@ const ChatBotBubbleButton = () => {
         <div style={contentContainerStyle}>
           <img src={PriPenSvg} alt="ChatBot 버튼" style={iconStyle} />
           <span style={spanStyle}>
-            <span style={{ fontSize:"20px",fontFamily:"NotoSansKR-Bold" }}>&nbsp;&nbsp;&nbsp;&nbsp;프라이팬 비서</span>
+            <span style={{ fontSize:"20px",fontFamily:"NotoSansKR-Bold" }}>&nbsp;&nbsp;&nbsp;&nbsp;프라이펜 비서</span>
             <br />
             <span style={{fontFamily:"NotoSansKR-SemiBold", color:"darkgrey"}}>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;개인정보와 관련된 모든 걸 물어보세요. 
@@ -135,12 +143,14 @@ const ChatBotBubbleButton = () => {
         </div>
       </button>
 
-      {iframeLoading && <Spinner />}
+
       {/* iframe을 조건부 렌더링 대신 항상 렌더링하되 위치를 변경합니다. */}
       <div style={iframeStyle}>
+      {iframeLoading && showIframe && <Spinner />}
         <iframe
           src={process.env.REACT_APP_CHATBOT_URL}
           style={{
+            backgroundColor:"white",
             width: width > 768 ? '400px' : '100%', // 768px 이상인 경우 400px, 미만인 경우 전체 너비
             height: width > 768 ? '550px' : '300px', // 768px 이상인 경우 550px, 미만인 경우 300px
             border: '2px solid #d9d9d9',

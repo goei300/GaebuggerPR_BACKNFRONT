@@ -7,8 +7,6 @@ import CustomTooltip from './CustomToolTip';
 
 const NonConformityCheck = ({ data, omissionData }) => {
   const [selectedViolations, setSelectedViolations] = useState(['법률 위반','법률 위반 위험','작성지침 미준수']);
-  console.log("data is?");
-  console.log(data);
   const contentPieces = [];
   const getMissingIssue = () => {
     const missingIssues = data.issues.filter(issue => issue.startIndex === -999 && selectedViolations.includes(issue.type));
@@ -98,8 +96,13 @@ const NonConformityCheck = ({ data, omissionData }) => {
     };
 
     const createTooltipTitle = (issueCount, issueTypes) => {
-      const issuesDescription = issueTypes.join(', ');
-      return `이 문장은 ${issueCount}건의 위반 유형을 가지고 있습니다.\n${issuesDescription}`;
+      const issueDescriptions = Object.entries(issueTypes)
+        .filter(([type,count]) => count >0)
+        .map(([type,count]) => `${type} ${count}건`);
+
+          // issueDescriptions 배열을 개행 문자(\n)로 결합
+      const descriptionText = issueDescriptions.join('\n');
+      return `위 문장은 표시된 위반 유형 외 ${issueCount-1}건의 위반 사항을 가지고 있습니다.\n\n${descriptionText}`;
     };
 
   const getHighlightedContent = () => {
@@ -117,8 +120,8 @@ const NonConformityCheck = ({ data, omissionData }) => {
         }
 
   
-        const issueContent = data.content.slice(issue.startIndex, issue.endIndex) +
-                             (data.content[issue.endIndex] === '\n' ? '\n' : '');
+        const issueContent = data.content.slice(issue.startIndex, issue.endIndex + 1) +
+                            (data.content[issue.endIndex] === '\n' ? '\n' : '');
   
         if (!displayedStartIndexes.has(issue.startIndex)) {
           // 중복되지 않은 경우, 내용을 표시
@@ -137,12 +140,12 @@ const NonConformityCheck = ({ data, omissionData }) => {
           issueCountsByStartIndex[issue.startIndex] = 1;
         } else {
           // 이미 표시된 startIndex인 경우, 개수만 카운트
-          if (!issueTypesByStartIndex[issue.startIndex].includes(issue.type)) {
+          if (issueTypesByStartIndex[issue.startIndex].length !== 0) {
             issueTypesByStartIndex[issue.startIndex].push(issue.type);
           }
           issueCountsByStartIndex[issue.startIndex] += 1;
         }
-        lastIndex = issue.endIndex + (data.content[issue.endIndex] === '\n' ? 1 : 0);
+        lastIndex = issue.endIndex + 1  + (data.content[issue.endIndex] === '\n' ? 1 : 0);
       }
     });
   
@@ -153,16 +156,35 @@ const NonConformityCheck = ({ data, omissionData }) => {
       if (React.isValidElement(contentPiece) && contentPiece.key != null) {
         const issueCount = issueCountsByStartIndex[contentPiece.key];
         const issueTypes = issueTypesByStartIndex[contentPiece.key];
-    
+
         if (issueCount > 1) {
           // 복수 이슈의 경우, 툴팁과 아이콘을 함께 렌더링
-          const tooltipTitle = createTooltipTitle(issueCount, issueTypes);
+          console.log("contentPieces is ");
+          console.log(contentPieces);
+
+          console.log("issueCount");
+          let types = {
+            "법률 위반": 0,
+            "법률 위반 위험": 0,
+            "작성지침 미준수": 0
+          };
+          for(var i=1; i <issueTypes.length ; i++){
+            if (issueTypes[i] === "법률 위반") {
+              types["법률 위반"]++;
+            } else if (issueTypes[i] === "법률 위반 위험") {
+              types["법률 위반 위험"]++;
+            } else {
+              types["작성지침 미준수"]++;
+            }
+          }
+          const tooltipTitle = createTooltipTitle(issueCount, types);
     
           newContentPieces.push(
             <>
               {contentPiece}
-              <CustomTooltip title={tooltipTitle} key={`${contentPiece.key}-tooltip`}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', whiteSpace: 'pre-line' }}>
+              <CustomTooltip style={{border:"2px solid #d9d9d9",borderRadius:"5px", marginTop:"10px", marginBottom:"10px", padding:"5px",display:"inline-flex"}} title={tooltipTitle} key={`${contentPiece.key}-tooltip`}>
+                <span style={{ fontSize:"0.9rem", fontFamily:"NotoSansKR-SemiBold"}}>추가 위반 사항</span>
+                <span style={{ marginLeft:"10px", display: 'inline-flex', alignItems: 'center', whiteSpace: 'pre-line' }}>
                   <BookIcon />
                 </span>
               </CustomTooltip>

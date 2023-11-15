@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState,useMemo} from "react";
 import CustomizedSteppers from "../../../../components/StepIndicator/StepIndicator";
 import {    Select, MenuItem, InputLabel, FormControl, Typography,  Box, Divider, Container, Button, IconButton,Table, TableBody, TableCell, TableHead, TableRow,TablePagination  } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -34,9 +34,10 @@ function Guideline_detail({processId, prevStep,responseData}){
         if (selectedIssueType === "모든 유형") return true;
         return issue.issue_type === selectedIssueType;
     });
-    const transformedIssues = responseData.process_Issues
-    .filter(issue => issue.issue_type !== "기재 항목 누락");
-
+    const transformedIssues = useMemo(() => {
+        return responseData.process_Issues
+            .filter(issue => issue.issue_type !== "기재 항목 누락");
+    }, [responseData.process_Issues]);
 
     const omissionParagraphIssues = responseData.process_Issues
         .filter(issue => issue.issue_type === "기재 항목 누락")
@@ -47,6 +48,7 @@ function Guideline_detail({processId, prevStep,responseData}){
                 content: issue.issue_content,
             };
         });
+    const omissionIssuesCount = omissionParagraphIssues.length;
 
     console.log("process_Issues is:");
     console.log(responseData.process_Issues);
@@ -178,8 +180,7 @@ function Guideline_detail({processId, prevStep,responseData}){
                                     <RenderIssue issuelist={selectedIssueList} highlightIssue={selectedIssue} style={{flex:"1",margin:"0 10px"}}/>
                                 </div>
                             ) : (
-                                <SlideByIssue original={responseData.process_Original} issues={transformedIssues} paragraphs={responseData.process_Paragraph} selectedButtonIssue={selectedButtonIssue} setSelectedButtonIssue={setSelectedButtonIssue} style={{flex:"1",margin:"0 10px",width: "10%"}} />
-
+                                <SlideByIssue original={responseData.process_Original} issues={transformedIssues} paragraphs={responseData.process_Paragraph} selectedButtonIssue={selectedButtonIssue} omissionIssuesCount={omissionIssuesCount} style={{flex:"1",margin:"0 10px",width: "10%"}} />
                             )}
                         </div>
                     </div>
@@ -188,7 +189,7 @@ function Guideline_detail({processId, prevStep,responseData}){
                 {/* 수정된 txt파일 내용 */}
 
                 <Divider style={{marginTop:"500px",opacity:0}} />
-                <Box mt={4}> 
+                {/* <Box mt={4}> 
                     <Typography variant="h6" gutterBottom style={customStyles_title}>솔루션 적용 후</Typography>
                     <Box border={1} p={2} borderColor="grey.300" mt={2} position="relative">
                         <Box position="absolute" top={5} right={5}>
@@ -221,7 +222,7 @@ function Guideline_detail({processId, prevStep,responseData}){
                         </IconButton>
                         <Typography>다운로드</Typography>   
                     </Box>
-                </Box>
+                </Box> */}
 
                 <Divider style={{ margin: '20px 0' }} />
 

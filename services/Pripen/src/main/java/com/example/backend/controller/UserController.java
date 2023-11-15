@@ -59,7 +59,7 @@ public class UserController {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://localhost:3000"},allowCredentials = "true")
+    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://localhost:3000","http://59.5.38.67:80","http://59.5.38.67:443"},allowCredentials = "true")
     //@CrossOrigin(origins = "*")
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody User loginUser, HttpServletResponse response) {
@@ -106,7 +106,7 @@ public class UserController {
         }
     }
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://59.5.38.67:3000"})
+    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://59.5.38.67:80","http://59.5.38.67:443"})
     //@CrossOrigin(origins = "*")
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshAccessToken(HttpServletRequest request, HttpServletResponse response) {

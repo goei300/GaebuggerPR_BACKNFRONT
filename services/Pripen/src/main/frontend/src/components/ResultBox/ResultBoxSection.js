@@ -39,7 +39,7 @@ const ResultBoxSection = ({ serverData }) => {
     }, []);
 
     return (
-        <div >
+        <div>
             <h2 style={{marginLeft:'20px',fontFamily: "NotoSansKR-Medium"}}>유형 별 진단 결과</h2>
             <Divider style={{marginBottom:'10px'}} />
             <div style={{display:"flex", justifyContent: "space-between"}}>

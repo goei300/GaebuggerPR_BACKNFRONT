@@ -77,7 +77,19 @@ function Step3({ nextStep, processId,dispatch,apiResponse }) {
                             <Typography variant="h6" style={{ height:'100px' , marginTop: '1px', color: '#333', fontFamily: 'NotoSansKR-Black', animation: 'blink 3s infinite' }}>
                                 진단이 완료되었습니다. 결과를 바로 확인해보세요!
                             </Typography>
-                            <Button variant="contained" color="primary" onClick={nextStep}>
+                            <Button
+                                className="custom-button"
+                                onClick={nextStep}
+                                sx= {{
+                                    fontSize: "24px",
+                                    color:"white",
+                                    fontFamily:"NotoSansKR-SemiBold",
+                                    marginTop:"-10px",
+                                    borderRadius:"20px",
+                                    padding:"5px 15px",
+
+                                }}
+                            >
                                 결과 확인
                             </Button>
                         </div>

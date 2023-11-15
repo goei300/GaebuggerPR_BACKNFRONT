@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { Typography, Divider } from '@mui/material';
 import { StyledPaper } from '../../pages/Start/check/Guideline_detail/styles/ComponentStyles';
 import './RenderIssue.css';
@@ -9,24 +9,29 @@ function RenderIssue({issuelist,highlightIssue, style}){
 
 
     const [animate, setAnimate] = useState(false);
-    const highlightedIssueRef = React.useRef(null);
-    if (!highlightIssue) {
-        highlightIssue = {};
-    }
-useEffect(() => {
-        if (!highlightIssue) return;
-    
-        console.log("highlight issue on!");
-        // 강조되어야 하는 이슈가 있고, 이슈의 위치가 지정되면 해당 위치로 스크롤
-        if (highlightedIssueRef.current) {
-            console.log("move highlight!");
-            highlightedIssueRef.current.scrollIntoView({ behavior: 'smooth',block: 'nearest' });
-            window.scrollTo({
-                top: window.scrollY, // 원하는 Y 좌표
-                behavior: 'smooth', // 스무스 스크롤 효과를 추가할 수 있습니다.
-            });
+    const highlightedIssueRef = useRef(null);
+    const prevHighlightIssueIdRef = useRef();
+    useEffect(() => {
+        if (highlightIssue){
+            console.log("issue click and highlight effect is on!");
+            // highlightIssue의 고유 식별자나 특정 속성을 사용합니다. 
+            // 예를 들어, highlightIssue에 id 속성이 있다고 가정합니다.
+            const currentIssueId = highlightIssue.issue_id;
+            if (currentIssueId !== prevHighlightIssueIdRef.current) {
+                console.log("highlight issue changed and on!");
+
+                if (highlightedIssueRef.current) {
+                    console.log("move highlight!");
+                    // 내부 컨테이너 스크롤
+                    highlightedIssueRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+        
+                // 현재 highlightIssue ID를 저장
+                prevHighlightIssueIdRef.current = currentIssueId;
+            }
         }
-    }, [highlightIssue]);
+    }, [highlightIssue]); // 의존성 배열에 highlightIssue를 유지합니다.
+    
 
     useEffect(() => {
         if (issuelist) {
@@ -57,9 +62,16 @@ useEffect(() => {
                 {issuelist.map((issue, index) => (
                     <div
                         key={index}
-                        ref={issue.issue_id === highlightIssue.issue_id ? highlightedIssueRef : null}
+                        ref={
+                            highlightIssue && issue.issue_id === highlightIssue.issue_id 
+                            ? highlightedIssueRef 
+                            : null
+                        }
                         style={{
-                            border: issue.issue_id === highlightIssue.issue_id ? '2px solid red' : '1px solid #999',
+                            border: 
+                                highlightIssue && issue.issue_id === highlightIssue.issue_id 
+                                ? '2px solid red' 
+                                : '1px solid #999',
                             marginBottom: '40px',
                             padding: '10px'
                         }}

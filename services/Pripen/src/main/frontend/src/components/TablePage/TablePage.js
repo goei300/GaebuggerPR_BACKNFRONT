@@ -109,18 +109,18 @@ const TablePage = ({ selectedIssueType,setSelectedIssueType,filteredIssues, hand
             <Table style={{ width: "100%"}}>
                 <TableHead>
                     <TableRow style={{}}>
-                        <TableCell style={{fontFamily:"NotoSansKR-Bold", width:"5%"}}>번호</TableCell>
-                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"20%"}}>진단 유형</TableCell>
+                        <TableCell style={{fontFamily:"NotoSansKR-Bold", width:"8%"}}>번호</TableCell>
+                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"17%"}}>진단 유형</TableCell>
                         <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"40%"}}>위반 내용</TableCell>
-                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"30%"}}>진단 근거</TableCell>
-                        <TableCell style={{fontFamily:"NotoSansKR-Bold"}}>확인하기</TableCell>
+                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"25%"}}>진단 근거</TableCell>
+                        <TableCell style={{fontFamily:"NotoSansKR-Bold",width:"10%",textAlign:"center"}}>확인하기</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {filteredIssues.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(issue => (
                         <TableRow key={issue.issue_id}>
-                            <TableCell style={{width:"10%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_id}</TableCell>
-                            <TableCell style={{width:"10%", fontFamily:"NotoSansKR-Regular"}}>
+                            <TableCell style={{width:"8%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_id}</TableCell>
+                            <TableCell style={{width:"17%", fontFamily:"NotoSansKR-Regular"}}>
                                 {issue.issue_type}
                                 {issue.issue_type === "법률 위반" && <span style={{color: "red", fontWeight: "bold", marginLeft: "7px"}}>(-15)</span>}
                                 {issue.issue_type === "법률 위반 위험" && <span style={{color: "orange", fontWeight: "bold", marginLeft: "7px"}}>(-7)</span>}
@@ -128,9 +128,8 @@ const TablePage = ({ selectedIssueType,setSelectedIssueType,filteredIssues, hand
                                 {issue.issue_type === "기재 항목 누락" && <span style={{color: "purple", fontWeight: "bold", marginLeft: "7px"}}>(-{issue.issue_score})</span>}
                             </TableCell>
                             <TableCell style={{width:"40%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_content}</TableCell>
-                            <TableCell style={{width:"30%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_reason}</TableCell>
-                            <TableCell>
-                                
+                            <TableCell style={{width:"25%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_reason}</TableCell>
+                            <TableCell style={{width:"10%", fontFamily:"NotoSansKR-Regular",textAlign:"center"}}>
                                 {issue.issue_type === "기재 항목 누락" ? (
                                     // '기재 항목 누락' 이슈 타입에 대한 '모범 사례' 버튼
                                     <BestPractice issue_case={issue.issue_case}/>

@@ -14,3 +14,5 @@ FROM alpine:latest
 # 빌드 스테이지에서 생성된 빌드 파일을 복사합니다.
 COPY --from=build-stage /app/build /var/www
 
+
+# 빌드 시험용. -> deprecated & nginx 바로 배포.

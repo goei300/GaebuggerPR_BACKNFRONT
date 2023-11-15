@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react';
+import React,{useEffect, useState,useRef} from 'react';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
@@ -7,15 +7,16 @@ import "../../assets/fonts/fonts.css";
 import "./ResultSlide.css";
 import { StyledPaper } from '../../pages/Start/check/Guideline_detail/styles/ComponentStyles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import IconHoverEvent from '../SlideByIssue/IconHoverEvent';
 function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selectedButtonIssue,setSelectedButtonIssue}) {
 
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
     const [onlyShowIssueParagraphs, setOnlyShowIssueParagraphs] = useState(false);
-    const sliderRef = React.useRef(null);
+    const sliderRef = useRef(null);
     const [clickedIssueId, setClickedIssueId] = useState(null);
     const [activeIssueId, setActiveIssueId] = useState(null);
     const [isIconHovered, setIconHovered] = useState(false);
-
+    const prevSlideIndexRef = useRef(); // 이전 슬라이드 인덱스를 저장할 ref
     const getDisplayedParagraphs = () => {
         const issueParagraphIds = getIssueParagraphIds();
         return onlyShowIssueParagraphs ? paragraph.filter(p => issueParagraphIds.includes(p.paragraph_id)) : paragraph;
@@ -26,14 +27,17 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
     };
     // 현재 슬라이드의 index가 변경될 때 호출되는 함수
     const handleAfterChange = (currentIndex) => {
-        setCurrentSlideIndex(currentIndex);
-        
-        const displayedParagraphs = getDisplayedParagraphs();
-        const currentParagraphId = displayedParagraphs[currentIndex].paragraph_id;
-        const relevantIssues = getRelevantIssues(currentParagraphId);
-        // 현재 paragraph와 관련된 모든 issue들을 onIssueRender에 전달
-        console.log("handleAfterChange is on!!");
-        onIssueRender(relevantIssues);
+        if(currentIndex !==prevSlideIndexRef.current){
+            setCurrentSlideIndex(currentIndex);
+            prevSlideIndexRef.current = currentIndex; // 현재 인덱스를 저장
+
+            const displayedParagraphs = getDisplayedParagraphs();
+            const currentParagraphId = displayedParagraphs[currentIndex].paragraph_id;
+            const relevantIssues = getRelevantIssues(currentParagraphId);
+            // 현재 paragraph와 관련된 모든 issue들을 onIssueRender에 전달
+            console.log("handleAfterChange is on!!");
+            onIssueRender(relevantIssues);
+        }
     };
     
     // 위반사항이 있는 paragraph_id 목록을 가져옵니다.
@@ -91,19 +95,7 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
         return (
             <div className="issueWrapper" >
                 {wrapWithIssueSpan(paragraphInfo.paragraph_content.slice(activeIssue.issue_startIndex-paragraphInfo.paragraph_startIndex, (activeIssue.issue_endIndex ) - paragraphInfo.paragraph_startIndex), activeIssue)}
-                <div className="IconHoverEvent" onMouseLeave={() => setIconHovered(false)}>
-                    <h2 style={{margin:'0px'}}>외 {otherIssues.length}건</h2>
-                    &nbsp;
-                    &nbsp;
-                    <ExpandMoreIcon className="issueIcon" onMouseEnter={() => setIconHovered(true)} />
-                    <div className="popover" style={{ display: isIconHovered ? 'flex' : 'none' }}>
-                        {otherIssues.map(issue => (
-                            <div key={issue.issue_id} onClick={() => handleIssueClick(issue)}>
-                                {wrapWithIssueSpan(null, issue)}
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <IconHoverEvent otherIssues={otherIssues} handleIssueClick={handleIssueClick} wrapWithIssueSpan={wrapWithIssueSpan}/>
             </div>
         );
 
@@ -210,12 +202,17 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
                 });
 
                 contentArray.push(
-                    <div key="omittedIssues" className="omittedContent" style={{border:"1px solid #e0e0e0", borderRadius:"5px", paddingLeft: "10px", marginBottom:"15px"}}>
-                        <h3 style={{fontFamily:'NotoSansKR-Regular', marginBottom:"2px", marginTop:"5px"}}>누락으로 인한 위반 사항</h3>
+                    <div key="omittedIssues" className="omittedContent" style={{padding: "5px", borderRadius: "5px", margin: "10px 0", border: "2px solid #d9d9d9"}}>
+                        <strong>대단락 내 누락에 의한 위반 사항</strong>
                         <Divider style={{marginTop:"3px", marginBottom:"5px"}} />
-
                         <div className="omittedIssuesList" style={{marginBottom:"5px"}}>{omittedIssueElements}</div>
                     </div>
+
+                    // <div className="omittedIssuesList" key={"missingDiv-" + issue.issue_startIndex} style={{ padding: "5px", borderRadius: "5px", margin: "10px 0", border: "2px solid #d9d9d9" }}>
+                    //     <strong>대단락 내 누락에 의한 위반 사항</strong>
+                    //     <Divider style={{marginBottom:"10px"}} />
+                    //     {missingIssueContent}
+                    // </div>
                 );
             }
 
@@ -254,6 +251,7 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
         });
     }
     useEffect(() => {
+        console.log("hihi im firsteffect");
         setCurrentSlideIndex(0);
 
         const currentParagraphId = paragraph[0].paragraph_id;
@@ -263,6 +261,7 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
         onIssueRender(relevantIssues);
     }, []);   //초기 설정
     useEffect(() => {
+        console.log("hihi im 2effect");
         // 체크박스의 상태가 변경될 때마다 첫 번째 슬라이드로 이동
         setCurrentSlideIndex(0);
         // 미세한 딜레이 후에 슬라이드 이동
@@ -278,10 +277,10 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
         const relevantIssues = getRelevantIssues(firstParagraphId);
         onIssueRender(relevantIssues);
 
-    }, [onlyShowIssueParagraphs, paragraph, issues]);
+    }, [onlyShowIssueParagraphs, paragraph,issues]);  //onlyShowIssueParagraphs = 체크박스(이슈있는 항목만)
 
     useEffect(() => {
-
+        console.log("hihi im it");
         if (selectedButtonIssue) {
             setOnlyShowIssueParagraphs(false);
             console.log("checkbox false!");
@@ -304,7 +303,7 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
 
 
                 
-            }, 300);
+            }, 100);
             setTimeout(()=>{
                 handleIssueClick(selectedButtonIssue);
             },1000)
