@@ -1,5 +1,8 @@
 import pandas as pd
 
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+
 columns_to_concatenate = [f'규칙{i}' for i in range(1, 9)]
 def concatenate_texts(temp_df):
     texts=[]
