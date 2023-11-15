@@ -17,6 +17,8 @@ services/Pripen/src/main/resources/application.properties
 services/Pripen/src/main/frontend/.env
 
 
+
+
 ### STS ###
 .apt_generated
 .classpath

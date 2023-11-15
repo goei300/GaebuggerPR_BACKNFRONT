@@ -43,7 +43,7 @@ const PieChartComponent = ({ pieData, total }) => {
           }
           return { ...data, value: newValue, num: num };
         }),
-        { id:"점수", label: "점수", value: remainingValue, num: 0} // 남은 값을 추가 항목으로 추가
+        { id:"점수", label: "점수", value: remainingValue, num: 0, color: "#00CC00"} // 남은 값을 추가 항목으로 추가
       ];
 
     useEffect(() => {
@@ -106,7 +106,7 @@ const PieChartComponent = ({ pieData, total }) => {
                 outerRadius={outerRadius} // 예를 들어 부모 컨테이너의 크기가 450px이라면 여기서 계산
                 padAngle={0.7}
                 cornerRadius={3}
-                colors={['#d32f2f', '#ff9800', '#ffeb3b', 'purple', '#00CC00']}
+                colors={datum => datum.data.color}
                 borderColor={{ from: 'color', modifiers: [['darker', 0.6]] }}
                 animate={true}
                 motionStiffness={90}
@@ -149,7 +149,7 @@ const PieChartComponent = ({ pieData, total }) => {
                 {total}건
             </div>
             <div className="pieChartDesc">
-                <p style={{border:"2px solid #409eff", textAlign:"end", fontFamily:"NotoSansKR-SemiBold", padding: "10px",borderRadius:"10px", }}>100점 이상 감점 받으시면 차트에 안보여요!</p>
+                <p style={{border:"2px solid #409eff", textAlign:"end", fontFamily:"NotoSansKR-SemiBold", padding: "10px",borderRadius:"10px", }}>점수가 0점 이하면 차트에 나타나지 않아요!</p>
             </div>
         </div>
     );

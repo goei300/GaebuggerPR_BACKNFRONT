@@ -8,7 +8,7 @@ import MoreIcon from '@mui/icons-material/More';
 
 import BestPractice from '../bestpractice/BestPractice';
 import IconHoverEvent from './IconHoverEvent';
-const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,setSelectedButtonIssue }) => {
+const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,omissionIssuesCount}) => {
     const [currentIssueIndex, setCurrentIssueIndex] = useState(0);
     const [clickedIssueId, setClickedIssueId] = useState(1); // 추가
     const paragraphRef = useRef(null);
@@ -127,10 +127,10 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
             borderRadius: '50%',  // 동그라미 모양
             color: 'white',  // 글자색 지정
             backgroundColor:"transparent",
-            width: '20px',  // 원 크기 조절
+            width: '23.2px',  // 원 크기 조절
             height: '20px',
             textAlign: 'center',  // 번호 중앙 정렬
-            marginRight: '5px',  // 이슈 번호와 텍스트 사이의 간격
+
             lineHeight: '20px',  // 수직 중앙 정렬
             fontSize: '1em'  // 폰트 크기
         };
@@ -262,7 +262,7 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
             const containerElement = document.querySelector('.paragraph-section');
             if (spanElement && currentIssueId !== lastClickedIssueId) {
                 // 윈도우 스크롤입니다.
-                const targetSlide = selectedButtonIssue.issue_id - 1;
+                const targetSlide = (selectedButtonIssue.issue_id - 1) - omissionIssuesCount;
                 sliderRef.current.slickGoTo(targetSlide);
     
                 var element = document.querySelector('.slick-list'); // 요소를 선택
@@ -277,27 +277,27 @@ const SlideByIssue = ({ original, paragraphs, issues,style,selectedButtonIssue,s
                     behavior: 'smooth'
                 });
 
-                // 내부 컨테이너 스크롤입니다.
-                let elementRect = spanElement.getBoundingClientRect();
-                const containerRect = containerElement.getBoundingClientRect();
-                let parentElement = spanElement.parentElement;
+                // // 내부 컨테이너 스크롤입니다.
+                // let elementRect = spanElement.getBoundingClientRect();
+                // const containerRect = containerElement.getBoundingClientRect();
+                // let parentElement = spanElement.parentElement;
 
-                // 부모 요소를 탐색하며 'issuewrapper' 클래스를 가진 요소를 찾습니다.
-                while (parentElement && !parentElement.classList.contains('issueWrapper')) {
-                    parentElement = parentElement.parentElement;
-                }
+                // // 부모 요소를 탐색하며 'issuewrapper' 클래스를 가진 요소를 찾습니다.
+                // while (parentElement && !parentElement.classList.contains('issueWrapper')) {
+                //     parentElement = parentElement.parentElement;
+                // }
             
-                if (parentElement) {
-                    elementRect = parentElement.getBoundingClientRect();
-                    // parentRect를 사용하여 위치 및 크기 정보를 얻을 수 있습니다.
-                }
-                const relativeTop = elementRect.top - containerRect.top + containerElement.scrollTop;
-                const scrollPosition = relativeTop - containerElement.offsetHeight / 2 + elementRect.height / 2;
+                // if (parentElement) {
+                //     elementRect = parentElement.getBoundingClientRect();
+                //     // parentRect를 사용하여 위치 및 크기 정보를 얻을 수 있습니다.
+                // }
+                // const relativeTop = elementRect.top - containerRect.top + containerElement.scrollTop;
+                // const scrollPosition = relativeTop - containerElement.offsetHeight / 2 + elementRect.height / 2;
 
-                containerElement.scrollTo({
-                    top: scrollPosition,
-                    behavior: 'smooth'
-                });
+                // containerElement.scrollTo({
+                //     top: scrollPosition,
+                //     behavior: 'smooth'
+                // });
 
                 
 

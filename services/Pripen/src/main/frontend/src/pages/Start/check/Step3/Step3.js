@@ -81,7 +81,13 @@ function Step3({ nextStep, processId,dispatch,apiResponse }) {
                                 className="custom-button"
                                 onClick={nextStep}
                                 sx= {{
-                                    fontSize: "20px",
+                                    fontSize: "24px",
+                                    color:"white",
+                                    fontFamily:"NotoSansKR-SemiBold",
+                                    marginTop:"-10px",
+                                    borderRadius:"20px",
+                                    padding:"5px 15px",
+
                                 }}
                             >
                                 결과 확인

@@ -202,12 +202,17 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
                 });
 
                 contentArray.push(
-                    <div key="omittedIssues" className="omittedContent" style={{border:"1px solid #e0e0e0", borderRadius:"5px", paddingLeft: "10px", marginBottom:"15px"}}>
-                        <h3 style={{fontFamily:'NotoSansKR-Regular', marginBottom:"2px", marginTop:"5px"}}>누락으로 인한 위반 사항</h3>
+                    <div key="omittedIssues" className="omittedContent" style={{padding: "5px", borderRadius: "5px", margin: "10px 0", border: "2px solid #d9d9d9"}}>
+                        <strong>대단락 내 누락에 의한 위반 사항</strong>
                         <Divider style={{marginTop:"3px", marginBottom:"5px"}} />
-
                         <div className="omittedIssuesList" style={{marginBottom:"5px"}}>{omittedIssueElements}</div>
                     </div>
+
+                    // <div className="omittedIssuesList" key={"missingDiv-" + issue.issue_startIndex} style={{ padding: "5px", borderRadius: "5px", margin: "10px 0", border: "2px solid #d9d9d9" }}>
+                    //     <strong>대단락 내 누락에 의한 위반 사항</strong>
+                    //     <Divider style={{marginBottom:"10px"}} />
+                    //     {missingIssueContent}
+                    // </div>
                 );
             }
 
@@ -301,7 +306,7 @@ function ResultSlide({issues, paragraph, style, onIssueRender,onIssueClick,selec
             }, 100);
             setTimeout(()=>{
                 handleIssueClick(selectedButtonIssue);
-            },800)
+            },1000)
 
 
         }
