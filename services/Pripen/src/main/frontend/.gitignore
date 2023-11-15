@@ -5,6 +5,8 @@
 /.pnp
 .pnp.js
 
+# endpoint security
+.env
 
 # testing
 /coverage
