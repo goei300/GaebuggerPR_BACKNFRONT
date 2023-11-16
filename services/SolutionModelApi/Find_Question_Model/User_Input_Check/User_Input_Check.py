@@ -1,7 +1,7 @@
 from .Make_Json import Make_Issues_Omission
 
 import pandas as pd
-df = pd.read_csv("./test_instruction_1106.csv", encoding='cp949')
+df = pd.read_csv("./test_instruction_1111.csv")
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 # 1) 0: 의무
