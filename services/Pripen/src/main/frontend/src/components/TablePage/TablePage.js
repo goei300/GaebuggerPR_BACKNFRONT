@@ -80,7 +80,9 @@ const TablePage = ({ selectedIssueType,setSelectedIssueType,filteredIssues, hand
         setPage(0);  // 페이지당 행 수를 변경하면 페이지를 처음 페이지로 초기화
     };
 
-
+    const reasons = filteredIssues.map(issue => issue.issue_reason);
+    console.log("reasons is");
+    console.log(reasons);
     return(
         <StyledPaper elevation={3} style={{ margin: '10px', padding: '20px' }}>
             <Box sx={{ minWidth: 180 }}>
