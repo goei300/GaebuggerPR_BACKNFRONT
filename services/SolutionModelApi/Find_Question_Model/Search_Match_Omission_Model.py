@@ -62,7 +62,7 @@ def Search_Match_Omission_Model(user_input):
     # Match를 위한 rule 후보군
     # 사용자가 체크한 Rule들을 후보군으로 매칭하기 위한 rule 리스트 생성
     user_rule = []
-    df = pd.read_csv("./test_instruction_1106.csv", encoding='cp949')
+    df = pd.read_csv("./test_instruction_1111.csv")
     for i in range(1, len(user_input)):
         user_rule.append(df["part"][user_input[i]])
 
