@@ -74,6 +74,7 @@ def Make_Issues(ans, issue_paragraph_id, text, df, original_index, issue_id_star
     issue_endIndex=[]
 
     for i in issue_texts:
+        i=i.replace("\n","\r\n")
         if i.startswith('"') and i.endswith('"'):
             i = i[1:-1]  # 앞뒤 따옴표 그냥 제거 추후 수정 -> 프롬프트에서 계속 위반문장에 따옴표를 붙임
         startIndex = text.find(i)
