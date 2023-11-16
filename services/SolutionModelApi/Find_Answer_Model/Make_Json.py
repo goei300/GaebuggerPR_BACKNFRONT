@@ -37,7 +37,7 @@ def Make_Issues(ans, issue_paragraph_id, text, df, original_index, issue_id_star
     process_Law_Danger = 0
     process_Guide_Violate = 0
 
-    issue = {"issue_id": 0, "issue_paragraph_id": -999, "issue_type": "", "issue_score":-999, "issue_content": "", "issue_reason": "", "issue_startIndex": -999, "issue_endIndex": -999, "issue_case":-999, "issue_guideline": ""}
+    issue = {"issue_id": 0, "issue_paragraph_id": -999, "issue_type": "", "issue_score":-999, "issue_content": "", "issue_reason": [], "issue_startIndex": -999, "issue_endIndex": -999, "issue_case":-999, "issue_guideline": ""}
     issue_paragraph_id = issue_paragraph_id
 
     print("Make_Issues에 들어온 LLM의 결과입니다.", ans)
@@ -128,12 +128,12 @@ def Make_Issues(ans, issue_paragraph_id, text, df, original_index, issue_id_star
         issue["issue_paragraph_id"] = issue_paragraph_id
         issue["issue_type"] = issue_type
 
-
+        issue["issue_reason"]=[]
         df = df.fillna("NO_REASON")
         if(df[issue_reason][issue_paragraph_id]!="NO_REASON"):
             print("근거가 있습니다")
             print("근거는",df[issue_reason][issue_paragraph_id], "입니다.")
-            issue["issue_reason"] = df[issue_reason][issue_paragraph_id]
+            issue["issue_reason"].append(df[issue_reason][issue_paragraph_id])
 
         issue["issue_content"] = issue_content
         issue["issue_case"] = original_index
