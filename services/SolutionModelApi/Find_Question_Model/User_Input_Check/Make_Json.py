@@ -10,7 +10,7 @@ def concatenate_texts(temp_df):
     for col in columns_to_concatenate:
         if temp_df.loc[:,col].iloc[0] != 'NO_REASON':
             texts.append(str(temp_df.loc[:,col].iloc[0]))
-    return '\r'.join(texts)
+    return '\r\n'.join(texts)
 
 
 def Make_Issues_Omission(omission_dict, df):
