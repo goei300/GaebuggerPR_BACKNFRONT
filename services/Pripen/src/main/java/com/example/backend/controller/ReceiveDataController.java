@@ -6,6 +6,7 @@ import com.example.backend.service.DataProcessingService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,7 +31,8 @@ public class ReceiveDataController {
         this.dataProcessingService = dataProcessingService;
     }
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com","http://localhost:3000", "http://59.5.38.67:80","http://59.5.38.67:443" })
+
+    @CrossOrigin(origins = {"https://www.pri-pen.com" })
     @PostMapping("/start")
     public ResponseEntity<Map<String, UUID>> receiveData(
             @RequestPart("file") MultipartFile file,
@@ -56,7 +58,7 @@ public class ReceiveDataController {
     }
 
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com","http://localhost:3000","http://localhost:8080","http://59.5.38.67:80","http://59.5.38.67:443"})
+    @CrossOrigin(origins = {"https://www.pri-pen.com"})
     @GetMapping("/check-response/{processId}")
     public SseEmitter checkResponse(@PathVariable String processId) throws Exception {
         UUID parsedProcessId;
@@ -79,7 +81,7 @@ public class ReceiveDataController {
     // test endpoint
 //    @CrossOrigin(origins = "http://localhost:3000")
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com","http://localhost:3000","http://localhost:8080","http://59.5.38.67:80","http://59.5.38.67:443"})
+    @CrossOrigin(origins = {"https://www.pri-pen.com"})
     @PostMapping("/test-mock")
     public ResponseEntity<Map<String, Object>> getMockData(@RequestBody String process_ID) {
         // 임의의 데이터 생성

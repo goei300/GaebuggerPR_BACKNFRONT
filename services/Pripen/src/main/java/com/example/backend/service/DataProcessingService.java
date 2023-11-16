@@ -55,7 +55,7 @@ public class DataProcessingService {
     @Async
     @Transactional
     public CompletableFuture<Void> processData(UUID processId, SseEmitter emitter) throws Exception {
-        synchronized (lock) {
+        //synchronized (lock) {
             ProcessingStatus status = statusMap.get(processId);
 
             status.setProcessingStarted(true);
@@ -93,7 +93,7 @@ public class DataProcessingService {
             status.setProcessingComplete(true);
             return CompletableFuture.completedFuture(null);
         }
-    }
+    //}
 
     @Async
     @Transactional
