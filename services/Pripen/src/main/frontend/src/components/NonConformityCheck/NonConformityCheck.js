@@ -52,8 +52,6 @@ const NonConformityCheck = ({ data, omissionData }) => {
 
   
   const getOmissionParagraph = () => {
-
-
     return (
       <div className="omissionParagraph" style={{ border: "2px solid black",display:"flex", justifyContent:"center" ,flexDirection:"column", alignContent:"center", alignItems:"center", marginBottom:"30px"}}>
         <h2 style={{fontFamily:"NotosansKR-SemiBold"}}>누락된 항목</h2>

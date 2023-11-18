@@ -57,7 +57,6 @@ public class ReceiveDataController {
 
     }
 
-
     @CrossOrigin(origins = {"https://www.pri-pen.com"})
     @GetMapping("/check-response/{processId}")
     public SseEmitter checkResponse(@PathVariable String processId) throws Exception {
@@ -87,24 +86,25 @@ public class ReceiveDataController {
         // 임의의 데이터 생성
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("process_Id", process_ID);
-        responseData.put("process_Original", "개인정보취급방침Best of the Best는 이용자의 개인정보보호를 최우선의 가치로 생각합니다.\\r\\n한국정보기술연구원의 개인정보취급방침은 다음과  같은 내용을 담고 있습니다.\\r\\n가. 수집하는 개인정보 항목 및 수집방법\\r\\n웹사이트에서 회원가입, 전자민원서비스 이용 및 게시판 등에 글쓰기를 하시고자 하는 경우에, 연구원에서는 이용자의 동의를 얻어 필요한 최소한의 개인정보를 수집하고 있습니다.\\r\\n수집하는 개인정보 항목은 다음과 같습니다.\\r\\n- 홈페이지 회원가입 : 아이디, 이름, 이메일, 주소, 전화번호, 휴대폰번호 등\\r\\n- 게시판 글쓰기 : 이름, E-mail\\r\\n※ 수집근거 : 홈페이지 이용약관\\r\\n나. 개인정보 수집 및 이용목적\\r\\n대부분의 연구원 홈페이지에서 제공하는 서비스는 별도의 회원가입 없이 언제든지 사용할 수 있습니다. 그러나, 연구원에서는 맞춤서비스(메일링 서비스, 교육안내 등)를 비롯한 보다 더 향상된 양질의 서비스를 제공하기 위하여 이용자 개인의 정보를 수집하고 있습니다.\\r\\n다. 개인정보의 공유 및 제공\\r\\n연구원 회원에 가입하신 분께서는 개인정보를 열람 또는 정정하고자 하실 때에는 아이디와  이름을 제외하고 직접 열람 또는 정정하시면 됩니다. 회원가입을 통해 개인정보의 수집, 이용, 제공에 대해 동의하신 내용을 회 원은 언제든지 철회하실 수 있습니다. 회원은 관리자에게 유선 또는 메일로 문의하여 조치를 받으시면 됩니다.\\r\\n라. 개인정보 의 보유 및 이용기간\\r\\n회원으로서 한국정보기술연구원에 제공하는 서비스를 이용하는 동안 연구원은 회원의 개인정보를 계속적으로 보유하며 서비스 제공 등을 위해 이용합니다.\\r\\n일시적인 목적(이벤트 등)으로 입력 받은 개인정보는 그 목적이 달성된 이후에는 동일한 방법으로 사후 재생이 불가능한 상태로 처리됩니다. 한국정보기술연구원은 개인정보의 수집목적이 달성되면 파기 하는 것을 원칙으로 합니다.\\r\\n전자민원창구(Q&A)와 제안마당의 게시물을 작성하신 경우, 또는 정부지원사업에 참여하신 경우  민원의 원활한 행정업무 처리를 위하여 개인정보를 보관합니다. 이 경우 한국정보기술연구원은 보관하는 정보를 그 보관 목적으 로만 이용합니다.\\r\\n비회원 : 회원에 가입하지 않고 서비스를 이용하는 자를 말합니다.\\r\\n마.개인정보 보호책임자\\r\\n한국정보기술연구원은 회원의 개인정보를 보호하고 개인정보와 관련한 불만을 처리하기 위하여 아래와 같이 관련 부서 및 개인정보 보호 책임자를 지정하고 있습니다.\\r\\n[한국정보기술연구원 BoB센터 개인정보 보호책임자]\\r\\n- 담당자: 윤일중 보안교육운영팀장\\r\\n- 담당부서: BoB센터\\r\\n- 전화번호: 070-7093-9877\\r\\n- 이메일: toquryoon@kitri.re.kr\\r\\n- 주소: 서울시 금천구 서부샛길 606 대성디폴리스지식산업센터 A동 2701호");
+        responseData.put("process_Original", "개인정보취급방침Best of the Best는 이용자의 개인정보보호를 최우선의 가치로 생각합니다.\r\n한국정보기술연구원의 개인정보취급방침은 다음과  같은 내용을 담고 있습니다.\r\n가. 수집하는 개인정보 항목 및 수집방법\r\n웹사이트에서 회원가입, 전자민원서비스 이용 및 게시판 등에 글쓰기를 하시고자 하는 경우에, 연구원에서는 이용자의 동의를 얻어 필요한 최소한의 개인정보를 수집하고 있습니다.\r\n수집하는 개인정보 항목은 다음과 같습니다.\r\n- 홈페이지 회원가입 : 아이디, 이름, 이메일, 주소, 전화번호, 휴대폰번호 등\r\n- 게시판 글쓰기 : 이름, E-mail\r\n※ 수집근거 : 홈페이지 이용약관\r\n나. 개인정보 수집 및 이용목적\r\n대부분의 연구원 홈페이지에서 제공하는 서비스는 별도의 회원가입 없이 언제든지 사용할 수 있습니다. 그러나, 연구원에서는 맞춤서비스(메일링 서비스, 교육안내 등)를 비롯한 보다 더 향상된 양질의 서비스를 제공하기 위하여 이용자 개인의 정보를 수집하고 있습니다.\r\n다. 개인정보의 공유 및 제공\r\n연구원 회원에 가입하신 분께서는 개인정보를 열람 또는 정정하고자 하실 때에는 아이디와  이름을 제외하고 직접 열람 또는 정정하시면 됩니다. 회원가입을 통해 개인정보의 수집, 이용, 제공에 대해 동의하신 내용을 회 원은 언제든지 철회하실 수 있습니다. 회원은 관리자에게 유선 또는 메일로 문의하여 조치를 받으시면 됩니다.\r\n라. 개인정보 의 보유 및 이용기간\r\n회원으로서 한국정보기술연구원에 제공하는 서비스를 이용하는 동안 연구원은 회원의 개인정보를 계속적으로 보유하며 서비스 제공 등을 위해 이용합니다.\r\n일시적인 목적(이벤트 등)으로 입력 받은 개인정보는 그 목적이 달성된 이후에는 동일한 방법으로 사후 재생이 불가능한 상태로 처리됩니다. 한국정보기술연구원은 개인정보의 수집목적이 달성되면 파기 하는 것을 원칙으로 합니다.\r\n전자민원창구(Q&A)와 제안마당의 게시물을 작성하신 경우, 또는 정부지원사업에 참여하신 경우  민원의 원활한 행정업무 처리를 위하여 개인정보를 보관합니다. 이 경우 한국정보기술연구원은 보관하는 정보를 그 보관 목적으 로만 이용합니다.\r\n비회원 : 회원에 가입하지 않고 서비스를 이용하는 자를 말합니다.\r\n마.개인정보 보호책임자\r\n한국정보기술연구원은 회원의 개인정보를 보호하고 개인정보와 관련한 불만을 처리하기 위하여 아래와 같이 관련 부서 및 개인정보 보호 책임자를 지정하고 있습니다.\r\n[한국정보기술연구원 BoB센터 개인정보 보호책임자]\r\n- 담당자: 윤일중 보안교육운영팀장\r\n- 담당부서: BoB센터\r\n- 전화번호: 070-7093-9877\r\n- 이메일: toquryoon@kitri.re.kr\r\n- 주소: 서울시 금천구 서부샛길 606 대성디폴리스지식산업센터 A동 2701호");
         responseData.put("process_Law_Violate",2);
         responseData.put("process_Law_Danger",2);
         responseData.put("process_Guide_Violate",4);
         responseData.put("process_Omission_Paragraph",4);
 
+
         List<Map<String, Object>> paragraphs = new ArrayList<>();
 
         Map<String, Object> paragraph0 = new HashMap<>();
         paragraph0.put("paragraph_id",0);
-        paragraph0.put("paragraph_content","개인정보취급방침Best of the Best는 이용자의 개인정보보호를 최우선의 가치로 생각합니다.\\r\\n한국정보기술연구원의 개인정보취급 방침은 다음과 같은 내용을 담고 있습니다.\\r\\n");
+        paragraph0.put("paragraph_content","개인정보취급방침Best of the Best는 이용자의 개인정보보호를 최우선의 가치로 생각합니다.\r\n한국정보기술연구원의 개인정보취급 방침은 다음과 같은 내용을 담고 있습니다.\r\n");
         paragraph0.put("paragraph_startIndex",0);
         paragraph0.put("paragraph_endIndex",97);
         paragraphs.add(paragraph0);
 
         Map<String, Object> paragraph1 = new HashMap<>();
         paragraph1.put("paragraph_id", 1);
-        paragraph1.put("paragraph_content", "가. 수집하는 개인정보 항목 및 수집방법\\r\\n웹사이트에서 회원가입, 전자민원서비스 이용 및 게시판 등에 글쓰기를 하시고자 하는 경우에, 연구원에서는 이용자의 동의를 얻어 필요한 최소한의 개인정보를 수집하고 있습니다.\\r\\n수 집하는 개인정보 항목은 다음과 같습니다.\\r\\n- 홈페이지 회원가입 : 아이디, 이름, 이메일, 주소, 전화번호, 휴대폰번호 등\\r\\n- 게시판 글쓰기 : 이름, E-mail\\r\\n※ 수집근거 : 홈페이지 이용약관\\r\\n");
+        paragraph1.put("paragraph_content", "가. 수집하는 개인정보 항목 및 수집방법\r\n웹사이트에서 회원가입, 전자민원서비스 이용 및 게시판 등에 글쓰기를 하시고자 하는 경우에, 연구원에서는 이용자의 동의를 얻어 필요한 최소한의 개인정보를 수집하고 있습니다.\r\n수 집하는 개인정보 항목은 다음과 같습니다.\r\n- 홈페이지 회원가입 : 아이디, 이름, 이메일, 주소, 전화번호, 휴대폰번호 등\r\n- 게시판 글쓰기 : 이름, E-mail\r\n※ 수집근거 : 홈페이지 이용약관\r\n");
         paragraph1.put("paragraph_startIndex",98);
         paragraph1.put("paragraph_endIndex",334);
         // ... 나머지 속성들도 동일하게 추가
@@ -113,7 +113,7 @@ public class ReceiveDataController {
 
         Map<String,Object> paragraph2= new HashMap<>();
         paragraph2.put("paragraph_id",2);
-        paragraph2.put("paragraph_content","나. 개인정보 수집 및 이용목적\\r\\n대부분의 연구원 홈페이지에서 제공하는 서비스는 별도의 회원가입 없이 언제든지 사용할 수 있습니다. 그러나, 연구원에서는 맞춤서비스(메일링 서비스, 교육안내 등)를 비롯한 보다 더 향상된 양질의 서비스를 제공하기 위하여 이용자 개인의 정보를 수집하고 있습니다.\\r\\n");
+        paragraph2.put("paragraph_content","나. 개인정보 수집 및 이용목적\r\n대부분의 연구원 홈페이지에서 제공하는 서비스는 별도의 회원가입 없이 언제든지 사용할 수 있습니다. 그러나, 연구원에서는 맞춤서비스(메일링 서비스, 교육안내 등)를 비롯한 보다 더 향상된 양질의 서비스를 제공하기 위하여 이용자 개인의 정보를 수집하고 있습니다.\r\n");
         paragraph2.put("paragraph_startIndex",335);
         paragraph2.put("paragraph_endIndex",499);
         paragraphs.add(paragraph2);
@@ -121,7 +121,7 @@ public class ReceiveDataController {
         Map<String, Object> paragraph3 = new HashMap<>();
 
         paragraph3.put("paragraph_id",3);
-        paragraph3.put("paragraph_content", "다. 개인정보의 공유 및 제공\\r\\n연구원 회원에 가입하신 분께서는 개인정보를 열람 또는 정정하고자 하실 때에는 아이디와 이름을 제외하고 직접 열람 또는 정정하시면 됩니다. 회원가입을 통해 개인정보의 수집, 이용, 제공에 대해 동의하신 내용을 회원은 언제든지 철회하실 수 있습니다. 회원은 관리자에게 유선 또는 메일로 문의하여 조치를 받으시면 됩니다.\\r\\n");
+        paragraph3.put("paragraph_content", "다. 개인정보의 공유 및 제공\r\n연구원 회원에 가입하신 분께서는 개인정보를 열람 또는 정정하고자 하실 때에는 아이디와 이름을 제외하고 직접 열람 또는 정정하시면 됩니다. 회원가입을 통해 개인정보의 수집, 이용, 제공에 대해 동의하신 내용을 회원은 언제든지 철회하실 수 있습니다. 회원은 관리자에게 유선 또는 메일로 문의하여 조치를 받으시면 됩니다.\r\n");
         paragraph3.put("paragraph_startIndex",500);
         paragraph3.put("paragraph_endIndex",695);
         paragraphs.add(paragraph3);
@@ -156,7 +156,13 @@ public class ReceiveDataController {
     // test issue 생성
     public static List<Map<String, Object>> createProcessIssues() {
         List<Map<String, Object>> processIssues = new ArrayList<>();
-
+        List<String> reasons = Arrays.asList(
+                "작성지침 9. 개인정보의 파기 절차 및 방법에 관한 사항",
+                "작성지침 9. 개인정보의 파기 절차 및 방법에 관한 사항",
+                "개인정보보호법 제21조 제3항",
+                "개인정보보호법 제30조 제1항",
+                "개인정보보호법 시행령 제16조 제1항"
+        );
         // Issue 0
         Map<String, Object> issue0 = new HashMap<>();
         issue0.put("issue_id", 0);
@@ -164,11 +170,11 @@ public class ReceiveDataController {
         issue0.put("issue_type", "기재 항목 누락");
         issue0.put("issue_score",51);
         issue0.put("issue_content", "개인정보의 파기 절차 및 방법에 관한 사항에 해당하는 항목의 기재가 누락인 상태이고 이를 의무로 기재하여야합니다.");
-        issue0.put("issue_reason", "작성지침 9. 개인정보의 파기 절차 및 방법에 관한 사항\\r\\n작성지침 9. 개인정보의 파기 절차 및 방법에 관한 사항\\r\\n개인정보보호법 제21조 제3항\\r\\n개인정보보호법 제30조 제1항\\r\\n개인정보보호법 시행령 제16조 제1항");
+        issue0.put("issue_reason", reasons);
         issue0.put("issue_startIndex", -500);
         issue0.put("issue_endIndex", -500);
         issue0.put("issue_case",8);
-        issue0.put("issue_guideline", "");
+        issue0.put("issue_guideline", new ArrayList<>());
         processIssues.add(issue0);
 
         // Issue 1
@@ -178,7 +184,7 @@ public class ReceiveDataController {
         issue1.put("issue_type", "기재 항목 누락");
         issue1.put("issue_score",30);
         issue1.put("issue_content", "정보주체와 법정대리인의 권리·의무 및 행사방법에 관한 사항에 해당하는 항목의 기재가 누락인 상태이고 이를 의무로 기재하여야합니다.");
-        issue1.put("issue_reason", "개인정보보호법 제30조 제1항\\r\\n개인정보보호법 제38조 제4항\\r\\n작성지침 11. 정보주체와 법정대리인의 권리, 의무 및 행사방법에 관한 사항");
+        issue1.put("issue_reason", reasons);
         issue1.put("issue_startIndex", -500);
         issue1.put("issue_endIndex", -500);
         issue1.put("issue_case",10);
@@ -194,11 +200,11 @@ public class ReceiveDataController {
         issue2.put("issue_type", "기재 항목 누락");
         issue2.put("issue_score",15);
         issue2.put("issue_content", "개인정보의 안전성 확보조치에 관한 사항에 해당하는 항목의 기재가 누락인 상태이고 이를 의무로 기재하여야합니다.");
-        issue2.put("issue_reason", "개인정보보호법 시행령 제31조 제1항\\r\\n작성지침 12. 개인정보의 안전성 확보조치에 관한 사항\\r\\n작성지침 12. 개인정보의 안전성 확보조치에 관한 사항");
+        issue2.put("issue_reason", reasons);
         issue2.put("issue_startIndex", -500);
         issue2.put("issue_endIndex", -500);
         issue2.put("issue_case",11);
-        issue2.put("issue_guideline", "");
+        issue2.put("issue_guideline", new ArrayList<>());
         processIssues.add(issue2);
 
         // Issue 3
@@ -208,11 +214,11 @@ public class ReceiveDataController {
         issue3.put("issue_type", "기재 항목 누락");
         issue3.put("issue_score",25);
         issue3.put("issue_content", "개인정보 처리방침의 변경에 관한 사항에 해당하는 항목의 기재가 누락인 상태이고 이를 의무로 기재하여야합니다.");
-        issue3.put("issue_reason", "작성지침 22.개인정보 처리방침의 변경에 관한 사항\\r\\n작성지침 22.개인정보 처리방침의 변경에 관한 사항\\r\\n작성지침 22.개인정보 처리방침의 변경에 관한 사항");
+        issue3.put("issue_reason", reasons);
         issue3.put("issue_startIndex", -500);
         issue3.put("issue_endIndex", -500);
         issue3.put("issue_case",21);
-        issue3.put("issue_guideline", "");
+        issue3.put("issue_guideline", new ArrayList<>());
         processIssues.add(issue3);
 
         // Issue 4
@@ -222,7 +228,7 @@ public class ReceiveDataController {
         issue4.put("issue_type", "작성지침 미준수");
         issue4.put("issue_score",-999);
         issue4.put("issue_content", "개인정보 처리방침을 수립·공개하고자 하는 개인정보처리자의 명칭을 주어로 하여 기재하여야 함.**");
-        issue4.put("issue_reason", "");
+        issue4.put("issue_reason", new ArrayList<>());
         issue4.put("issue_startIndex", 0);
         issue4.put("issue_endIndex", 53);
         issue4.put("issue_case",0);
@@ -236,7 +242,7 @@ public class ReceiveDataController {
         issue5.put("issue_type", "작성지침 미준수");
         issue5.put("issue_score",-999);
         issue5.put("issue_content", "'개인정보취급방침'이란 용어가 아닌 '개인정보처리방침'이란 용어를 사용해야함.**");
-        issue5.put("issue_reason", "");
+        issue5.put("issue_reason", new ArrayList<>());
         issue5.put("issue_startIndex", 860);
         issue5.put("issue_endIndex", 905);
         issue5.put("issue_case",4);
@@ -250,7 +256,7 @@ public class ReceiveDataController {
         issue6.put("issue_type", "작성지침 미준수");
         issue6.put("issue_score",3);
         issue6.put("issue_content", "재난, 감염병 등 긴급 상황 발생 시 정보주체의 동의가 없어도 관련 기관에 개인정보를 제공할 수 있다'는 내용을 기재해야 해. 해당 내용이 기재되어있지 않으면, 지침 미준수야.");
-        issue6.put("issue_reason", "작성지침 6.개인정보의 제3자 제공에 관한 사항");
+        issue6.put("issue_reason", List.of("작성지침 6.개인정보의 제3자 제공에 관한 사항"));
         issue6.put("issue_startIndex", -999);
         issue6.put("issue_endIndex", -999);
         issue6.put("issue_case",6);
@@ -263,7 +269,7 @@ public class ReceiveDataController {
         issue7.put("issue_type", "작성지침 미준수");
         issue7.put("issue_score",3);
         issue7.put("issue_content", "누락테스트");
-        issue7.put("issue_reason", "누락테스트2");
+        issue7.put("issue_reason", List.of("누락테스트2"));
         issue7.put("issue_startIndex", -999);
         issue7.put("issue_endIndex", -999);
         issue7.put("issue_case",8);
@@ -277,7 +283,7 @@ public class ReceiveDataController {
         issue8.put("issue_type", "법률 위반");
         issue8.put("issue_score",15);
         issue8.put("issue_content", "누락테스트_법률");
-        issue8.put("issue_reason", "누락테스트2_법률");
+        issue8.put("issue_reason", List.of("누락테스트2_법률"));
         issue8.put("issue_startIndex", -999);
         issue8.put("issue_endIndex", -999);
         issue8.put("issue_case",4);
@@ -290,7 +296,7 @@ public class ReceiveDataController {
         issue9.put("issue_type","기재 항목 누락");
         issue9.put("issue_score",51);
         issue9.put("issue_content","제목 및 서문");
-        issue9.put("issue_reason","개인정보 보호법");
+        issue9.put("issue_reason",List.of("개인정보 보호법"));
         issue9.put("issue_startIndex",-500);
         issue9.put("issue_endIndex",-500);
         issue9.put("issue_case",3);
@@ -303,7 +309,7 @@ public class ReceiveDataController {
         issue10.put("issue_type","기재 항목 누락");
         issue10.put("issue_score",51);
         issue10.put("issue_content","개인정보 어떤거 그 긴거 출력하는거");
-        issue10.put("issue_reason","개인정보 보호법29조");
+        issue10.put("issue_reason",List.of("개인정보 보호법29조"));
         issue10.put("issue_startIndex",-500);
         issue10.put("issue_endIndex",-500);
         issue10.put("issue_case",21);

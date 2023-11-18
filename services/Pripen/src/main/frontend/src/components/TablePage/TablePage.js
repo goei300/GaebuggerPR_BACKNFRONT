@@ -130,7 +130,17 @@ const TablePage = ({ selectedIssueType,setSelectedIssueType,filteredIssues, hand
                                 {issue.issue_type === "기재 항목 누락" && <span style={{color: "purple", fontWeight: "bold", marginLeft: "7px"}}>(-{issue.issue_score})</span>}
                             </TableCell>
                             <TableCell style={{width:"40%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_content}</TableCell>
-                            <TableCell style={{width:"25%", fontFamily:"NotoSansKR-Regular"}}>{issue.issue_reason}</TableCell>
+                            <TableCell style={{ width: "25%", fontFamily: "NotoSansKR-Regular" }}>
+                                {Array.isArray(issue.issue_reason) ? (
+                                    <ul>
+                                    {issue.issue_reason.map((reason, index) => (
+                                        <li key={index}>{reason}</li>
+                                    ))}
+                                    </ul>
+                                ) : (
+                                    issue.issue_reason
+                                )}
+                            </TableCell>
                             <TableCell style={{width:"10%", fontFamily:"NotoSansKR-Regular",textAlign:"center"}}>
                                 {issue.issue_type === "기재 항목 누락" ? (
                                     // '기재 항목 누락' 이슈 타입에 대한 '모범 사례' 버튼
