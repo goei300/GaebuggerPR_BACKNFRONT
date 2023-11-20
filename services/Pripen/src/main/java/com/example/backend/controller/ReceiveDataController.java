@@ -31,7 +31,6 @@ public class ReceiveDataController {
         this.dataProcessingService = dataProcessingService;
     }
 
-
     @CrossOrigin(origins = {"https://www.pri-pen.com" })
     @PostMapping("/start")
     public ResponseEntity<Map<String, UUID>> receiveData(
