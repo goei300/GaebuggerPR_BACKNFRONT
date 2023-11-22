@@ -53,7 +53,7 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .headers()
-                    .frameOptions().disable() // 이 부분이 X-Frame-Options 헤더를 비활성화합니다.
+                    .frameOptions().disable() // 이 부분이 X-Frame-Options 헤더를 비활성화
                     .and()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

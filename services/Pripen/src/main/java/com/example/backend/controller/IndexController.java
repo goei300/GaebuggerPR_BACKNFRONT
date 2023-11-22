@@ -9,7 +9,7 @@ public class IndexController {
 
     @GetMapping({"/", "/services/*","/guidelines","/start/*","/contact"})
     public String forward() {
-        System.out.println("Forwarding request"); // Add this
+        System.out.println("Forwarding request");
         return "forward:/index.html";
     }
 

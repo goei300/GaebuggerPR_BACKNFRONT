@@ -170,7 +170,7 @@ public class DataProcessingService {
         System.out.println("response dto is!");
         System.out.println(responseDTO);
 
-        // responseDTO를 JSON 형태로 변환하여 SSE로 보냅니다.
+        // responseDTO를 JSON 형태로 변환하여 SSE로 전송
         String responseJson = objectMapper.writeValueAsString(responseDTO);
         emitter.send(SseEmitter.event().name("data").data(responseJson));
     }
