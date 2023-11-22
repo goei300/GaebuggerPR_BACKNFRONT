@@ -11,11 +11,13 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder; // 비밀번호 암호화를 위한 PasswordEncoder
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
+        this.userRepository = userRepository;
+        this.passwordEncoder= passwordEncoder;
+    }
 
     public Optional<User> authenticate(String email, String password) {
         Optional<User> foundUser = userRepository.findByEmail(email);
