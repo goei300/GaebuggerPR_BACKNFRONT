@@ -59,7 +59,7 @@ public class UserController {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://localhost:3000","http://59.5.38.67:80","http://59.5.38.67:443"},allowCredentials = "true")
+    @CrossOrigin(origins = {"https://www.pri-pen.com"},allowCredentials = "true")
     //@CrossOrigin(origins = "*")
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody User loginUser, HttpServletResponse response) {
@@ -106,7 +106,7 @@ public class UserController {
         }
     }
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://59.5.38.67:80","http://59.5.38.67:443"})
+    @CrossOrigin(origins = {"https://www.pri-pen.com"})
     //@CrossOrigin(origins = "*")
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshAccessToken(HttpServletRequest request, HttpServletResponse response) {
@@ -139,7 +139,7 @@ public class UserController {
         }
     }
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://59.5.38.67:3000"})
+    @CrossOrigin(origins = {"https://www.pri-pen.com"})
     //@CrossOrigin(origins = "*")
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
@@ -167,7 +167,7 @@ public class UserController {
         return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://59.5.38.67", "http://59.5.38.67:443"},allowCredentials = "true")
+    @CrossOrigin(origins = {"https://www.pri-pen.com"},allowCredentials = "true")
     @DeleteMapping("/logout")
     public ResponseEntity<?> logoutUser(HttpServletRequest request,HttpServletResponse response) {
         // 클라이언트로부터 받은 리프레시 토큰 쿠키 가져오기

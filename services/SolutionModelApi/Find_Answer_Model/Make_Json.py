@@ -30,14 +30,14 @@ issue_id=0
 
 # 2> 위반한 이슈의 내용을 약속된 JSON형태로 정제해주는 함수
     #: 한번 결과에는 규칙1, 규칙2, 규칙 3 이게 다있음
-def Make_Issues(ans, issue_paragraph_id, text, df, issue_id_start):
+def Make_Issues(ans, issue_paragraph_id, text, df, original_index, issue_id_start):
     issue_id = issue_id_start
 
     process_Law_Violate = 0
     process_Law_Danger = 0
     process_Guide_Violate = 0
 
-    issue = {"issue_id": 0, "issue_paragraph_id": -999, "issue_type": "", "issue_score":-999, "issue_content": "", "issue_reason": "", "issue_startIndex": -999, "issue_endIndex": -999, "issue_case":-999, "issue_guideline": ""}
+    issue = {"issue_id": 0, "issue_paragraph_id": -999, "issue_type": "", "issue_score":-999, "issue_content": "", "issue_reason": [], "issue_startIndex": -999, "issue_endIndex": -999, "issue_case":-999, "issue_guideline": ""}
     issue_paragraph_id = issue_paragraph_id
 
     print("Make_Issues에 들어온 LLM의 결과입니다.", ans)
@@ -74,6 +74,7 @@ def Make_Issues(ans, issue_paragraph_id, text, df, issue_id_start):
     issue_endIndex=[]
 
     for i in issue_texts:
+        i=i.replace("\n","\r\n")
         if i.startswith('"') and i.endswith('"'):
             i = i[1:-1]  # 앞뒤 따옴표 그냥 제거 추후 수정 -> 프롬프트에서 계속 위반문장에 따옴표를 붙임
         startIndex = text.find(i)
@@ -127,13 +128,15 @@ def Make_Issues(ans, issue_paragraph_id, text, df, issue_id_start):
         issue["issue_paragraph_id"] = issue_paragraph_id
         issue["issue_type"] = issue_type
 
+        issue["issue_reason"]=[]
         df = df.fillna("NO_REASON")
         if(df[issue_reason][issue_paragraph_id]!="NO_REASON"):
             print("근거가 있습니다")
             print("근거는",df[issue_reason][issue_paragraph_id], "입니다.")
-            issue["issue_reason"] = df[issue_reason][issue_paragraph_id]
+            issue["issue_reason"].append(df[issue_reason][issue_paragraph_id])
 
         issue["issue_content"] = issue_content
+        issue["issue_case"] = original_index
         issue["issue_guideline"] = issue_guideline.split('/////')
 
         print("issue", issue_id, "입니다.", issue)

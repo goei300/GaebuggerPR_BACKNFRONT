@@ -1,7 +1,9 @@
 from .Make_Json import Make_Issues_Omission
 
 import pandas as pd
-df = pd.read_csv("./test_instruction_1106.csv", encoding='cp949')
+df = pd.read_csv("./test_instruction_1111.csv")
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
 # 1) 0: 의무
 # 2) 1: 해당시 의무
 # 3) 2: 해당시 권장
@@ -58,7 +60,7 @@ def Alert_Omission(title_dict2, user_input_text):
     omission_dict = {}
     omission_text = ""
     omission_text_one =""
-    # title_dict2 : {지침: 방침}
+    # title_dict2 : {지침:방침}
     # user_input_text: 사용자 체크 input 및 필수항목
     process_Omission_Paragraph = 0
     title_dict2_list = list(title_dict2.keys())

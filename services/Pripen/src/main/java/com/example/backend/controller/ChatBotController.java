@@ -14,7 +14,7 @@ public class ChatBotController {
     private final WebClient webClient;
 
     public ChatBotController(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://3.35.0.224:8000").build();
+        this.webClient = webClientBuilder.baseUrl("https://chatbot.pri-pen.com").build();
     }
 
     @GetMapping("/chatbot")

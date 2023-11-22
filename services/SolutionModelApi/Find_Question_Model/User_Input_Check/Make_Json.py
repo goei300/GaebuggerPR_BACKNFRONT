@@ -1,5 +1,8 @@
 import pandas as pd
 
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+
 columns_to_concatenate = [f'규칙{i}' for i in range(1, 9)]
 def concatenate_texts(temp_df):
     texts=[]
@@ -7,13 +10,13 @@ def concatenate_texts(temp_df):
     for col in columns_to_concatenate:
         if temp_df.loc[:,col].iloc[0] != 'NO_REASON':
             texts.append(str(temp_df.loc[:,col].iloc[0]))
-    return '\r'.join(texts)
+    return texts
 
 
 def Make_Issues_Omission(omission_dict, df):
     omission_Issues = []
     issue = {"issue_id": 0, "issue_paragraph_id": -500, "issue_type": "", "issue_score": -500, "issue_content": "",
-             "issue_reason": "", "issue_startIndex": -500, "issue_endIndex": -500, "issue_case": -500,
+             "issue_reason": [], "issue_startIndex": -500, "issue_endIndex": -500, "issue_case": -500,
              "issue_guideline": []}
     issue_id = 0
     # Apply the function to each row
