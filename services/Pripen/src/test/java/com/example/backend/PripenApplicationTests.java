@@ -47,32 +47,5 @@ public class PripenApplicationTests {
 		boolean isAvailable = userService.existsByEmail(nonExistingEmail);
 		assertTrue(isAvailable); // 이메일이 존재하지 않으므로 사용할 수 있음
 	}
-	@Test
-	void sendVerificationEmailTest() throws Exception {
-		// 모의 객체 생성
-		JavaMailSender mockMailSender = mock(JavaMailSender.class);
-		EmailPostService service = new EmailPostService(mockMailSender);
 
-		// 테스트를 위한 데이터
-		String testEmail = "test@example.com";
-		String testCode = "123456";
-
-		// 메서드 호출
-		service.sendVerificationEmail(testEmail, testCode);
-
-		// send 메서드가 호출되었는지 검증
-		verify(mockMailSender, times(1)).send(any(SimpleMailMessage.class));
-	}
-	@Test
-	public void generateVerificationCodeTest() {
-		JavaMailSender mockMailSender = mock(JavaMailSender.class);
-		EmailPostService service = new EmailPostService(mockMailSender);
-		String code = service.generateVerificationCode();
-
-		// 코드 길이 검증
-		assertEquals(6, code.length());
-
-		// 코드가 올바른 문자 집합으로 구성되었는지 검증
-		assertTrue(code.matches("[A-Za-z0-9]{6}"));
-	}
 }

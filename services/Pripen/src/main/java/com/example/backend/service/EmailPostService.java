@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.repository.redis.EmailVerificationCodeRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -16,10 +17,11 @@ public class EmailPostService {
 
 
     private final JavaMailSender mailSender;
-
+    private final EmailVerificationCodeRepository emailVerificationRepository;
     @Autowired
-    public EmailPostService(JavaMailSender mailSender){
+    public EmailPostService(JavaMailSender mailSender, EmailVerificationCodeRepository emailVerificationCodeRepository){
         this.mailSender = mailSender;
+        this.emailVerificationRepository = emailVerificationCodeRepository;
     }
 
 
@@ -32,6 +34,9 @@ public class EmailPostService {
         mail.setText("귀하의 인증 코드는 " + verificationCode + "입니다."); // 메일 본문 설정
         System.out.println("before send message");
         mailSender.send(mail);
+
+        // Redis에 인증 코드와 이메일 저장
+        emailVerificationRepository.saveVerificationCode(verificationCode, email);
         System.out.println("working well!");
     }
     public void doSendEmail(String email,String verificationCode){
