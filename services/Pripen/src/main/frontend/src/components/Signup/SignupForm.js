@@ -115,7 +115,14 @@ const SignupForm = ({nextStep, handleChange}) => {
             <Typography variant="h5" component="div" fontFamily="NotoSansKR-Bold">
                 회원가입
             </Typography>
-
+            <TextField
+                label="테스트"
+                variant="outlined"
+                size="small"
+                fullWidth
+                onChange={handleChange('name')}
+                sx={{ marginBottom: '5px', fontFamily:"NotoSansKR-Bold"  }}
+            />
             <TextField
                 label="사용자 이름"
                 variant="outlined"
@@ -123,7 +130,7 @@ const SignupForm = ({nextStep, handleChange}) => {
                 fullWidth
                 onChange={(e) => {
                     setUsername(e.target.value);
-                    handleChange('name')(e); // handleChange 함수 호출
+                    handleChange('name')(e);
                 }}
                 sx={{ marginBottom: '5px', fontFamily:"NotoSansKR-Bold"  }}
             />

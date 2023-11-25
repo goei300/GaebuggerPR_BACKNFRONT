@@ -203,11 +203,12 @@ public class UserController {
 
     @CrossOrigin(origins = {"https://www.pri-pen.com","http://localhost:3000"})
     @PostMapping("/email-post")
-    public ResponseEntity<?> emailPost(@RequestParam String email){
-
+    public ResponseEntity<?> emailPost(@RequestBody Map<String, String> requestData){
+        String email = requestData.get("email");
         try {
             String verificationCode = emailPostService.generateVerificationCode();
-            emailPostService.sendVerificationEmail(email, verificationCode);
+            System.out.println("verfication code is! " + verificationCode);
+            emailPostService.doSendEmail(email,verificationCode);
             return ResponseEntity.ok().body("이메일 전송 성공");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이메일 전송 실패");
