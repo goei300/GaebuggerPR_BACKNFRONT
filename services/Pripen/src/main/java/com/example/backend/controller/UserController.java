@@ -6,6 +6,7 @@ import com.example.backend.dto.UserDto;
 import com.example.backend.model.User;
 import com.example.backend.model.redis.RefreshToken;
 import com.example.backend.repository.redis.RefreshTokenRepository;
+import com.example.backend.service.EmailPostService;
 import com.example.backend.service.RefreshTokenService;
 import com.example.backend.service.UserService;
 import jakarta.servlet.http.Cookie;
@@ -40,7 +41,7 @@ public class UserController {
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
     private final RefreshTokenRepository refreshTokenRepository;
-
+    private final EmailPostService emailPostService;
     public UserController(
             UserService userService,
             PasswordEncoder passwordEncoder,
@@ -48,7 +49,8 @@ public class UserController {
             JWTService jwtService,
             AuthenticationManager authenticationManager,
             RefreshTokenService refreshTokenService,
-            RefreshTokenRepository refreshTokenRepository) {
+            RefreshTokenRepository refreshTokenRepository,
+            EmailPostService emailPostService) {
 
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
@@ -57,6 +59,7 @@ public class UserController {
         this.authenticationManager = authenticationManager;
         this.refreshTokenService = refreshTokenService;
         this.refreshTokenRepository = refreshTokenRepository;
+        this.emailPostService = emailPostService;
     }
 
     @CrossOrigin(origins = {"https://www.pri-pen.com"},allowCredentials = "true")
@@ -193,7 +196,22 @@ public class UserController {
     @GetMapping("/check-email")
     public ResponseEntity<?> checkEmail(@RequestParam String email){
         boolean isAvailable = !userService.existsByEmail(email);
-        
+
         return ResponseEntity.ok().body(Map.of("isAvailable", isAvailable));
+    }
+
+
+    @CrossOrigin(origins = {"https://www.pri-pen.com","http://localhost:3000"})
+    @PostMapping("/email-post")
+    public ResponseEntity<?> emailPost(@RequestParam String email){
+
+        try {
+            String verificationCode = emailPostService.generateVerificationCode();
+            emailPostService.sendVerificationEmail(email, verificationCode);
+            return ResponseEntity.ok().body("이메일 전송 성공");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이메일 전송 실패");
+        }
+        //파라미터 입력받은 email에 템플릿 인증코드 전송.
     }
 }

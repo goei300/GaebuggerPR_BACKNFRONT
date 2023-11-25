@@ -7,7 +7,7 @@ import MuiLink from '@mui/material/Link';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const SignupForm = () => {
+const SignupForm = ({nextStep, handleChange}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
@@ -85,20 +85,7 @@ const SignupForm = () => {
             return;
         }
         setErrorMessage(null);
-        try {
-            const response = await axios.post('https://backapi.pri-pen.com/userAuthentication/signup', {
-                username: username,
-                email: email,
-                passwordHash: password,
-            });
-            if (response.status === 200) {
-                navigate('/login');
-            } else {
-                setErrorMessage("계정을 만들 수 없습니다.");
-            }
-        } catch (error) {
-            setErrorMessage("서버와의 연결이 불안정합니다.");
-        }
+        nextStep();
     };
     // 모든 조건을 확인하는 함수
     const checkFormValidity = () => {
@@ -134,7 +121,10 @@ const SignupForm = () => {
                 variant="outlined"
                 size="small"
                 fullWidth
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => {
+                    setUsername(e.target.value);
+                    handleChange('name')(e); // handleChange 함수 호출
+                }}
                 sx={{ marginBottom: '5px', fontFamily:"NotoSansKR-Bold"  }}
             />
             <div>
@@ -148,6 +138,7 @@ const SignupForm = () => {
                         onChange={(e) => {
                             setEmail(e.target.value)
                             setEmailError('');
+                            handleChange('email')(e); // handleChange 함수 호출
                         }}
                         sx={{ marginBottom: '5px' }}
                     />
@@ -176,7 +167,10 @@ const SignupForm = () => {
                     <TextField
                         label="비밀번호"
                         type="password"
-                        onChange={handlePasswordChange}
+                        onChange={(e) => {
+                            handlePasswordChange(e); // 비밀번호 유효성 검사 등을 수행하는 기존 함수
+                            handleChange('password')(e); // 비밀번호 상태를 업데이트하는 함수
+                        }}
                         fullWidth
                         sx={{ marginBottom: '5px' }}
                         variant="outlined"
