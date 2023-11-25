@@ -28,7 +28,7 @@ const SignupForm = ({nextStep, handleChange}) => {
     
         setIsCheckingEmail(true);
         try {
-            const response = await axios.get(`http://localhost:8080/userAuthentication/check-email?email=${encodeURIComponent(email)}`);
+            const response = await axios.get(`https://backapi.pri-pen.com/userAuthentication/check-email?email=${encodeURIComponent(email)}`);
             
             if (response.data.isAvailable) {
                 setEmailError("사용 가능한 이메일입니다.");

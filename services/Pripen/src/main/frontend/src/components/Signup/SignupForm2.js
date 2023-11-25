@@ -1,7 +1,7 @@
-import React,{useState} from "react";
-import { Box,TextField,Button } from "@mui/material";
+import React,{useState,useEffect} from "react";
+import { Box,TextField,Button, Typography } from "@mui/material";
 
-const SignupForm2 = ({nextStep, verifyCode}) =>{
+const SignupForm2 = ({nextStep, verifyCode, codeError}) =>{
     const [code, setCode] = useState('');
 
     const handleCodeChange = (e) => {
@@ -11,13 +11,13 @@ const SignupForm2 = ({nextStep, verifyCode}) =>{
     };
 
     const handleSubmit = () => {
-        if(verifyCode(code)){
-            nextStep();
-        } else {
-            console.log("fail!!");
-        }
+        verifyCode(code);
     };
-
+    useEffect(() => {
+        if (codeError) {
+            console.log(codeError);
+        }
+    }, [codeError]);
     return (
         <Box sx={{
             display: 'flex',
@@ -39,6 +39,11 @@ const SignupForm2 = ({nextStep, verifyCode}) =>{
             <Button variant="contained" onClick={handleSubmit}>
                 확인
             </Button>
+            {codeError && (
+                <Typography color="error">
+                    {codeError}
+                </Typography>
+            )}
         </Box>
     );
 };

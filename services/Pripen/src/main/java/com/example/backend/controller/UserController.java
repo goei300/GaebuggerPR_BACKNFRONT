@@ -219,7 +219,7 @@ public class UserController {
     @CrossOrigin(origins = {"https://www.pri-pen.com" , "http://localhost:3000"})
     @PostMapping("/email-validity")
     public ResponseEntity<?> emailValidity(@RequestBody Map<String, String> requestBody){
-        String code = requestBody.get("code");
+        String code = requestBody.get("code");  // 여기 고쳐야함. 
         String email = requestBody.get("email");
         System.out.println("your code is " + code);
         if (email == null || email.trim().isEmpty() || code == null || code.trim().isEmpty()) {
