@@ -188,4 +188,12 @@ public class UserController {
         System.out.println("delete your token from redis");
         return ResponseEntity.ok().build(); // 성공적인 응답
     }
+
+    @CrossOrigin(origins = {"https://www.pri-pen.com" , "http://localhost:3000"} )
+    @GetMapping("/check-email")
+    public ResponseEntity<?> checkEmail(@RequestParam String email){
+        boolean isAvailable = !userService.existsByEmail(email);
+        
+        return ResponseEntity.ok().body(Map.of("isAvailable", isAvailable));
+    }
 }

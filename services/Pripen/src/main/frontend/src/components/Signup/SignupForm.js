@@ -17,7 +17,32 @@ const SignupForm = () => {
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
     const [isFormValid, setIsFormValid] = useState(false);
+    const [emailError, setEmailError] = useState('');
+    const [isCheckingEmail, setIsCheckingEmail] = useState(false);
+
+    const checkEmailDuplicate = async () => {
+        if (!email) {
+            setEmailError("이메일을 입력해주세요.");
+            return;
+        }
     
+        setIsCheckingEmail(true);
+        try {
+            const response = await axios.get(`http://localhost:8080/userAuthentication/check-email?email=${encodeURIComponent(email)}`);
+            
+            if (response.data.isAvailable) {
+                setEmailError("사용 가능한 이메일입니다.");
+                console.log("possible!");
+            } else {
+                setEmailError("이미 사용 중인 이메일입니다.");
+                console.log("impossible!");
+            }
+        } catch (error) {
+            setEmailError("이메일 확인 중 오류가 발생했습니다.");
+            console.log("error!!");
+        }
+        setIsCheckingEmail(false);
+    };
     // 비밀번호 조건 검증
     const validatePassword = (password) => {
         const regex = /^(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,20}$/;
@@ -79,6 +104,7 @@ const SignupForm = () => {
     const checkFormValidity = () => {
         return (
             email.length > 0 &&
+            emailError === "사용 가능한 이메일입니다." &&
             username.length > 0 &&
             validatePassword(password) &&
             password === confirmPassword
@@ -87,7 +113,7 @@ const SignupForm = () => {
     // 입력 필드 변경 시 조건 확인
     useEffect(() => {
         setIsFormValid(checkFormValidity());
-    }, [email, username, password, confirmPassword]);
+    }, [email, emailError, username, password, confirmPassword]);
 
     return (
         <Box sx={{
@@ -111,54 +137,81 @@ const SignupForm = () => {
                 onChange={(e) => setUsername(e.target.value)}
                 sx={{ marginBottom: '5px', fontFamily:"NotoSansKR-Bold"  }}
             />
+            <div>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <TextField
+                        label="이메일"
+                        variant="outlined"
+                        size="small"
+                        fontFamily="NotoSansKR-Regular"
+                        fullWidth
+                        onChange={(e) => {
+                            setEmail(e.target.value)
+                            setEmailError('');
+                        }}
+                        sx={{ marginBottom: '5px' }}
+                    />
+                    <Button
+                        variant="outlined"
+                        onClick={checkEmailDuplicate}
+                        disabled={isCheckingEmail}
+                        sx={{fontSize:"0.8rem",padding:'2px', height:'40px', bottom:'1.5px'}}
+                    >
+                        중복 확인
+                    </Button>
+                </Box>
+                <Typography
+                    style={{
+                        color: emailError === "사용 가능한 이메일입니다." ? "green" : "red",
+                        fontFamily: "NotoSansKR-SemiBold",
+                        fontSize: '0.8rem',
+                        marginLeft:"10px"
+                    }}
+                >
+                    {emailError}
+                </Typography>
+            </div>
+            <div>
+                <div>
+                    <TextField
+                        label="비밀번호"
+                        type="password"
+                        onChange={handlePasswordChange}
+                        fullWidth
+                        sx={{ marginBottom: '5px' }}
+                        variant="outlined"
+                        size="small"
+                        fontFamily="NotoSansKR-Regular"
+                    />
+                    <Typography color={passwordError ? 'error' : passwordError === "" ? 'inherit' : 'green'} style={{fontFamily:"NotoSansKR-SemiBold", fontSize:"0.8rem",marginLeft:"5px"}}>
+                        {passwordError || (password && "비밀번호 조건 충족")}
+                    </Typography>
+                </div>
+                <div style={{marginTop:"15px"}}>
+                    <TextField
+                        label="비밀번호 확인"
+                        variant="outlined"
+                        size="small"
+                        fontFamily="NotoSansKR-Regular"
+                        type="password"
+                        fullWidth
+                        onChange={handleConfirmPasswordChange}
+                    />
+                    <Typography color={confirmPasswordError ? 'error' : confirmPasswordError === "" ? 'inherit' : 'green'} style={{fontFamily:"NotoSansKR-SemiBold", fontSize:"0.8rem",marginLeft:"5px"}}>
+                        {confirmPasswordError || (confirmPassword && password === confirmPassword && "비밀번호 일치")}
+                    </Typography>
 
-            <TextField
-                label="이메일"
-                variant="outlined"
-                size="small"
-                fontFamily="NotoSansKR-Regular"
-                fullWidth
-                onChange={(e) => setEmail(e.target.value)}
-                sx={{ marginBottom: '5px' }}
-            />
-
-            <TextField
-                label="비밀번호"
-                type="password"
-                onChange={handlePasswordChange}
-                fullWidth
-                sx={{ marginBottom: '5px' }}
-                variant="outlined"
-                size="small"
-                fontFamily="NotoSansKR-Regular"
-            />
-            <Typography color={passwordError ? 'error' : passwordError === "" ? 'inherit' : 'green'}>
-                {passwordError || (password && "비밀번호 조건 충족")}
-            </Typography>
-
-            <TextField
-                label="비밀번호 확인"
-                variant="outlined"
-                size="small"
-                fontFamily="NotoSansKR-Regular"
-                type="password"
-                fullWidth
-                onChange={handleConfirmPasswordChange}
-            />
-            <Typography color={confirmPasswordError ? 'error' : confirmPasswordError === "" ? 'inherit' : 'green'}>
-                {confirmPasswordError || (confirmPassword && password === confirmPassword && "비밀번호 일치")}
-            </Typography>
-
-            <Typography
-                color="error"
-                style={{
-                    height: '20px',
-                    visibility: errorMessage ? 'visible' : 'hidden'
-                }}
-            >
-                {errorMessage}
-            </Typography>
-
+                    <Typography
+                        color="error"
+                        style={{
+                            height: '20px',
+                            visibility: errorMessage ? 'visible' : 'hidden'
+                        }}
+                    >
+                        {errorMessage}
+                    </Typography>
+                </div>
+            </div>
             <Button
                 variant="contained"
                 color="primary"
