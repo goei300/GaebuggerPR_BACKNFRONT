@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -16,7 +16,8 @@ const SignupForm = () => {
     const navigate = useNavigate();
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
-
+    const [isFormValid, setIsFormValid] = useState(false);
+    
     // 비밀번호 조건 검증
     const validatePassword = (password) => {
         const regex = /^(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,20}$/;
@@ -74,6 +75,19 @@ const SignupForm = () => {
             setErrorMessage("서버와의 연결이 불안정합니다.");
         }
     };
+    // 모든 조건을 확인하는 함수
+    const checkFormValidity = () => {
+        return (
+            email.length > 0 &&
+            username.length > 0 &&
+            validatePassword(password) &&
+            password === confirmPassword
+        );
+    };
+    // 입력 필드 변경 시 조건 확인
+    useEffect(() => {
+        setIsFormValid(checkFormValidity());
+    }, [email, username, password, confirmPassword]);
 
     return (
         <Box sx={{
@@ -149,8 +163,9 @@ const SignupForm = () => {
                 variant="contained"
                 color="primary"
                 fullWidth
-                sx={{fontFamily:"NotoSansKR-Bold",fontSize:'1.2rem'}}
+                sx={{ fontFamily: "NotoSansKR-Bold", fontSize: '1.2rem' }}
                 onClick={handleSignup}
+                disabled={!isFormValid}  // 버튼 활성화 조건
             >
                 다음
             </Button>
