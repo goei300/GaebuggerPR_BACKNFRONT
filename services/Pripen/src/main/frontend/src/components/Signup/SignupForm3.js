@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Autocomplete, TextField, Button } from '@mui/material';
 import axios from 'axios';
 
-const SignupForm3 = () => {
+const SignupForm3 = ({nextStep, handleChange, userData}) => {
     const [inputValue, setInputValue] = useState('');
     const [options, setOptions] = useState([]);
     const [companyAddress, setCompanyAddress] = useState('');
+    const [companyExtraAddress, setCompanyExtraAddress] = useState('');
+    const [postalCode, setPostalCode] = useState('');
     const [businessRegistrationFile, setBusinessRegistrationFile] = useState(null);
-
     useEffect(() => {
         const script = document.createElement('script');
         script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
@@ -40,9 +41,19 @@ const SignupForm3 = () => {
         };
     }, [inputValue]);
 
+    const handleOptionSelect = (event, value) => {
+        if(value){
+            setPostalCode(value.companyPostCode);
+            setCompanyAddress(value.companyAddress);
+            setCompanyExtraAddress(value.companyExtraAddress);
+        }
+    }
+
+    // Daum 우편번호 찾기 팝업 핸들러
     const handleAddressSearch = () => {
         new window.daum.Postcode({
             oncomplete: function(data) {
+                setPostalCode(data.zonecode);
                 setCompanyAddress(data.address);
             }
         }).open();
@@ -57,11 +68,15 @@ const SignupForm3 = () => {
     };
 
     return (
-        <div style={{background:'white' , borderRadius:'50px', padding:'100px'}}>
-            <div>
+        <div style={{background:'white' , borderRadius:'50px', padding:'50px 100px 100px 100px',width: '600px', height:'85%', display:'flex', flexDirection:'column', justifyContent:'start', margin:'50px 0px 50px 0px'}}>
+            
+            <p style={{fontFamily:'NotoSansKR-Bold', fontSize:'1.8rem', marginBottom:'50px'}}> {userData['name']}님 안녕하세요!<br/> 회사 정보를 입력해주세요! </p>
+            <div style={{marginBottom:'50px'}}>
+                <p style={{fontFamily:'NotoSansKR-SemiBold', fontSize:'1.3rem'}}>회사 명</p>
                 <Autocomplete
                     freeSolo
                     options={options.map(option => option.companyName)}
+                    onChange={handleOptionSelect}
                     renderInput={(params) => (
                         <TextField
                             {...params}
@@ -73,26 +88,47 @@ const SignupForm3 = () => {
                 />
             </div>
 
-            <div>
-                <TextField
-                    fullWidth
-                    label="회사 주소"
-                    value={companyAddress}
-                    variant="outlined"
-                    margin="normal"
-                    onClick={handleAddressSearch}
-                    readOnly
-                />
+            <div style={{marginBottom:'50px'}}>
+                <p style={{fontFamily:'NotoSansKR-SemiBold', fontSize:'1.3rem'}}>회사 주소</p>
+                <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '50px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+                        <TextField
+                            style={{ marginRight: '8px' }}
+                            label="우편번호"
+                            value={postalCode}
+                            variant="outlined"
+                            readOnly
+                        />
+                        <Button variant="outlined" onClick={handleAddressSearch}>우편번호 찾기</Button>
+                    </div>
+                    <TextField
+                        fullWidth
+                        label="주소"
+                        value={companyAddress}
+                        variant="outlined"
+                        margin="normal"
+                        readOnly
+                    />
+
+                    <TextField
+                        fullWidth
+                        label="상세주소"
+                        variant="outlined"
+                        margin="normal"
+                        // 상태 업데이트 함수 추가 필요
+                    />
+                </div>
             </div>
 
-            <div>
+            <div style={{marginBottom:'50px'}}>
+                <p style={{fontFamily:'NotoSansKR-SemiBold', fontSize:'1.3rem'}}>사업자 등록증</p>
                 <input
                     type="file"
                     onChange={handleFileChange}
                     style={{ marginTop: '1rem' }}
                 />
             </div>
-            <div>
+            <div style={{display:'flex' , justifyContent:'end'}}>
                 <Button onClick={handleSubmit} variant="contained" color="primary" style={{ marginTop: '2rem' }}>
                     제출
                 </Button>

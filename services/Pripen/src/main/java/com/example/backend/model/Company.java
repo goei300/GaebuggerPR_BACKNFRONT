@@ -23,6 +23,12 @@ public class Company {
     @Column(name = "company_address")
     private String companyAddress;
 
+    @Column(name = "company_postcode")
+    private String companyPostCode;
+
+    @Column(name = "company_extra_address")
+    private String companyExtraAddress;
+
     @Column(name = "company_business_registration")
     private String companyBusinessRegistration;
 }

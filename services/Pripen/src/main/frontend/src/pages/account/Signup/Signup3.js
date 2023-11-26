@@ -9,7 +9,6 @@ const Signup3 = ({nextStep, handleChange, userData}) => {
             justifyContent: 'center',
             alignItems: 'center',
             background: '#E2F5FF',
-            height: '100vh' // 전체 뷰포트 높이
         }}>
             <SignupForm3 nextStep={nextStep} handleChange={handleChange} userData={userData} />
         </div>
