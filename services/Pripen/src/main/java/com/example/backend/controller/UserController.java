@@ -219,18 +219,25 @@ public class UserController {
     @CrossOrigin(origins = {"https://www.pri-pen.com" , "http://localhost:3000"})
     @PostMapping("/email-validity")
     public ResponseEntity<?> emailValidity(@RequestBody Map<String, String> requestBody){
-        String code = requestBody.get("code");  // 여기 고쳐야함. 
-        String email = requestBody.get("email");
-        System.out.println("your code is " + code);
-        if (email == null || email.trim().isEmpty() || code == null || code.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("이메일 or code 없음");
-        }
+        try {
+            String code = requestBody.get("code");  // 여기 고쳐야함.
+            String email = requestBody.get("email");
+            System.out.println("your code is " + code);
+            System.out.println("your email is " + email);
 
-        boolean isValid = emailVerificationService.verifyEmailWithCode(email, code);
-        if (!isValid) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("코드 만료 or 잘못된 코드");
-        }
+            if (email == null || email.trim().isEmpty() || code == null || code.trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("이메일 or code 없음");
+            }
 
-        return ResponseEntity.ok().body("인증 성공");
+            boolean isValid = emailVerificationService.verifyEmailWithCode(email, code);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("isValid", isValid);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            // 내부 서버 오류 처리
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
+        }
     }
 }
