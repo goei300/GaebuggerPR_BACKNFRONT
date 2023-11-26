@@ -43,6 +43,8 @@ const SignupForm3 = ({nextStep, handleChange, userData}) => {
 
     const handleOptionSelect = (event, value) => {
         if(value){
+            console.log("value is!", value);
+            setCompanyExtraAddress('');
             setPostalCode(value.companyPostCode);
             setCompanyAddress(value.companyAddress);
             setCompanyExtraAddress(value.companyExtraAddress);
@@ -75,7 +77,8 @@ const SignupForm3 = ({nextStep, handleChange, userData}) => {
                 <p style={{fontFamily:'NotoSansKR-SemiBold', fontSize:'1.3rem'}}>회사 명</p>
                 <Autocomplete
                     freeSolo
-                    options={options.map(option => option.companyName)}
+                    options={options}
+                    getOptionLabel={(option) => option.companyName}
                     onChange={handleOptionSelect}
                     renderInput={(params) => (
                         <TextField
@@ -115,7 +118,8 @@ const SignupForm3 = ({nextStep, handleChange, userData}) => {
                         label="상세주소"
                         variant="outlined"
                         margin="normal"
-                        // 상태 업데이트 함수 추가 필요
+                        value={companyExtraAddress}
+                        onChange={(event) => setCompanyExtraAddress(event.target.value)}
                     />
                 </div>
             </div>
