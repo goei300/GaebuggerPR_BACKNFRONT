@@ -1,9 +1,18 @@
 import React from "react";
+import SignupForm3 from "../../../components/Signup/SignupForm3";
 
-const Signup3 = () => {
+const Signup3 = ({nextStep, handleChange, userData}) => {
 
     return (
-        <p> hi </p>
+        <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: 'pink',
+            height: '100vh' // 전체 뷰포트 높이
+        }}>
+            <SignupForm3 nextStep={nextStep} handleChange={handleChange} userData={userData} />
+        </div>
     );
 };
 
