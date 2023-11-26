@@ -20,8 +20,11 @@ const SignupForm3 = () => {
 
         const fetchCompanyData = async () => {
             try {
-                const response = await axios.get(`https://backapi.pri-pen.com/userAuthenticaion/company-search?query=${inputValue}`);
+                console.log("inputdata is : " , inputValue);
+                const response = await axios.get(`https://backapi.pri-pen.com/userAuthentication/company-search?query=${inputValue}`);
+                console.log("response data is ", response.data);
                 setOptions(response.data);
+                console.log("options? :", options);
             } catch (error) {
                 console.error('회사 정보 검색 중 오류 발생:', error);
             }
@@ -54,36 +57,46 @@ const SignupForm3 = () => {
     };
 
     return (
-        <div>
-            <Autocomplete
-                freeSolo
-                options={options.map(option => option.name)}
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label="회사명 검색"
-                        variant="outlined"
-                        onChange={(event) => setInputValue(event.target.value)}
-                    />
-                )}
-            />
-            <TextField
-                fullWidth
-                label="회사 주소"
-                value={companyAddress}
-                variant="outlined"
-                margin="normal"
-                onClick={handleAddressSearch}
-                readOnly
-            />
-            <input
-                type="file"
-                onChange={handleFileChange}
-                style={{ marginTop: '1rem' }}
-            />
-            <Button onClick={handleSubmit} variant="contained" color="primary" style={{ marginTop: '2rem' }}>
-                제출
-            </Button>
+        <div style={{background:'white' , borderRadius:'50px', padding:'100px'}}>
+            <div>
+                <Autocomplete
+                    freeSolo
+                    options={options.map(option => option.companyName)}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="회사명 검색"
+                            variant="outlined"
+                            onChange={(event) => setInputValue(event.target.value)}
+                        />
+                    )}
+                />
+            </div>
+
+            <div>
+                <TextField
+                    fullWidth
+                    label="회사 주소"
+                    value={companyAddress}
+                    variant="outlined"
+                    margin="normal"
+                    onClick={handleAddressSearch}
+                    readOnly
+                />
+            </div>
+
+            <div>
+                <input
+                    type="file"
+                    onChange={handleFileChange}
+                    style={{ marginTop: '1rem' }}
+                />
+            </div>
+            <div>
+                <Button onClick={handleSubmit} variant="contained" color="primary" style={{ marginTop: '2rem' }}>
+                    제출
+                </Button>
+            </div>
         </div>
     );
 };

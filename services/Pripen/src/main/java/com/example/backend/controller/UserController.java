@@ -246,6 +246,8 @@ public class UserController {
     @GetMapping("/company-search")
     public ResponseEntity<List<Company>> companyList(@RequestParam String query) {
         try {
+
+            System.out.println("input is : " + query);
             List<Company> companies = companyService.searchCompanies(query);
             return ResponseEntity.ok(companies);
         } catch (Exception e) {
