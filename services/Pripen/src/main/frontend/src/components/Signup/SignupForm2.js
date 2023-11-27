@@ -20,32 +20,34 @@ const SignupForm2 = ({nextStep, verifyCode, codeError, code, setCode}) =>{
         }
     }, [codeError]);
     return (
-        <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '20px',
-            backgroundColor: 'white',
-            borderRadius: '10px',
-            boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)'
-        }}>
-            <TextField
-                label="인증 코드"
-                variant="outlined"
-                value={code}
-                onChange={handleCodeChange}
-                sx={{ marginBottom: '10px' }}
-            />
-            <Button variant="contained" onClick={handleSubmit}>
-                확인
-            </Button>
-            {codeError && (
-                <Typography color="error">
-                    {codeError}
-                </Typography>
-            )}
-        </Box>
+        <div style={{background:'white' , borderRadius:'50px', padding:'50px 100px 100px 100px',width: '600px', height:'85%', display:'flex', flexDirection:'column', justifyContent:'start', margin:'50px 0px 50px 0px'}}>
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '20px',
+                backgroundColor: 'white',
+                borderRadius: '10px',
+                boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)'
+            }}>
+                <TextField
+                    label="인증 코드"
+                    variant="outlined"
+                    value={code}
+                    onChange={handleCodeChange}
+                    sx={{ marginBottom: '10px' }}
+                />
+                <Button variant="contained" onClick={handleSubmit}>
+                    확인
+                </Button>
+                {codeError && (
+                    <Typography color="error">
+                        {codeError}
+                    </Typography>
+                )}
+            </Box>
+        </div>
     );
 };
 

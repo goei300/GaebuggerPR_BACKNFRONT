@@ -50,7 +50,12 @@ const Signup2 = ({userData, nextStep}) => {
 
     return(
         
-        <div className="Signup2">
+        <div className="Signup2" style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: '#E2F5FF'
+            }}>
             <SignupForm2 verifyCode={verifyCode} codeError={codeError} code={code} setCode={setCode}/>
         </div>
     );
