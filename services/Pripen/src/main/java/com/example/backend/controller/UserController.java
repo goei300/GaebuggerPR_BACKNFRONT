@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 
+import com.example.backend.dto.CompanyDTO;
 import com.example.backend.dto.ResponseMessage;
 import com.example.backend.dto.UserDto;
 import com.example.backend.model.Company;
@@ -254,5 +255,19 @@ public class UserController {
             // 적절한 예외 처리 로직 구현
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @CrossOrigin(origins = {"https://www.pri-pen.com" , "http://localhost:3000"})
+    @PostMapping("/company-create")
+    public ResponseEntity<?> companyCreate(@RequestBody CompanyDTO companyDTO){
+        Company newCompany = new Company();
+        newCompany.setCompanyName(companyDTO.getCompanyName());
+        newCompany.setCompanyAddress(companyDTO.getCompanyAddress());
+        newCompany.setCompanyPostCode(companyDTO.getCompanyPostCode());
+        newCompany.setCompanyExtraAddress(companyDTO.getCompanyExtraAddress());
+        newCompany.setCompanyBusinessRegistration(companyDTO.getCompanyBusinessRegistration());
+
+        Company createdCompany = companyService.createCompany(newCompany);
+        return ResponseEntity.ok(createdCompany);
     }
 }

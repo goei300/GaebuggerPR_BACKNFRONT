@@ -11,6 +11,7 @@ const SignupMain = () =>{
         name: '',
         email: '',
         password: '',
+        companyId: ''
     });
 
     // 다음 단계로 넘어가는 함수
@@ -33,8 +34,8 @@ const SignupMain = () =>{
         case 2:
             return <Signup2 nextStep={nextStep} userData={userData} />;
         case 3:
-            return <Signup3 nextStep={nextStep} handleChange={handleChange} userData={userData}/>;
-        case 4:  // redirect login
+            return <Signup3 nextStep={nextStep} userData={userData} setUserData={setUserData}/>;
+        case 4:  // db save && redirect login
         default:
             return <div>Unknown step</div>;
     }
