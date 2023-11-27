@@ -49,14 +49,28 @@ const LoginForm = () => {
             if (response.status === 200) {
                 login(); //` AuthContext의 login 함수를 호출하여 쿠키와 상태를 업데이트합니다.
                 navigate('/'); // 홈페이지로 이동
-            } else {
-                setErrorMessage("해당 정보를 찾을 수 없습니다.");
-                return;
-            }
+            } 
         } catch (error) {
-            setErrorMessage("서버와의 연결이 불안정합니다.");
+            if (error.response) {
+                // 백엔드에서 보낸 HTTP 상태 코드에 따른 오류 처리
+                const status = error.response.status;
+                switch (status) {
+                    case 401: // 인증 실패
+                        setErrorMessage("이메일 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요. ");
+                        break;
+                    case 500: // 서버 내부 오류
+                        setErrorMessage("서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+                        break;
+                    // 필요한 경우 다른 상태 코드에 대한 처리 추가
+                    default:
+                        setErrorMessage("오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+                        break;
+                }
+            } else {
+                // 네트워크 오류나 기타 오류 처리
+                setErrorMessage("서버와의 연결이 불안정합니다.");
+            }
             return;
-            // 네트워크 오류나 서버 에러 처리
         }
     };
 
