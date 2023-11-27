@@ -76,18 +76,18 @@ const LoginForm = () => {
 
 
     return (
-        <Box
-            sx={{
-                width: '300px',
-                padding: '40px',
-                boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-                borderRadius: '10px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '30px'
-            }}
-        >
-            <form onSubmit={handleLogin}>
+        <form onSubmit={handleLogin}>
+            <Box
+                sx={{
+                    width: '300px',
+                    padding: '40px',
+                    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+                    borderRadius: '10px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '30px'
+                }}
+            >
                 <Typography variant="h5" component="div" fontFamily="NotoSansKR-Bold">
                     로그인
                 </Typography>
@@ -122,60 +122,58 @@ const LoginForm = () => {
                 >
                     {errorMessage}
                 </Typography>
-
                 <Button
                     type="submit"
                     variant="contained"
                     color="primary"
                     fontFamily="NotoSansKR-Bold"
                     fullWidth
-
                     >
                     로그인
                 </Button>
-            </form>
 
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    gap: '10px',
-                    marginTop: '20px'
-                }}
-            >
-                <MuiLink
-                    component={RouterLink}
-                    to="/signup"
-                    color="primary"
-                    fontFamily="NotoSansKR-SemiBold"
+                <Box
                     sx={{
-                        textDecoration:"none",
-                        '&:hover': {
-                            fontWeight: 'bold',     // 폰트 두께 변경
-                            color: 'secondary.main' // hover 시 색상 변경 (예: secondary 색상 사용)
-                        }
+                        display: 'flex',
+                        justifyContent: 'center',
+                        gap: '10px',
+                        marginTop: '20px'
                     }}
                 >
-                    회원가입
-                </MuiLink>
-                |
-                <MuiLink
-                    component={RouterLink}
-                    to="/findpass"
-                    color="primary"
-                    fontFamily="NotoSansKR-SemiBold"
-                    sx={{
-                        textDecoration:"none",
-                        '&:hover': {
-                            fontWeight: 'bold',     // 폰트 두께 변경
-                            color: 'secondary.main' // hover 시 색상 변경 (예: secondary 색상 사용)
-                        }
-                    }}
-                >
-                    비밀번호 찾기
-                </MuiLink>
+                    <MuiLink
+                        component={RouterLink}
+                        to="/signup"
+                        color="primary"
+                        fontFamily="NotoSansKR-SemiBold"
+                        sx={{
+                            textDecoration:"none",
+                            '&:hover': {
+                                fontWeight: 'bold',     // 폰트 두께 변경
+                                color: 'secondary.main' // hover 시 색상 변경 (예: secondary 색상 사용)
+                            }
+                        }}
+                    >
+                        회원가입
+                    </MuiLink>
+                    |
+                    <MuiLink
+                        component={RouterLink}
+                        to="/findpass"
+                        color="primary"
+                        fontFamily="NotoSansKR-SemiBold"
+                        sx={{
+                            textDecoration:"none",
+                            '&:hover': {
+                                fontWeight: 'bold',     // 폰트 두께 변경
+                                color: 'secondary.main' // hover 시 색상 변경 (예: secondary 색상 사용)
+                            }
+                        }}
+                    >
+                        비밀번호 찾기
+                    </MuiLink>
+                </Box>
             </Box>
-        </Box>
+        </form>
     );
 }
 

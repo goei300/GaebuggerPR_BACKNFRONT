@@ -54,7 +54,8 @@ const Signup2 = ({userData, nextStep}) => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            background: '#E2F5FF'
+            background: '#E2F5FF',
+            height: '100vh'
             }}>
             <SignupForm2 verifyCode={verifyCode} codeError={codeError} code={code} setCode={setCode}/>
         </div>

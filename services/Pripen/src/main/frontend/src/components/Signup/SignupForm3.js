@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Autocomplete, TextField, Button,Modal } from '@mui/material';
+import { Autocomplete, TextField, Button,Modal, Divider } from '@mui/material';
 import axios from 'axios';
 import SignupForm3Duplication from './SignupForm3Duplication';
 
@@ -108,9 +108,15 @@ const SignupForm3 = ({nextStep, userData,setUserData}) => {
     return (
         <div style={{background:'white' , borderRadius:'50px', padding:'50px 100px 100px 100px',width: '600px', height:'85%', display:'flex', flexDirection:'column', justifyContent:'start', margin:'50px 0px 50px 0px'}}>
 
-            <p style={{fontFamily:'NotoSansKR-Bold', fontSize:'1.8rem', marginBottom:'50px'}}> {userData['name']}님 안녕하세요!<br/> 회사 정보를 입력해주세요! </p>
+            <p style={{fontFamily:'NotoSansKR-SemiBold', fontSize:'1.8rem', marginBottom:'50px'}}> {userData['name']}님 안녕하세요!<br/> 회사 정보를 입력해주세요! </p>
+            <Divider style={{marginBottom:'10px'}}/>
             <div style={{marginBottom:'50px'}}>
-                <p style={{fontFamily:'NotoSansKR-SemiBold', fontSize:'1.3rem'}}>회사 명</p>
+                <div style={{ display: 'flex', flexDirection: 'row',margin:'20px 0 30px' }}>
+                    <p style={{ fontFamily: 'NotoSansKR-SemiBold', fontSize: '1.3rem', margin: 0 }}>
+                        회사 명
+                    </p>
+                    <span style={{ color: 'orange', marginLeft: '5px' }}>*</span>
+                </div>
                 <Autocomplete
                     freeSolo
                     options={options}
@@ -128,7 +134,10 @@ const SignupForm3 = ({nextStep, userData,setUserData}) => {
             </div>
 
             <div style={{marginBottom:'50px'}}>
-                <p style={{fontFamily:'NotoSansKR-SemiBold', fontSize:'1.3rem'}}>회사 주소</p>
+                <div style={{ display: 'flex', flexDirection: 'row', margin:'20px 0 30px'}}>
+                    <p style={{fontFamily:'NotoSansKR-SemiBold', fontSize:'1.3rem',margin:0}}>회사 주소</p>
+                    <span style={{ color: 'orange', marginLeft: '5px' }}>*</span>
+                </div>
                 <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '50px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
                         <TextField
@@ -160,7 +169,7 @@ const SignupForm3 = ({nextStep, userData,setUserData}) => {
             </div>
 
             <div style={{marginBottom:'50px'}}>
-                <p style={{fontFamily:'NotoSansKR-SemiBold', fontSize:'1.3rem'}}>사업자 등록증</p>
+                <p style={{fontFamily:'NotoSansKR-SemiBold', fontSize:'1.3rem'}}>사업자 등록증 (선택)</p>
                 <input
                     type="file"
                     onChange={handleFileChange}
