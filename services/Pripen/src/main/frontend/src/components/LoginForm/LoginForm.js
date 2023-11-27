@@ -22,8 +22,8 @@ const LoginForm = () => {
         return response.data;
     }
 
-    const handleLogin = async () => {
-
+    const handleLogin = async (event) => {
+        event.preventDefault();
         // const csrfToken = await getCsrfToken();
         // const headers = {
         //     'X-CSRF-TOKEN': csrfToken
@@ -115,7 +115,8 @@ const LoginForm = () => {
                     color="primary"
                     fontFamily="NotoSansKR-Bold"
                     fullWidth
-                >
+
+                    >
                     로그인
                 </Button>
             </form>
@@ -128,7 +129,37 @@ const LoginForm = () => {
                     marginTop: '20px'
                 }}
             >
-                {/* 회원가입 및 비밀번호 찾기 링크 */}
+                <MuiLink
+                    component={RouterLink}
+                    to="/signup"
+                    color="primary"
+                    fontFamily="NotoSansKR-SemiBold"
+                    sx={{
+                        textDecoration:"none",
+                        '&:hover': {
+                            fontWeight: 'bold',     // 폰트 두께 변경
+                            color: 'secondary.main' // hover 시 색상 변경 (예: secondary 색상 사용)
+                        }
+                    }}
+                >
+                    회원가입
+                </MuiLink>
+                |
+                <MuiLink
+                    component={RouterLink}
+                    to="/findpass"
+                    color="primary"
+                    fontFamily="NotoSansKR-SemiBold"
+                    sx={{
+                        textDecoration:"none",
+                        '&:hover': {
+                            fontWeight: 'bold',     // 폰트 두께 변경
+                            color: 'secondary.main' // hover 시 색상 변경 (예: secondary 색상 사용)
+                        }
+                    }}
+                >
+                    비밀번호 찾기
+                </MuiLink>
             </Box>
         </Box>
     );
