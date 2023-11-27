@@ -1,11 +1,13 @@
 import React,{useState} from "react";
+import axios from "axios";
 import Signup from "./Signup";
 import Signup2 from "./Signup2";
 import Signup3 from "./Signup3";
-
+import { useNavigate } from "react-router-dom";
 
 
 const SignupMain = () =>{
+    const navigate = useNavigate();
     const [step, setStep] = useState(1); // 현재 단계
     const [userData, setUserData] = useState({
         name: '',
@@ -27,6 +29,23 @@ const SignupMain = () =>{
         setUserData({ ...userData, [input]: e.target.value });
     };
 
+    const signUpUser = async (userData, navigate) => {
+        try {
+            const response = await axios.post('https://backapi.pri-pen.com/userAuthentication/signup', {
+                email: userData.email,
+                password: userData.password,
+                name: userData.name,
+                companyId: userData.companyId ? Number(userData.companyId) : null // companyId가 문자열인 경우 숫자로 변환
+            });
+            console.log(response.data);
+            alert('회원가입 성공하였습니다!'); // 성공 메시지 표시
+            navigate('/login'); // /login 페이지로 리다이렉트
+
+        } catch (error) {
+            console.error('Signup failed:', error);
+            // 오류 처리 로직
+        }
+    };
     // 현재 단계에 따른 컴포넌트 렌더링
     switch(step) {
         case 1:
@@ -35,9 +54,10 @@ const SignupMain = () =>{
             return <Signup2 nextStep={nextStep} userData={userData} />;
         case 3:
             return <Signup3 nextStep={nextStep} userData={userData} setUserData={setUserData}/>;
-        case 4:  // db save && redirect login
+        case 4:  
+            signUpUser(userData,navigate);
         default:
-            return <div>Unknown step</div>;
+            return;
     }
 };
 

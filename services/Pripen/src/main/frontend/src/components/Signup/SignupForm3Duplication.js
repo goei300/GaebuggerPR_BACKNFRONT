@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState } from "react";
 import { Button, List, ListItem, ListItemText, Switch, Typography, Divider } from "@mui/material";
 import { makeStyles } from '@mui/styles';
 
@@ -36,12 +36,13 @@ const SignupForm3Duplication = ({ nextStep, handleModalClose, options, createCom
         } else if (selectedOption) {
             // 선택된 회사의 companyId로 userData 업데이트
             setUserData({...userData, companyId: selectedOption.companyId});
+            nextStep();
         }
         handleModalClose();
     };
 
     return (
-        <div style={{ padding: '20px', maxWidth: '500px', margin: 'auto' }}>
+        <div style={{ padding: '20px', maxWidth: '500px', margin: 'auto', background:'white' }}>
             <Typography variant="h6">회사 선택</Typography>
             <List>
                 {options.map((option) => (

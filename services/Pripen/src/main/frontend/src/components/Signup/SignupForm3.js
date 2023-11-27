@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Autocomplete, TextField, Button } from '@mui/material';
+import { Autocomplete, TextField, Button,Modal } from '@mui/material';
 import axios from 'axios';
 import SignupForm3Duplication from './SignupForm3Duplication';
 
@@ -73,7 +73,7 @@ const SignupForm3 = ({nextStep, userData,setUserData}) => {
     const handleModalClose = () => {
         setIsModalOpen(false);
     };
-    const CreateCompanyData = async () => {
+    const createCompanyData = async () => {
         // 서버에 데이터 전송
         const payload = {
             companyName: inputValue, // 사용자가 입력한 회사명
@@ -91,7 +91,6 @@ const SignupForm3 = ({nextStep, userData,setUserData}) => {
             nextStep();
             // 성공 시 응답 처리
         } catch (error) {
-            setError(error);
             console.log(error);
         }
     }
@@ -102,7 +101,7 @@ const SignupForm3 = ({nextStep, userData,setUserData}) => {
         if (options.length > 0) {
             setIsModalOpen(true);
         } else {
-            CreateCompanyData();
+            createCompanyData();
         }
     };
 
@@ -176,7 +175,7 @@ const SignupForm3 = ({nextStep, userData,setUserData}) => {
                     open={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
                 >
-                    <SignupForm3Duplication nextStep={nextStep} handleModalClose={handleModalClose} options={options} setOptions={setOptions} CreateCompanyData={CreateCompanyData} userData={userData} setUserData={setUserData} />
+                    <SignupForm3Duplication nextStep={nextStep} handleModalClose={handleModalClose} options={options} setOptions={setOptions} createCompanyData={createCompanyData} userData={userData} setUserData={setUserData} />
                 </Modal>
             </div>
         </div>

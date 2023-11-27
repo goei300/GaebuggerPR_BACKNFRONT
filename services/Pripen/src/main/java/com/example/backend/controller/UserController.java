@@ -164,8 +164,6 @@ public class UserController {
         System.out.println(user.getPasswordHash());
         System.out.println("user's info is:");
         System.out.println(user);
-        // CompanyId를 1로 고정
-        user.setCompanyId(1L);
 
         userService.save(user);
 
