@@ -6,13 +6,28 @@ const useStyles = makeStyles({
     listItem: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: '#f5f5f5' // 호버 시 배경색 변경
-        }
+            backgroundColor: '#f5f5f5'
+        },
+        margin: '10px 0', // 간격 조정
     },
     selected: {
-        backgroundColor: '#e0e0e0' // 선택된 항목의 배경색
-    }
+        backgroundColor: '#e0e0e0', // 선택된 항목의 배경색 변경
+        fontWeight: 'bold', // 선택된 항목의 글꼴 굵기 변경
+    },
+    primaryText: {
+        fontWeight: 'bold', // 이름 강조
+    },
+    secondaryText: {
+        color: 'gray', // 주소 부각 감소
+    },
 });
+
+const modalStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh', // 뷰포트 높이 전체를 사용
+};
 
 const SignupForm3Duplication = ({ nextStep, handleModalClose, options, createCompanyData, userData, setUserData }) => {
     const [selectedOption, setSelectedOption] = useState(null);
@@ -42,36 +57,41 @@ const SignupForm3Duplication = ({ nextStep, handleModalClose, options, createCom
     };
 
     return (
-        <div style={{ padding: '20px', maxWidth: '500px', margin: 'auto', background:'white' }}>
-            <Typography variant="h6">회사 선택</Typography>
-            <List>
-                {options.map((option) => (
+        <div style={modalStyle}>
+            <div style={{ padding: '20px', maxWidth: '500px', margin: 'auto', background:'white' }}>
+                <Typography style={{fontFamily: "NotoSansKR-Bold", marginBottom:'30px',fontSize:'1.2rem'}}>입력하신 회사 상호와 동일한 상호들이 등록되어 있어요.<br/>같은 회사일 경우 선택해주세요!</Typography>
+                <Divider style={{marginBottom:'10px'}}/>
+                <List>
+                    {options.map((option) => (
+                        <ListItem
+                            key={option.companyId}
+                            className={`${classes.listItem} ${selectedOption === option ? classes.selected : ''}`}
+                            onClick={() => handleOptionClick(option)}
+                        >
+                            <ListItemText
+                                primary={option.companyName}
+                                secondary={option.companyAddress}
+                                classes={{ primary: classes.primaryText, secondary: classes.secondaryText }}
+                            />
+                        </ListItem>
+                    ))}
                     <ListItem
-                        key={option.companyId}
-                        className={`${classes.listItem} ${selectedOption === option ? classes.selected : ''}`}
-                        onClick={() => handleOptionClick(option)}
+                        className={`${classes.listItem} ${isUnique ? classes.selected : ''}`}
+                        onClick={handleToggleUnique}
                     >
-                        <ListItemText primary={option.companyName} secondary={option.companyAddress} />
+                        <ListItemText primary="새로운 회사이신가요?" secondary="이 곳을 클릭해주세요!"/>
                     </ListItem>
-                ))}
-            </List>
-            <Divider />
-            <div style={{ display: 'flex', alignItems: 'center', margin: '20px 0' }}>
-                <Switch
-                    checked={isUnique}
-                    onChange={handleToggleUnique}
+                </List>
+                <Divider />
+                <Button
+                    variant="contained"
                     color="primary"
-                />
-                <Typography variant="body1">회사와 겹치는 것 없다</Typography>
+                    onClick={handleConfirm}
+                    style={{ float: 'right' }}
+                >
+                    확인
+                </Button>
             </div>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={handleConfirm}
-                style={{ float: 'right' }}
-            >
-                확인
-            </Button>
         </div>
     );
 };

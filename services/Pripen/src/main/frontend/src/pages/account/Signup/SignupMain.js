@@ -18,7 +18,11 @@ const SignupMain = () =>{
 
     // 다음 단계로 넘어가는 함수
     const nextStep = () => {
-        setStep(step + 1);
+        if(step+1 === 4){
+            signUpUser(userData,navigate);
+        } else{
+            setStep(step + 1);
+        }
         console.log("my userData is:");
         console.log("your step is " , step);
         console.log(userData);
@@ -54,8 +58,6 @@ const SignupMain = () =>{
             return <Signup2 nextStep={nextStep} userData={userData} />;
         case 3:
             return <Signup3 nextStep={nextStep} userData={userData} setUserData={setUserData}/>;
-        case 4:  
-            signUpUser(userData,navigate);
         default:
             return;
     }
