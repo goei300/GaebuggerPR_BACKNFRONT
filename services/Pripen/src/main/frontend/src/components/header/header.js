@@ -106,7 +106,7 @@ const Header = ({ active }) => {
             {isLoggedIn? (
                 <div className="authentication">
                     <Link to="/mypage">마이 페이지</Link>
-                    <button onClick={handleLogout}>로그아웃</button>
+                    <Link to="/" onClick={handleLogout}>로그아웃</Link>
                 </div>
             ) : (
                 <div className="authentication">
