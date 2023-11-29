@@ -10,9 +10,10 @@ import './Step4.css';
 import '../../../../assets/fonts/fonts.css';    
 import CustomizedSteppers from '../../../../components/StepIndicator/StepIndicator';
 import { StyledPaper } from '../Guideline_detail/styles/ComponentStyles';
-import { captureCanvas } from '../captureCanvas';
+import { captureCanvas,useCanvas } from '../CanvasProvider';
 
 function Step4({ processId, nextStep,responseData,infoObject }) {
+    const { captureCanvas } = useCanvas();
     const [open, setOpen] = useState(false);
     const [detailType, setDetailType] = useState("");
     const [visible, setVisible] = useState(false);
@@ -203,17 +204,17 @@ function Step4({ processId, nextStep,responseData,infoObject }) {
         }
     ];
     useEffect(() => {
-        captureCanvas('sectionId1');
-        captureCanvas('sectionId2');
-        // ... 나머지 섹션들
-      }, []);
+        captureCanvas('section1');
+        captureCanvas('section2');
+        captureCanvas('section3');
+      }, [captureCanvas]);
     const total = pieData.reduce((acc, data) => acc + data.value, 0);
 
     return (
         <Container className="compact-container" style={{padding:"0px"}}>
             <CustomizedSteppers activeStep={3} />
             {/* 다양한 항목들 */}
-            <div className="results" style={{margin:"20px"}}>
+            <div id="section1" className="results" style={{margin:"20px"}}>
                 <div className="estimate_userFile" style={{marginBottom: "200px"}}>
                     <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>대시보드</h1>
                     <Divider style={{marginBottom:'30px'}} />
@@ -233,7 +234,7 @@ function Step4({ processId, nextStep,responseData,infoObject }) {
                     <Divider style={{marginBottom:"20px",opacity:0}} />
                 </div>
 
-                <div className="average-bargraph" style={{display:"flex", flexDirection:"column"}}>
+                <div id="section2" className="average-bargraph" style={{display:"flex", flexDirection:"column"}}>
                     <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>업종 내 평균 비교 확인</h1>
                     <Divider style={{marginBottom:'10px'}} />
                     <h3 style={{ marginLeft: "25px", fontFamily: "NotoSansKR-Medium", color: "#999" }}>
@@ -245,7 +246,7 @@ function Step4({ processId, nextStep,responseData,infoObject }) {
                 <Divider style={{margin: "100px", opacity:0}} />
 
                 {/* 여기 부적합요소 확인 스크롤 보여주기. */}
-                <div className="nonconformity">
+                <div id="section3" className="nonconformity">
                     <h1 style={{marginLeft:'20px', fontFamily: "NotoSansKR-SemiBold"}}>한눈에 진단 결과 확인 하기</h1>
                     <Divider style={{marginBottom:'10px'}} />
                     <div style={{display:"flex", justifyContent: "space-between"}}>
