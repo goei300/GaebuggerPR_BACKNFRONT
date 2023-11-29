@@ -1,4 +1,4 @@
-import React, { useState,useMemo} from "react";
+import React, { useState,useMemo, useEffect} from "react";
 import CustomizedSteppers from "../../../../components/StepIndicator/StepIndicator";
 import {    Select, MenuItem, InputLabel, FormControl, Typography,  Box, Divider, Container, Button, IconButton,Table, TableBody, TableCell, TableHead, TableRow,TablePagination  } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -12,10 +12,10 @@ import '../../../../assets/fonts/fonts.css';
 import { 
     StyledPaper, 
 } from './styles/ComponentStyles';
-import {captureCanvas, useCanvas} from '../CanvasProvider'; 
+import { useCanvas } from "../../CanvasProvider";
 function Guideline_detail({processId, prevStep,responseData}){
     // 임의의 데이터    
-    const { captureCanvas } = useCanvas();
+    const { captureCanvas, downloadMergedImage } = useCanvas();
     const [selectedIssueList, setSelectedIssueList] = useState(null);
     const [selectedIssue, setSelectedIssue] = useState(null);
     const [selectedButtonIssue, setSelectedButtonIssue] = useState(null);
@@ -62,7 +62,7 @@ function Guideline_detail({processId, prevStep,responseData}){
 
     };
     useEffect(() => {
-        captureCanvas('section4');
+        captureCanvas('section4',5);
       }, [captureCanvas]);
     return (
         <Container className="compact-container" style={{padding:"0px"}}>
@@ -136,7 +136,9 @@ function Guideline_detail({processId, prevStep,responseData}){
                 {/* 수정된 txt파일 내용 */}
 
                 <Divider style={{marginTop:"500px",opacity:0}} />
-
+                <Button variant="contained" color="primary" onClick={downloadMergedImage}>
+                    Download Merged Image
+                </Button>
                 <Divider style={{ margin: '20px 0' }} />
 
                 <Box mt={3} display="flex" justifyContent="space-between">

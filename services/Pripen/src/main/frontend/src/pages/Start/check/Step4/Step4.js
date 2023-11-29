@@ -10,14 +10,9 @@ import './Step4.css';
 import '../../../../assets/fonts/fonts.css';    
 import CustomizedSteppers from '../../../../components/StepIndicator/StepIndicator';
 import { StyledPaper } from '../Guideline_detail/styles/ComponentStyles';
-import { captureCanvas,useCanvas } from '../CanvasProvider';
-
+import { useCanvas } from "../../CanvasProvider";
 function Step4({ processId, nextStep,responseData,infoObject }) {
     const { captureCanvas } = useCanvas();
-    const [open, setOpen] = useState(false);
-    const [detailType, setDetailType] = useState("");
-    const [visible, setVisible] = useState(false);
-    const containerRef = useRef(null);
 
     // 임의의 테스트 데이터
     const mockServerData = {
@@ -204,9 +199,9 @@ function Step4({ processId, nextStep,responseData,infoObject }) {
         }
     ];
     useEffect(() => {
-        captureCanvas('section1');
-        captureCanvas('section2');
-        captureCanvas('section3');
+        captureCanvas('section1',4);
+        captureCanvas('section2',4);
+        captureCanvas('section3',4);
       }, [captureCanvas]);
     const total = pieData.reduce((acc, data) => acc + data.value, 0);
 
