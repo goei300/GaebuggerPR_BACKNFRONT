@@ -5,17 +5,12 @@ import PieChartComponent from '../../../../components/piechart/PieChartComponent
 import ResultBoxSection from '../../../../components/ResultBox/ResultBoxSection';
 import ScoreDisplay from '../../../../components/scoredisplay/ScoreDisplay';
 import NonConformityCheck from '../../../../components/NonConformityCheck/NonConformityCheck';
-import testData from './fromback.json';
 import '../compactContainer.css';
 import './Step4.css';
 import '../../../../assets/fonts/fonts.css';    
 import CustomizedSteppers from '../../../../components/StepIndicator/StepIndicator';
-import axios from "axios";
-import { Subtitles } from '@mui/icons-material';
 import { StyledPaper } from '../Guideline_detail/styles/ComponentStyles';
-import LiveHelpIcon from '@mui/icons-material/LiveHelp';
-import Tooltip from '@mui/material/Tooltip';
-import IssuePopover from '../../../../components/IssuePopover/IssuePopover';
+import { captureCanvas } from '../captureCanvas';
 
 function Step4({ processId, nextStep,responseData,infoObject }) {
     const [open, setOpen] = useState(false);
@@ -207,8 +202,11 @@ function Step4({ processId, nextStep,responseData,infoObject }) {
             "color": "#9370db"
         }
     ];
-
-
+    useEffect(() => {
+        captureCanvas('sectionId1');
+        captureCanvas('sectionId2');
+        // ... 나머지 섹션들
+      }, []);
     const total = pieData.reduce((acc, data) => acc + data.value, 0);
 
     return (
