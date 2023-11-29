@@ -15,7 +15,7 @@ import {
 import { useCanvas } from "../../CanvasProvider";
 function Guideline_detail({processId, prevStep,responseData}){
     // 임의의 데이터    
-    const { captureCanvas, downloadMergedImage } = useCanvas();
+    const { captureCanvas, downloadAllImages } = useCanvas();
     const [selectedIssueList, setSelectedIssueList] = useState(null);
     const [selectedIssue, setSelectedIssue] = useState(null);
     const [selectedButtonIssue, setSelectedButtonIssue] = useState(null);
@@ -136,7 +136,7 @@ function Guideline_detail({processId, prevStep,responseData}){
                 {/* 수정된 txt파일 내용 */}
 
                 <Divider style={{marginTop:"500px",opacity:0}} />
-                <Button variant="contained" color="primary" onClick={downloadMergedImage}>
+                <Button variant="contained" color="primary" onClick={downloadAllImages}>
                     Download Merged Image
                 </Button>
                 <Divider style={{ margin: '20px 0' }} />

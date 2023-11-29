@@ -14,66 +14,42 @@ export const CanvasProvider = ({ children }) => {
 
   // 캔버스 캡처 함수
   const captureCanvas = async (elementId, step) => {
-    if (captured[step]?.includes(elementId)) return;  // 해당 step에서 이미 캡처됐다면 중복 캡처 방지
-
+    const uniqueId = `${step}-${elementId}`; // 단계와 elementId의 조합으로 고유 ID 생성
+    console.log("unique id is " , uniqueId);
+    if (captured[uniqueId]) return;  // 이미 캡처된 경우 중복 캡처 방지
+  
     try {
       const element = document.getElementById(elementId);
       if (element) {
-        const canvas = await html2canvas(element);
-        setCanvases(prevCanvases => ({ ...prevCanvases, [elementId]: canvas }));
-        setCaptured(prevCaptured => ({
-          ...prevCaptured,
-          [step]: [...(prevCaptured[step] || []), elementId]
-        }));
+        const canvas = await html2canvas(element, { scale: 4 });
+        setCanvases(prevCanvases => ({ ...prevCanvases, [uniqueId]: canvas }));
+        setCaptured(prevCaptured => ({ ...prevCaptured, [uniqueId]: true }));
       }
     } catch (error) {
       console.error('Error capturing canvas:', error);
     }
   };
-  const mergeCanvases = () => {
-    // 캔버스가 없을 경우
-    if (Object.keys(canvases).length === 0) {
-      return null;
-    }
 
-    const mergedCanvas = document.createElement('canvas');
-    const context = mergedCanvas.getContext('2d');
+  const downloadImage = (canvas, filename) => {
+    if (!canvas) return;
 
-    let totalHeight = 0;
-    let maxWidth = 0;
-
-    Object.values(canvases).forEach(canvas => {
-      totalHeight += canvas.height;
-      maxWidth = Math.max(maxWidth, canvas.width);
-    });
-
-    mergedCanvas.width = maxWidth;
-    mergedCanvas.height = totalHeight;
-
-    let currentY = 0;
-    Object.values(canvases).forEach(canvas => {
-      context.drawImage(canvas, 0, currentY);
-      currentY += canvas.height;
-    });
-
-    return mergedCanvas;
-  };
-
-  const downloadMergedImage = () => {
-    const mergedCanvas = mergeCanvases();
-    if (!mergedCanvas) return;
-
-    const image = mergedCanvas.toDataURL('image/png');
+    const image = canvas.toDataURL('image/png');
     const downloadLink = document.createElement('a');
     downloadLink.href = image;
-    downloadLink.download = 'mergedCanvas.png';
+    downloadLink.download = `${filename}.png`;
     downloadLink.click();
+  };
+
+  const downloadAllImages = () => {
+    Object.entries(canvases).forEach(([key, canvas]) => {
+      downloadImage(canvas, key); // 각 캔버스에 대한 다운로드
+    });
   };
 
   const contextValue = {
     canvases,
     captureCanvas,
-    downloadMergedImage  // 다운로드 함수를 컨텍스트 값에 추가
+    downloadAllImages // 모든 이미지를 다운로드하는 함수
   };
 
   return (
