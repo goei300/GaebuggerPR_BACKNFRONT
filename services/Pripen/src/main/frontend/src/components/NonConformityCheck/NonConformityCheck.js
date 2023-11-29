@@ -231,7 +231,7 @@ const NonConformityCheck = ({ captureCanvas, data, omissionData }) => {
       setTimeout(() => {
         setCaptureStyle({});
       },250); // 예상되는 캡처 시간 설정
-    }, 500);
+    }, 200);
   }, []);
   const classes = useStyles();
     return (

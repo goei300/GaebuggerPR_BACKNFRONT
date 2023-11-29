@@ -61,9 +61,6 @@ function Guideline_detail({processId, prevStep,responseData}){
         }, 100);
 
     };
-    useEffect(() => {
-        captureCanvas('section4',5);
-      }, [captureCanvas]);
     return (
         <Container className="compact-container" style={{padding:"0px"}}>
             <CustomizedSteppers activeStep={3} />
@@ -75,12 +72,12 @@ function Guideline_detail({processId, prevStep,responseData}){
                     <Divider style={{ marginBottom: '30px',border: "1px solid" }} />
 
                     {/* 상세 테이블 */}
-                    <div id="section4" className="issueTable">
+                    <div className="issueTable">
                         <h2 style={{fontFamily:"NotoSansKR-SemiBold", marginLeft: "20px"}}>상세 테이블</h2>
                         <Divider style={{marginBottom:'10px'}} />
                         <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>테이블을 통해 진단 결과를 간편하게 확인해보세요</h3>
                         <Divider style={{marginBottom:'20px',opacity:0}} />
-                        <TablePage selectedIssueType={selectedIssueType} setSelectedIssueType={setSelectedIssueType} filteredIssues={filteredIssues} handleButtonClick={handleButtonClick}/>
+                        <TablePage captureCanvas={captureCanvas} selectedIssueType={selectedIssueType} setSelectedIssueType={setSelectedIssueType} filteredIssues={filteredIssues} handleButtonClick={handleButtonClick}/>
                     </div>
 
                     <Divider style={{marginBottom:"50px", opacity:0}} />
