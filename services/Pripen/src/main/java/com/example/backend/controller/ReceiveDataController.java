@@ -73,6 +73,14 @@ public class ReceiveDataController {
     // test endpoint
 //    @CrossOrigin(origins = "http://localhost:3000")
 
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/download")
+    public ResponseEntity<?> downloadReport(@RequestParam("files") List<MultipartFile> files){
+        System.out.println("hihi");
+        return ResponseEntity.ok("hi");
+    }
+
+
     @CrossOrigin(origins = {"https://www.pri-pen.com", "http://localhost:3000"})
     @PostMapping("/test-mock")
     public ResponseEntity<Map<String, Object>> getMockData(@RequestBody String process_ID) {
