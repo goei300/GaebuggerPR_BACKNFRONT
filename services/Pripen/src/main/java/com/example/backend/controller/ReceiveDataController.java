@@ -76,8 +76,14 @@ public class ReceiveDataController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/download")
     public ResponseEntity<?> downloadReport(@RequestParam("files") List<MultipartFile> files){
-        System.out.println("hihi");
-        return ResponseEntity.ok("hi");
+        for (MultipartFile file : files) {
+            System.out.println("Received file:");
+            System.out.println("Name: " + file.getOriginalFilename());
+            System.out.println("Size: " + file.getSize());
+            System.out.println("ContentType: " + file.getContentType());
+        }
+
+        return ResponseEntity.ok("Received " + files.size() + " files");
     }
 
 
