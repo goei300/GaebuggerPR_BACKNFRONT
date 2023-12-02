@@ -10,6 +10,7 @@ import { Button } from '@mui/material';
 import {styled} from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import InfoDiagSection from './diagnosisIntroduceSection/InfoDiagSection';
+import MoreFunc from './diagnosisIntroduceSection/MoreFunc';
 
 
 function AnimatedSection({ className, title, content }) {
@@ -78,6 +79,15 @@ function Home() {
                     <div className="what-content" style={{fontFamily:'NotoSansKR-SemiBold'}}>
                         <InfoDiagSection />
                     </div>
+                    <div className="what-moreFuncTitle" style={{fontFamily:"NotoSansKR-Bold",fontSize:"32px",margin:"200px 0 100px"}}>
+                        <span>다음 기능들을 제공해요!</span>
+                    </div>
+                    <div className="what-moreFunc" style={{fontFamily:'NotoSansKR-Regular'}}>
+                        <MoreFunc />
+                    </div>
+                </div>
+                <div>
+
                 </div>
             </main>
             <Footer />
