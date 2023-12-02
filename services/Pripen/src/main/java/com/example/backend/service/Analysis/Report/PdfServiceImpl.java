@@ -162,40 +162,39 @@ public class PdfServiceImpl implements PdfService {
         }
     }
     private void addContents(Document document, List<MultipartFile> files) throws IOException {
-
         String fontPath = "./fonts/NotoSansKR-SemiBold.ttf";
-
-        // PDF 폰트 생성
         PdfFont koreanFont = PdfFontFactory.createFont(fontPath, PdfEncodings.IDENTITY_H, true);
+
         String[] titles = {
                 "1. 진단 유형 결과",
-                "2. 점수",
-                "3. 업종별 평균 비교",
-                "4. 위반 문장 확인",
-                "5. 상세 테이블"
+                "2. 평균 위반 수치 비교",
+                "3. 위반 문장 확인",
+                "4. 상세 테이블"
         };
 
+        int chapter = 0;
         for (int i = 0; i < files.size(); i++) {
-            MultipartFile file = files.get(i);
-
-            // 제목 추가
-            String title = titles[i];
-            Paragraph titleParagraph = new Paragraph(title)
-                    .setFontSize(16)
-                    .setBold()
-                    .setFont(koreanFont)
-                    .setUnderline()
-                    .setTextAlignment(TextAlignment.CENTER);
-            document.add(titleParagraph);
+            // 새 챕터의 첫 이미지에 제목 추가
+            if (i == 0 || i == 2 || i == 3 || i == 4) {
+                String title = titles[chapter++];
+                Paragraph titleParagraph = new Paragraph(title)
+                        .setFontSize(16)
+                        .setBold()
+                        .setFont(koreanFont)
+                        .setUnderline()
+                        .setTextAlignment(TextAlignment.CENTER);
+                document.add(titleParagraph);
+            }
 
             // 이미지 추가
+            MultipartFile file = files.get(i);
             byte[] bytes = file.getBytes();
             ImageData imageData = ImageDataFactory.create(bytes);
             Image image = new Image(imageData).setAutoScale(true);
             document.add(image);
 
-            // 다음 파일을 위해 새 페이지 시작
-            if (i < files.size() - 1) {
+            // 첫 챕터의 두 번째 이미지 이후, 그리고 그 이후의 각 이미지 후에 새 페이지 시작
+            if ((i == 1 && files.size() > 2) || (i >= 2 && i < files.size() - 1)) {
                 document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
             }
         }
