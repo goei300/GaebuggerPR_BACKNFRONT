@@ -81,8 +81,15 @@ public class ReceiveDataController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/download")
-    public ResponseEntity<?> downloadReport(@RequestParam("files") List<MultipartFile> files) throws IOException {
-        String pdfFilePath = pdfService.createPdf(files);
+    public ResponseEntity<?> downloadReport(
+            @RequestParam("files") List<MultipartFile> files,
+            @RequestParam("userName") String userName,
+            @RequestParam("companyName") String companyName) throws IOException {
+
+        System.out.println(userName);
+        System.out.println(companyName) ;
+
+        String pdfFilePath = pdfService.createPdf(files,userName,companyName);
         FileSystemResource file = new FileSystemResource(pdfFilePath);
 
         String filename = file.getFilename();

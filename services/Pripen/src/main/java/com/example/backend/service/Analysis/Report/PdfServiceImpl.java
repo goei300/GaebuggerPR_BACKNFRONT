@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 @Service
 public class PdfServiceImpl implements PdfService {
 
-    public String createPdf(List<MultipartFile> files) throws IOException {
+    public String createPdf(List<MultipartFile> files,String userName, String companyName) throws IOException {
         String tempPdfFilePath = "./TemporaryStorage/temp_generated_pdf.pdf"; // 임시 파일 경로
         String finalPdfFilePath = "./TemporaryStorage/generated_pdf.pdf"; // 최종 파일 경로
 
@@ -53,7 +53,7 @@ public class PdfServiceImpl implements PdfService {
         // 이미지 추가 로직
 
         // 표지 추가
-        addCoverPage(tempDocument);
+        addCoverPage(tempDocument,userName,companyName);
 
         // 첫 페이지를 빈 페이지로 추가
         tempDocument.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
@@ -84,7 +84,7 @@ public class PdfServiceImpl implements PdfService {
     }
 
 
-    private void addCoverPage(Document document) throws IOException {
+    private void addCoverPage(Document document,String userName, String companyName) throws IOException {
         // 한글 폰트 파일 경로
         String fontPath = "./fonts/NotoSansKR-SemiBold.ttf";
 
@@ -100,8 +100,6 @@ public class PdfServiceImpl implements PdfService {
 
         // 날짜 추가
         String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String userName = "김프펜";
-        String companyName = "프라이펜";
         Table table = new Table(1) // 1 열 테이블
                 .setWidth(UnitValue.createPercentValue(30)) // 테이블 폭 설정
                 .setFixedPosition(450, 50, 100); // x, y, width
@@ -114,16 +112,16 @@ public class PdfServiceImpl implements PdfService {
         dateCell.setBorderBottom(new SolidBorder(borderColor, 1)); // 아래쪽 테두리 색상 설정
         table.addCell(dateCell);
 
-        // 사용자 이름 행 추가
-        Cell userCell = new Cell().add(new Paragraph("작성자: " + userName).setFont(koreanFont).setFontSize(10));
-        userCell.setBorder(Border.NO_BORDER);
-        userCell.setBorderBottom(new SolidBorder(borderColor, 1));
-        table.addCell(userCell);
-
         // 회사 이름 행 추가
         Cell companyCell = new Cell().add(new Paragraph("회사: " + companyName).setFont(koreanFont).setFontSize(10));
         companyCell.setBorder(Border.NO_BORDER);
+        dateCell.setBorderBottom(new SolidBorder(borderColor, 1)); // 아래쪽 테두리 색상 설정
         table.addCell(companyCell);
+
+        // 사용자 이름 행 추가
+        Cell userCell = new Cell().add(new Paragraph("작성자: " + userName).setFont(koreanFont).setFontSize(10));
+        userCell.setBorder(Border.NO_BORDER);
+        table.addCell(userCell);
 
         document.add(table);
     }
