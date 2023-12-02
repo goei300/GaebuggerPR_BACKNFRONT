@@ -17,9 +17,8 @@ import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.*;
+import com.itextpdf.layout.property.AreaBreakType;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Image;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -56,17 +55,15 @@ public class PdfServiceImpl implements PdfService {
         // 표지 추가
         addCoverPage(tempDocument);
 
+        // 첫 페이지를 빈 페이지로 추가
+        tempDocument.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+
         // 파일 이름에 따라 정렬
         List<MultipartFile> sortedFiles = files.stream()
                 .sorted(Comparator.comparing(MultipartFile::getOriginalFilename))
                 .collect(Collectors.toList());
 
-        for (MultipartFile file : sortedFiles) {
-            byte[] bytes = file.getBytes();
-            ImageData imageData = ImageDataFactory.create(bytes);
-            Image image = new Image(imageData);
-            tempDocument.add(image);
-        }
+        addContents(tempDocument, sortedFiles);
         tempDocument.close();
 
         // 임시 파일을 읽고 최종 파일에 워터마크 추가
@@ -89,7 +86,7 @@ public class PdfServiceImpl implements PdfService {
 
     private void addCoverPage(Document document) throws IOException {
         // 한글 폰트 파일 경로
-        String fontPath = "./fonts/NotoSansKR-Bold.ttf";
+        String fontPath = "./fonts/NotoSansKR-SemiBold.ttf";
 
         // PDF 폰트 생성
         PdfFont koreanFont = PdfFontFactory.createFont(fontPath, PdfEncodings.IDENTITY_H, true);
@@ -146,10 +143,10 @@ public class PdfServiceImpl implements PdfService {
                 // 페이지 테두리 추가
                 PdfCanvas canvas = new PdfCanvas(page);
                 // 테두리 위치 및 크기 조정
-                float inset = 20; // 여백
+                float inset = 10; // 여백
                 canvas.rectangle(inset / 2, inset / 2, width - inset, height - inset);
                 canvas.setStrokeColor(new DeviceRgb(173, 216, 230)); // 연한 파란색으로 설정
-                canvas.setLineWidth(20);
+                canvas.setLineWidth(10);
                 canvas.stroke();
 
                 // 워터마크 추가
@@ -158,13 +155,49 @@ public class PdfServiceImpl implements PdfService {
                         .setFontSize(7)
                         .setFontColor(ColorConstants.GRAY);
                 new Canvas(canvas, pdf, a4)
-                        .showTextAligned(watermark, width / 2, 30, TextAlignment.CENTER);
+                        .showTextAligned(watermark, width / 2, 15, TextAlignment.CENTER);
             } else {
                 System.out.println("페이지가 null입니다: " + i);
             }
         }
     }
-    private void addTableOfContents(Document document) {
-        // 목차 구현...
+    private void addContents(Document document, List<MultipartFile> files) throws IOException {
+
+        String fontPath = "./fonts/NotoSansKR-SemiBold.ttf";
+
+        // PDF 폰트 생성
+        PdfFont koreanFont = PdfFontFactory.createFont(fontPath, PdfEncodings.IDENTITY_H, true);
+        String[] titles = {
+                "1. 진단 유형 결과",
+                "2. 점수",
+                "3. 업종별 평균 비교",
+                "4. 위반 문장 확인",
+                "5. 상세 테이블"
+        };
+
+        for (int i = 0; i < files.size(); i++) {
+            MultipartFile file = files.get(i);
+
+            // 제목 추가
+            String title = titles[i];
+            Paragraph titleParagraph = new Paragraph(title)
+                    .setFontSize(16)
+                    .setBold()
+                    .setFont(koreanFont)
+                    .setUnderline()
+                    .setTextAlignment(TextAlignment.CENTER);
+            document.add(titleParagraph);
+
+            // 이미지 추가
+            byte[] bytes = file.getBytes();
+            ImageData imageData = ImageDataFactory.create(bytes);
+            Image image = new Image(imageData).setAutoScale(true);
+            document.add(image);
+
+            // 다음 파일을 위해 새 페이지 시작
+            if (i < files.size() - 1) {
+                document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+            }
+        }
     }
 }
