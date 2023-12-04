@@ -6,13 +6,13 @@ import FmdBadIcon from '@mui/icons-material/FmdBad';
 import RuleFolderIcon from '@mui/icons-material/RuleFolder';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import "../../assets/fonts/fonts.css";
-
+import { useCanvas } from '../../pages/Start/CanvasProvider';
 import CategoryPopover from '../categoryPopover/categoryPopover';
 
-const ResultBoxSection = ({ serverData, captureCanvas }) => {
+const ResultBoxSection = ({ serverData }) => {
     const [isVisible, setIsVisible] = useState(false);
     const containerRef = useRef(null);
-
+    const {captureCanvas} = useCanvas();
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
