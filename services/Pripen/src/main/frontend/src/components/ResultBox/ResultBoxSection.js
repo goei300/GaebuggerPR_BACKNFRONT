@@ -12,6 +12,7 @@ import CategoryPopover from '../categoryPopover/categoryPopover';
 const ResultBoxSection = ({ serverData }) => {
     const [isVisible, setIsVisible] = useState(false);
     const containerRef = useRef(null);
+    const [captureDone, setCaptureDone] = useState(false); // 캡처 완료 상태
     const {captureCanvas} = useCanvas();
     useEffect(() => {
         const observer = new IntersectionObserver(

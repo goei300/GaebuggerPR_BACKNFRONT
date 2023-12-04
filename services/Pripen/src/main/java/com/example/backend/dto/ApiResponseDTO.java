@@ -68,5 +68,9 @@ public class ApiResponseDTO {
                 return Integer.compare(o1.getIssue_id(), o2.getIssue_id());
             }
         });
+        // 이제 각 이슈의 ID를 업데이트
+        for (int i = 0; i < this.process_Issues.size(); i++) {
+            this.process_Issues.get(i).setIssue_id(i+1); // ID를 0부터 시작하도록 설정
+        }
     }
 }

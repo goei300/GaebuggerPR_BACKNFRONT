@@ -22,10 +22,10 @@ const MoreFunc = () => {
         <Box sx={{
             display: 'flex', 
             flexWrap: 'wrap', 
-            gap: 2, 
+            gap: 3, 
             p: 1, 
             justifyContent: 'center',
-            maxWidth: '100%', // 최대 너비 설정
+            maxWidth: '80%', // 최대 너비 설정
         }}>
             {boxes.map((box, index) => (
                 <Box key={index} sx={{

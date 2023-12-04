@@ -82,9 +82,13 @@ function Home() {
                     <div className="what-moreFuncTitle" style={{fontFamily:"NotoSansKR-Bold",fontSize:"32px",margin:"200px 0 100px"}}>
                         <span>다음 기능들을 제공해요!</span>
                     </div>
-                    <div className="what-moreFunc" style={{fontFamily:'NotoSansKR-Regular'}}>
+                    <div className="what-moreFunc" style={{fontFamily:'NotoSansKR-Regular', display:'flex', justifyContent:'center', margin:'0 0 200px'}}>
                         <MoreFunc />
                     </div>
+                </div>
+
+                <div className="FAQ" style={{fontFamily:"NotoSansKR-Bold",fontSize:"50px"}}>
+                    <span>FAQ</span>
                 </div>
                 <div>
 
