@@ -5,7 +5,7 @@ import './Home.css';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/Footer';
 import '../../assets/fonts/fonts.css';
-import solutionImage from '../../assets/images/pripen.png';
+import solutionImage from '../../assets/images/homeImages/메인이미지.png';
 import { Button } from '@mui/material';
 import {styled} from '@mui/material/styles';
 import { Link } from 'react-router-dom';
@@ -89,6 +89,7 @@ function Home() {
 
                 <div className="FAQ" style={{fontFamily:"NotoSansKR-Bold",fontSize:"50px"}}>
                     <span>FAQ</span>
+
                 </div>
                 <div>
 
