@@ -154,7 +154,7 @@ public class DataProcessingService {
         }
 
         // 이슈 정렬
-
+        responseDTO.sortIssues();
         // db 저장 로직 구현
 
 
