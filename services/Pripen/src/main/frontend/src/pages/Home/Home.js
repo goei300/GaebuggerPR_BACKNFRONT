@@ -58,7 +58,7 @@ function Home() {
                 <title>프라이팬 | 파일 하나로 개인정보 처리방침 점검</title>
             </Helmet>
 
-            <Header />
+            <Header active="contact"/>
             <main className="home-content">
                 <div className="introduce-sec" style={{width:"100%",  padding:"80px 0 80px"}}>
                     <div className="introduce-content">
