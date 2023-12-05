@@ -1,0 +1,4 @@
+.serviceIntroduction:hover, .teamIntroduction:hover {
+    color: black !important; 
+    cursor: pointer;
+}   

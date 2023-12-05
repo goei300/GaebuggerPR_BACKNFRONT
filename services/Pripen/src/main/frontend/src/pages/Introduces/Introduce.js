@@ -6,6 +6,7 @@ import Footer from "../../components/footer/Footer";
 import { useInView } from 'react-intersection-observer';
 import './Service.css';
 import '../../assets/fonts/fonts.css';
+import IntroduceUs from './IntroduceUs';
 
 function Introduce() {
     const location = useLocation();
@@ -16,9 +17,9 @@ function Introduce() {
             <main className="Introduce-content">
                 <Routes>
                     {/* /services 경로에 대한 내용 */}
-                    <Route path="/" 
-                    
-                    />
+                    <Route path="/" element={
+                        <IntroduceUs />
+                    } />
     
                 </Routes>
             </main>

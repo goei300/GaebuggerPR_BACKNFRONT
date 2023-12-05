@@ -1,10 +1,10 @@
 import React from "react";
 
-const Pripen = () => {
+const PripenIntroduce = () => {
 
     return(
         <p> hi </p>
     )
 };
 
-export default Pripen;
+export default PripenIntroduce;

@@ -54,7 +54,7 @@ const Header = ({ active }) => {
                         onMouseEnter={() => setShowServicesDropdown(true)}
                         onMouseLeave={() => setShowServicesDropdown(false)}
                     >
-                        <Link to="/introduce/pripen" className={active === "introduce" ? "active-link" : ""}>회사 소개</Link>
+                        <Link to="/introduce" className={active === "introduce" ? "active-link" : ""}>회사 소개</Link>
                         <CustomDropdown 
                             isOpen={showServicesDropdown}
                             items={[

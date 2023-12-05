@@ -1,10 +1,10 @@
 import React from "react";
 
-const Gaebugger = () => {
+const TeamIntroduce = () => {
     return(
         <p>hi</p>
     )
 
 };
 
-export default Gaebugger;
+export default TeamIntroduce;
