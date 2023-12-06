@@ -43,8 +43,13 @@ import java.util.stream.Collectors;
 public class PdfServiceImpl implements PdfService {
 
     public String createPdf(List<MultipartFile> files,String userName, String companyName) throws IOException {
-        String tempPdfFilePath = "./TemporaryStorage/temp_generated_pdf.pdf"; // 임시 파일 경로
-        String finalPdfFilePath = "./TemporaryStorage/generated_pdf.pdf"; // 최종 파일 경로
+        String tempStoragePath = System.getenv("REPORT_STORAGE_PATH");
+        if (tempStoragePath == null) {
+            // 개발 환경에서 사용할 기본 경로
+            tempStoragePath = "./TemporaryStorage";
+        }
+        String tempPdfFilePath = tempStoragePath + "/temp_generated_pdf.pdf";
+        String finalPdfFilePath = tempStoragePath + "/generated_pdf.pdf"; // 최종 파일 경로
 
         // 임시 PDF 파일에 이미지 추가
         PdfWriter tempWriter = new PdfWriter(tempPdfFilePath);

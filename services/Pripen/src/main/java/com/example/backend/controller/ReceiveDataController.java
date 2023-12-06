@@ -24,6 +24,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+
+@CrossOrigin(origins = {"https://www.pri-pen.com", "http://localhost:3000"})
 @RestController
 @RequestMapping("/api")
 public class ReceiveDataController {
@@ -31,12 +33,12 @@ public class ReceiveDataController {
     private ConcurrentMap<String, Boolean> processStatus = new ConcurrentHashMap<>();
     private final DataProcessingService dataProcessingService;
     private final PdfService pdfService;
-    public ReceiveDataController(DataProcessingService dataProcessingService,PdfService pdfService) {
+
+    public ReceiveDataController(DataProcessingService dataProcessingService, PdfService pdfService) {
         this.dataProcessingService = dataProcessingService;
         this.pdfService = pdfService;
     }
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com" , "http://localhost:3000"})
     @PostMapping("/start")
     public ResponseEntity<Map<String, UUID>> receiveData(
             @RequestPart("file") MultipartFile file,
@@ -58,8 +60,33 @@ public class ReceiveDataController {
         return ResponseEntity.ok(response);
 
     }
+    @PostMapping("/download")
+    public ResponseEntity<?> downloadReport(
+            @RequestParam("files") List<MultipartFile> files,
+            @RequestParam("userName") String userName,
+            @RequestParam("companyName") String companyName) throws IOException {
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com" ,"http://localhost:3000"})
+
+        System.out.println("hihihi im on!");
+
+
+        System.out.println(userName);
+        System.out.println(companyName);
+
+        String pdfFilePath = pdfService.createPdf(files, userName, companyName);
+        FileSystemResource file = new FileSystemResource(pdfFilePath);
+
+        String filename = file.getFilename();
+
+        // 클라이언트가 파일을 다운로드 할 수 있도록 헤더를 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(file);
+    }
     @GetMapping("/check-response/{processId}")
     public SseEmitter checkResponse(@PathVariable String processId) throws Exception {
         UUID parsedProcessId;
@@ -74,7 +101,7 @@ public class ReceiveDataController {
         //CompletableFuture<Void> future = dataProcessingService.processData(parsedProcessId, emitter);
 
         // test-mode
-        CompletableFuture<Void> future = dataProcessingService.processData_test(parsedProcessId,emitter);
+        CompletableFuture<Void> future = dataProcessingService.processData_test(parsedProcessId, emitter);
 
         return emitter;
     }
@@ -82,33 +109,6 @@ public class ReceiveDataController {
     // test endpoint
 //    @CrossOrigin(origins = "http://localhost:3000")
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://localhost:3000"})
-    @PostMapping("/download")
-    public ResponseEntity<?> downloadReport(
-            @RequestParam("files") List<MultipartFile> files,
-            @RequestParam("userName") String userName,
-            @RequestParam("companyName") String companyName) throws IOException {
-
-        System.out.println(userName);
-        System.out.println(companyName) ;
-
-        String pdfFilePath = pdfService.createPdf(files,userName,companyName);
-        FileSystemResource file = new FileSystemResource(pdfFilePath);
-
-        String filename = file.getFilename();
-
-        // 클라이언트가 파일을 다운로드 할 수 있도록 헤더를 설정
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(file);
-    }
-
-
-    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://localhost:3000"})
     @PostMapping("/test-mock")
     public ResponseEntity<Map<String, Object>> getMockData(@RequestBody String process_ID) {
         ObjectMapper mapper = new ObjectMapper();
