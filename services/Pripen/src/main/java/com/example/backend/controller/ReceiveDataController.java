@@ -82,7 +82,7 @@ public class ReceiveDataController {
     // test endpoint
 //    @CrossOrigin(origins = "http://localhost:3000")
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000","https://www.pri-pen.com"})
     @PostMapping("/download")
     public ResponseEntity<?> downloadReport(
             @RequestParam("files") List<MultipartFile> files,

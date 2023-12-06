@@ -15,7 +15,7 @@ function Introduce() {
     console.log(label);
     return (
         <div className="Introduce-container">
-            <Header active="Introduce" />
+            <Header active="introduce" />
 
             <main className="Introduce-content">
                 <Routes>
