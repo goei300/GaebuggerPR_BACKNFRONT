@@ -100,9 +100,10 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
             infoData: infoObject
         }));
     
+                                            // https://backapi.pri-pen.com/api/download
         try {
-            //const response = await axios.post('http://localhost:8080/api/start', formData);
-            const response = await axios.post('https://backapi.pri-pen.com/api/start', formData);
+            const response = await axios.post('http://localhost:8080/api/start', formData);
+            //const response = await axios.post('https://backapi.pri-pen.com/api/start', formData);
             if (response.status === 200) {
                 console.log("my process id is:", response.data.processID);
                 setProcessId(response.data.processID);
