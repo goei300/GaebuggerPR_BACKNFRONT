@@ -93,10 +93,8 @@ public class PdfServiceImpl implements PdfService {
 
         // 텍스트에 한글 폰트 적용
         Paragraph title = new Paragraph("프라이펜 개인정보 처리방침 진단 레포트").setFont(koreanFont).setFontSize(24).setBold();
-        Paragraph subtitle = new Paragraph("prototype-V").setFont(koreanFont).setFontSize(18);
 
         document.add(title);
-        document.add(subtitle);
 
         // 날짜 추가
         String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));

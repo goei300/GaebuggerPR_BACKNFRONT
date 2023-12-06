@@ -1,7 +1,5 @@
 import React from "react";
 import { Box, Card, CardContent, Typography, List, ListItem } from '@mui/material';
-import TeamLogo from "../../assets/images/Gaebugger_ver2.png";
-import TeamIntro from '../../assets/images/외부-전달용-간단-ver-002.png';
 
 const TeamIntroduce = () => {
     const teamMembers = [
@@ -74,7 +72,7 @@ const TeamIntroduce = () => {
             </div> */}
 
             <div className="Team-Content" style={{fontFamily:'NotoSansKR-Regular', fontSize:'18px'}}>
-                <img src={TeamIntro} style={{wdith:'100%', height:'100%'}} />
+                <img src='/images/외부-전달용-간단-ver-002.png' style={{wdith:'100%', height:'100%'}} />
                 
 
                 <Typography style={{fontFamily:'NotoSansKR-Bold',fontSize:'2rem', margin:'50px'}}> 팀원 소개 </Typography>
