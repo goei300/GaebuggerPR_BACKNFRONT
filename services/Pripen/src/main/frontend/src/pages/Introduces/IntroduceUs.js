@@ -1,17 +1,26 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import './IntroduceUs.css';
+import TeamIntroduce from "./TeamIntroduce";
+import PripenIntroduce from "./PripenIntroduce";
 import OptionIntro from "../../components/OptionIntro/OptionIntro";
-const IntroduceUs = () => {
-    
-    const [selectedOption, setSelectedOption] = useState("team"); 
+const IntroduceUs = ({active}) => {
+    const [selectedOption, setSelectedOption] = useState("Pripen"); 
+    console.log("active is ", active);
 
     const handleOptionChange =(option) =>{
         setSelectedOption(option);
     };
-    
+
+    useEffect(() =>{
+        handleOptionChange(active);
+    },[active])
 
     return (
-        <OptionIntro handleOptionChange={handleOptionChange} selectedOption={selectedOption}/>
+        <div className="Introduce-Section">
+            <OptionIntro handleOptionChange={handleOptionChange} selectedOption={selectedOption} />
+            {selectedOption === "Pripen" && <PripenIntroduce />}
+            {selectedOption === "Gaebugger" && <TeamIntroduce />}
+        </div>
     )
 
 };

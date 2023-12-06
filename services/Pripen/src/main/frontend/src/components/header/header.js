@@ -13,12 +13,18 @@ const Header = ({ active }) => {
     const navigate = useNavigate();
     const CustomDropdown = ({ isOpen, items, onClose }) => {
         if (!isOpen) return null;
-
+        
         return (
             <div className="dropdown-menu" onMouseLeave={onClose}>
                 {items.map((item, idx) => (
-                    <Link key={idx} to={item.link} className="dropdown-item" style={{fontFamily:'NotoSansKR-Regular', fontSize:'14px'}}>
-                        {item.label}
+                    <Link 
+                        key={idx} 
+                        to={item.link}
+                        state={{label:item.label}}
+                        className="dropdown-item" 
+                        style={{fontFamily:'NotoSansKR-Regular', fontSize:'14px'}}
+                        >
+                            {item.label}
                     </Link>
                 ))}
             </div>
@@ -58,8 +64,8 @@ const Header = ({ active }) => {
                         <CustomDropdown 
                             isOpen={showServicesDropdown}
                             items={[
-                                { label: 'Pripen', link: '/introduce/pripen' },
-                                { label: 'Gaebugger', link: '/introduce/gaebugger' }
+                                { label: 'Pripen', link: '/introduce' },
+                                { label: 'Gaebugger', link: '/introduce' }
                             ]}
                         />
                     </li>

@@ -8,26 +8,28 @@ const OptionIntro = ({handleOptionChange, selectedOption}) => {
             <div className="OptionChoice" style={{ fontFamily: "NotoSansKR-Bold", color: "#e0e0e0", marginLeft: "30px", display: "flex", flexDirection: "row", justifyContent: "flex-start", fontSize: "22px" }}>
                 <p
                     className="teamIntroduction"
-                    onClick={() => handleOptionChange("team")}
+                    onClick={() => handleOptionChange("Pripen")}
                     style={{
                         marginTop: "0px",
                         marginBottom: "0px",
-                        color: selectedOption === 'team' ? 'black' : '#e0e0e0'
-                    }}
-                >
-                    팀 소개
-                </p>
-                <span style={{ margin: '0 10px' }}>|</span>
-                <p
-                    className="serviceIntroduction"
-                    onClick={() => handleOptionChange("service")}
-                    style={{
-                        marginTop: "0px",
-                        marginBottom: "0px",
-                        color: selectedOption === 'service' ? 'black' : '#e0e0e0'
+                        color: selectedOption === 'Pripen' ? 'black' : '#e0e0e0',
+                        fontSize:'2.0rem'
                     }}
                 >
                     서비스 소개
+                </p>
+                <span style={{ margin: '0 50px' }}>|</span>
+                <p
+                    className="serviceIntroduction"
+                    onClick={() => handleOptionChange("Gaebugger")}
+                    style={{
+                        marginTop: "0px",
+                        marginBottom: "0px",
+                        color: selectedOption === 'Gaebugger' ? 'black' : '#e0e0e0',
+                        fontSize:'2.0rem'
+                    }}
+                >
+                    팀 소개
                 </p>
             </div>
         </div>

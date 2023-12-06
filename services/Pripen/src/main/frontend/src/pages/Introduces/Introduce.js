@@ -10,6 +10,9 @@ import IntroduceUs from './IntroduceUs';
 
 function Introduce() {
     const location = useLocation();
+    console.log(location);
+    const { label } = location.state || {}; // state가 없는 경우를 위한 기본값 설정
+    console.log(label);
     return (
         <div className="Introduce-container">
             <Header active="Introduce" />
@@ -18,7 +21,7 @@ function Introduce() {
                 <Routes>
                     {/* /services 경로에 대한 내용 */}
                     <Route path="/" element={
-                        <IntroduceUs />
+                        <IntroduceUs active={label} />
                     } />
     
                 </Routes>
