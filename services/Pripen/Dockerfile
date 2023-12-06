@@ -19,11 +19,15 @@ RUN ./gradlew clean build
 FROM openjdk:17-oracle
 WORKDIR /app
 
+
+COPY fonts/ /app/fonts/
+
 # 레포트 파일 저장을 위한 디렉토리 생성
 RUN mkdir -p /app/ReportStorage
 
 # 환경 변수 설정
 ENV REPORT_STORAGE_PATH=/app/ReportStorage
+
 
 COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8080
