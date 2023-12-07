@@ -120,7 +120,7 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
                 const statusCode = error.response.status;
                 const message = error.response.data.message || "An unknown error occurred";
         
-                if (statusCode === 401) {
+                if (statusCode === 403) {
                     // 인증 실패 처리: 로그인 페이지로 리다이렉트
                     window.location.href = '/login';
                 } else {
