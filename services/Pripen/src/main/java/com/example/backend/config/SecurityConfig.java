@@ -63,6 +63,7 @@ public class SecurityConfig {
                 )
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/test-mock").permitAll()
                         .requestMatchers("/api/**").authenticated() // /api/** 경로는 인증 필요
                         .anyRequest().permitAll()) // 그 외 모든 요청은 인증 없이 허용
                 .addFilterBefore(new RequestLoggingFilter(), UsernamePasswordAuthenticationFilter.class)

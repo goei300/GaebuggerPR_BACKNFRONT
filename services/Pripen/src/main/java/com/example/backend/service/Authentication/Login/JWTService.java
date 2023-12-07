@@ -41,8 +41,10 @@ public class JWTService {
     }
     // 토큰 유효성 검사 메소드
     public boolean validateToken(String token) {
+        System.out.println("token is!");
+        System.out.println(token);
         try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(key).parseClaimsJws(token);
             return true;
         } catch (Exception ex) { // 또는 구체적인 예외 타입들을 명시
             logger.error("Token validation error: {}", ex.getMessage());
@@ -52,7 +54,7 @@ public class JWTService {
     // 토큰에서 사용자 이메일 추출 메소드
     public String getUserEmailFromJWT(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(secretKey)
+                .setSigningKey(key)
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();

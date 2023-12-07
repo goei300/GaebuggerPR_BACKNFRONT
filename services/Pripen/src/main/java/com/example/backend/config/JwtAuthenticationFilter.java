@@ -37,8 +37,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            System.out.println("now register Context");
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            System.out.println("Context register is worked!!");
         }
+        System.out.println("hmm vlidation process is end");
         filterChain.doFilter(request, response);
     }
 
