@@ -1,6 +1,7 @@
 package com.example.backend.filter;
 
 import jakarta.servlet.*;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
@@ -13,11 +14,22 @@ public class RequestLoggingFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-        System.out.println("Incoming request data:");
+        Cookie[] cookies = httpRequest.getCookies();
+        String jwtToken = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("accessToken".equals(cookie.getName())) {
+                    jwtToken = cookie.getValue();
+                    break;
+                }
+            }
+        }
 
-        // 요청 헤더 로깅
-        Collections.list(httpRequest.getHeaderNames()).forEach(headerName ->
-                System.out.println(headerName + ": " + httpRequest.getHeader(headerName)));
+        if (jwtToken != null) {
+            System.out.println("Found JWT token in cookie: " + jwtToken);
+        } else {
+            System.out.println("JWT token not found in cookies");
+        }
 
         // 필터 체인 계속
         chain.doFilter(request, response);

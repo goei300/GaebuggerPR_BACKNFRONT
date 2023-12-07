@@ -73,7 +73,7 @@ public class UserController {
         this.companyService = companyService;
     }
 
-    @CrossOrigin(origins = {"https://www.pri-pen.com"},allowCredentials = "true")
+    @CrossOrigin(origins = {"https://www.pri-pen.com", "http://localhost:3000"},allowCredentials = "true")
     //@CrossOrigin(origins = "*")
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody User loginUser, HttpServletResponse response) {
@@ -82,10 +82,10 @@ public class UserController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             String accessToken = jwtService.generateJWT(loginUser.getEmail());
-            RefreshToken refreshTokenObject = refreshTokenService.createRefreshToken(loginUser.getEmail());
-
+            //RefreshToken refreshTokenObject = refreshTokenService.createRefreshToken(loginUser.getEmail());
+            System.out.println("accessToken is " + accessToken);
             cookieService.addCookie(response, "accessToken", accessToken, (int) jwtService.getAccessTokenValidityInSeconds());
-            cookieService.addCookie(response, "refreshToken", refreshTokenObject.getToken(), (int) refreshTokenService.getRefreshTokenValidityInSeconds());
+            //cookieService.addCookie(response, "refreshToken", refreshTokenObject.getToken(), (int) refreshTokenService.getRefreshTokenValidityInSeconds());
 
             return ResponseEntity.ok(Collections.singletonMap("status", "success"));
         } catch (BadCredentialsException e) {
