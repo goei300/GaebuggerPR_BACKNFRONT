@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.Response;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -106,16 +107,25 @@ public class ReceiveDataController {
     }
 
     @GetMapping("/download")
-    public ResponseEntity<?> downloadReport{
+    public ResponseEntity<?> downloadReport(@RequestParam("process_id") String processId) {
+        try {
+            String uri = analysisRepository.findProcessReportUriByProcessId(processId);
+            if (uri == null || uri.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.OK).body("좀만 기다려주세요!");
+            }
 
-        // step1 props로 받은 process_id로부터 db의 "process_reporturi"값을 찾음.
+            // S3에서 PDF 다운로드
+            Resource pdfFile = pdfService.downloadReportFromS3(uri);
 
-        // step2 "process_reporturi"는 s3 경로임. 이 경로를 통해 s3로 부터 다운로드함.
-
-        // step3 클라이언트에게 제공
-
-        // report 다운로드 s3
-        return ResponseEntity.ok("hihi");
+            // PDF 파일의 콘텐츠 타입 설정
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + uri + "\"")
+                    .body(pdfFile);
+        } catch (IOException e) {
+            // 예외 처리 로직
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error downloading file");
+        }
     }
 
     @GetMapping("/check-response/{processId}")

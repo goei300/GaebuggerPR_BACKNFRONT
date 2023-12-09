@@ -24,7 +24,10 @@ import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.property.AreaBreakType;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
+import io.lettuce.core.SslOptions;
 import jakarta.transaction.Transactional;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.itextpdf.io.image.ImageData;
@@ -33,13 +36,15 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.services.s3.model.PutObjectResponse;
+import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -53,9 +58,11 @@ import java.util.stream.Collectors;
 @Service
 public class PdfServiceImpl implements PdfService {
     private final AnalysisRepository analysisRepository;
+    private final S3Client s3Client;
 
-    public PdfServiceImpl(AnalysisRepository analysisRepository) {
+    public PdfServiceImpl(AnalysisRepository analysisRepository,S3Client s3Client) {
         this.analysisRepository = analysisRepository;
+        this.s3Client = s3Client;
     }
     public String createAndUploadPdf(List<MultipartFile> files,String userName, String companyName) throws IOException {
         String tempStoragePath = System.getenv("REPORT_STORAGE_PATH");
@@ -227,21 +234,36 @@ public class PdfServiceImpl implements PdfService {
         analysisRepository.save(analysis);
     }
     public String uploadFileToS3(String finalPdfFilePath, String bucketName, String objectKey) {
-        // S3 클라이언트 초기화
-        S3Client s3 = S3Client.builder()
-                .region(Region.of("ap-northeast-2"))
-                .credentialsProvider(DefaultCredentialsProvider.create())
-                .build();
-
         // S3에 파일 업로드
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(objectKey)
                 .build();
-        PutObjectResponse response = s3.putObject(putObjectRequest,
-                RequestBody.fromFile(Paths.get(finalPdfFilePath)));
+        s3Client.putObject(putObjectRequest, RequestBody.fromFile(Paths.get(finalPdfFilePath)));
 
-        s3.close();
         return "s3://" + bucketName + "/" + objectKey;
+    }
+
+    public Resource downloadReportFromS3(String reportUri) throws IOException {
+        // 버킷 이름과 오브젝트 키 추출
+        URI uri = URI.create(reportUri);
+        String bucketName = uri.getHost();
+        String objectKey = uri.getPath().substring(1); // 첫 번째 '/' 문자 제거
+
+        System.out.println("uri is " + uri);
+        System.out.println("bucketName is " + bucketName);
+        System.out.println("objectKey is " + objectKey);
+
+        // S3에서 PDF 파일 다운로드
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(objectKey)
+                .build();
+        ResponseInputStream<GetObjectResponse> s3ObjectResponse = s3Client.getObject(getObjectRequest);
+
+        // InputStream에서 데이터를 읽어 ByteArrayResource로 변환
+        try (InputStream inputStream = s3ObjectResponse) {
+            return new ByteArrayResource(inputStream.readAllBytes());
+        }
     }
 }

@@ -106,7 +106,7 @@ public class DataProcessingService {
                 if (responseDTO == null) {
                     throw new Exception("Response data is empty.");
                 }
-                handleApiResponse(responseDTO, status, emitter);
+                handleApiResponse(responseDTO, status, emitter,actor);
 
                 emitter.send(SseEmitter.event().name("message").data("{\"completed\":true}"));
                 emitter.complete();

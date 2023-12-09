@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface AnalysisRepository extends JpaRepository<Analysis, String> {
     Optional<Analysis> findByProcessIdAndProcessReportUriIsNotNull(String processId);
+    String findProcessReportUriByProcessId(String processId);
 }

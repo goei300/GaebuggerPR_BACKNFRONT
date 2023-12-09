@@ -66,15 +66,24 @@ export const CanvasProvider = ({ children }) => {
   };
 // FormData에 담긴 모든 이미지를 백엔드에 전송하고, 받은 PDF를 다운로드하는 함수
 const downloadReportPdf = async (processId) => {
-  const formData = "foo"  // "process_id" 라는 key를 prop으로 받은 processId로 설정하고 싶음.
-  axios.post('http://localhost:8080/api/download', formData, {
-    responseType: 'blob',  // 중요: PDF 파일을 Blob 형태로 받기 위함
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    },
-    withCredentials: true  // 쿠키를 포함시키기 위해 true로 설정
-  })
-}
+  try {
+    // https://backapi.pri-pen.com/api/download?process_id=${processId}
+    const response = await axios.get(`http://localhost:8080/api/download?process_id=${processId}`, {
+      responseType: 'blob', // PDF 파일을 Blob 형태로 받기 위함
+      withCredentials: true // 쿠키를 포함시키기 위해 true로 설정
+    });
+
+    // PDF 파일 다운로드 처리
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'report.pdf'); // 다운로드 파일 이름 설정
+    document.body.appendChild(link);
+    link.click();
+  } catch (error) {
+    console.error('Error during download:', error);
+  }
+};
   // const downloadImage = (canvas, filename) => {
   //   if (!canvas) return;
   //   const image = canvas.toDataURL('image/png');
@@ -93,8 +102,8 @@ const downloadReportPdf = async (processId) => {
   const contextValue = {
     canvases,
     captureCanvas,
-    downloadAllImages : uploadAllImagesAndPdf // 모든 이미지를 다운로드하는 함수
-    
+    downloadAllImages : uploadAllImagesAndPdf, // 모든 이미지를 다운로드하는 함수
+    downloadReportPdf
   };
 
   return (
