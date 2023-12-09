@@ -1,5 +1,8 @@
 package com.example.backend.service.Analysis.Report;
 
+import com.example.backend.model.Analysis.Analysis;
+import com.example.backend.repository.Analysis.AnalysisRepository;
+import com.example.backend.service.Analysis.DataProcessingService;
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.io.font.FontProgram;
 import com.itextpdf.io.font.FontProgramFactory;
@@ -21,6 +24,7 @@ import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.property.AreaBreakType;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.itextpdf.io.image.ImageData;
@@ -28,6 +32,12 @@ import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -37,12 +47,17 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class PdfServiceImpl implements PdfService {
+    private final AnalysisRepository analysisRepository;
 
-    public String createPdf(List<MultipartFile> files,String userName, String companyName) throws IOException {
+    public PdfServiceImpl(AnalysisRepository analysisRepository) {
+        this.analysisRepository = analysisRepository;
+    }
+    public String createAndUploadPdf(List<MultipartFile> files,String userName, String companyName) throws IOException {
         String tempStoragePath = System.getenv("REPORT_STORAGE_PATH");
         if (tempStoragePath == null) {
             // 개발 환경에서 사용할 기본 경로
@@ -85,6 +100,10 @@ public class PdfServiceImpl implements PdfService {
         // 임시 파일 삭제
         Files.delete(Paths.get(tempPdfFilePath));
 
+        String bucketName = "pripen-s3"; // S3 버킷 이름
+        String NanceValue = UUID.randomUUID().toString();  // 넌스값 (임의의 랜덤값)
+        String objectKey = "ReportStorage/" + NanceValue; // S3 오브젝트 키
+        String s3Uri = uploadFileToS3(finalPdfFilePath, bucketName, objectKey);
         return finalPdfFilePath;
     }
 
@@ -199,5 +218,30 @@ public class PdfServiceImpl implements PdfService {
                 document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
             }
         }
+    }
+    @Transactional
+    public void saveReportUri(String processId, String pdfFilePath) {
+        Analysis analysis = analysisRepository.findById(processId)
+                .orElseThrow(() -> new RuntimeException("Analysis not found"));
+        analysis.setProcess_reporturi(pdfFilePath);
+        analysisRepository.save(analysis);
+    }
+    public String uploadFileToS3(String finalPdfFilePath, String bucketName, String objectKey) {
+        // S3 클라이언트 초기화
+        S3Client s3 = S3Client.builder()
+                .region(Region.of("ap-northeast-2"))
+                .credentialsProvider(DefaultCredentialsProvider.create())
+                .build();
+
+        // S3에 파일 업로드
+        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(objectKey)
+                .build();
+        PutObjectResponse response = s3.putObject(putObjectRequest,
+                RequestBody.fromFile(Paths.get(finalPdfFilePath)));
+
+        s3.close();
+        return "s3://" + bucketName + "/" + objectKey;
     }
 }

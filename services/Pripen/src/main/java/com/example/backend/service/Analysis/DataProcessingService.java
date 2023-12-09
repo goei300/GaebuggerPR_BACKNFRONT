@@ -3,6 +3,7 @@ package com.example.backend.service.Analysis;
 // ... (import statements remain the same)
 
 
+import com.example.backend.repository.Analysis.AnalysisRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
@@ -28,6 +29,14 @@ import java.util.stream.Collectors;
 public class DataProcessingService {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final ConcurrentHashMap<UUID, ProcessingStatus> statusMap = new ConcurrentHashMap<>();
+
+    private final AnalysisRepository analysisRepository;
+
+    public DataProcessingService (
+            AnalysisRepository analysisRepository
+    ){
+        this.analysisRepository=analysisRepository;
+    }
 
     public UUID initializeProcessingStatus(List<Integer> checkedItems, MultipartFile file) {
         UUID uuid = UUID.randomUUID();
@@ -127,6 +136,8 @@ public class DataProcessingService {
         emitter.send(SseEmitter.event().name("message").data("{\"completed\":true}"));
         emitter.complete();
 
+        //db 저장 로직
+
         System.out.println("process done!!");
         status.setProcessingComplete(true);
         return CompletableFuture.completedFuture(null);
@@ -166,8 +177,6 @@ public class DataProcessingService {
         responseDTO.sortIssues();
         // db 저장 로직 구현
 
-
-
         // 중복 이슈 제거
         responseDTO.getProcess_Issues().forEach(issue -> {
             List<String> distinctReasons = issue.getIssue_reason().stream()
@@ -184,6 +193,18 @@ public class DataProcessingService {
         emitter.send(SseEmitter.event().name("data").data(responseJson));
     }
 
+    public void saveAnalysis(ApiResponseDTO responseDTO) {
+        Analysis analysis = new Analysis();
+        // DTO 필드에서 엔터티 필드로 데이터 복사
+        analysis.setProcessOriginal(responseDTO.getProcess_Original());
+        analysis.setProcessLawViolate(responseDTO.getProcess_Law_Violate());
+        analysis.setProcessLawDanger(responseDTO.getProcess_Law_Danger());
+        analysis.setProcessGuideViolate(responseDTO.getProcess_Guide_Violate());
+        analysis.setProcessOmissionParagraph(responseDTO.getProcess_Omission_Paragraph());
+        analysis.setProcessScore(responseDTO.getProcess_Score());
+
+        analysisRepository.save(analysis);
+    }
     public ProcessingStatus getStatus(UUID processId) {
         return statusMap.get(processId);
     }

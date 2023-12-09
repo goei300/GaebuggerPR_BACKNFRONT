@@ -102,7 +102,7 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
     
                                             // http://localhost:8080/api/start
         try {
-            const response = await axios.post('https://backapi.pri-pen.com/api/start', formData
+            const response = await axios.post('http://localhost:8080/api/start', formData
             , {
                 withCredentials: true
             });

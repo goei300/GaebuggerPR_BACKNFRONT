@@ -68,7 +68,7 @@ const StyledTablePagination = styled(TablePagination)(({page,count,rowsPerPage})
 
     
 
-const TablePage = ({ captureCanvas, selectedIssueType,setSelectedIssueType,filteredIssues, handleButtonClick}) => {
+const TablePage = ({ captureCanvas, selectedIssueType,setSelectedIssueType,filteredIssues, handleButtonClick,processId}) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     // 현재 페이징 상태 저장
@@ -96,6 +96,9 @@ const TablePage = ({ captureCanvas, selectedIssueType,setSelectedIssueType,filte
                 setPage(originalPage);
                 setRowsPerPage(originalRowsPerPage);
                 setShowCheckColumn(true);
+
+                // 자동 업로드
+                downloadAllImages(infoObject.name, infoObject.companyName, processId);
             },500);
         },200);
     }, []);

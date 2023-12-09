@@ -13,7 +13,7 @@ import {
     StyledPaper, 
 } from './styles/ComponentStyles';
 import { useCanvas } from "../../CanvasProvider";
-function Guideline_detail({ prevStep,responseData,infoObject}){
+function Guideline_detail({ prevStep,processId, responseData,infoObject}){
     // 임의의 데이터    
     const { captureCanvas, downloadAllImages } = useCanvas();
     const [selectedIssueList, setSelectedIssueList] = useState(null);
@@ -81,7 +81,7 @@ function Guideline_detail({ prevStep,responseData,infoObject}){
                         <Divider style={{marginBottom:'10px'}} />
                         <h3 style={{marginLeft:"25px", fontFamily:"NotoSansKR-Medium", color:"#999"}}>테이블을 통해 진단 결과를 간편하게 확인해보세요</h3>
                         <Divider style={{marginBottom:'20px',opacity:0}} />
-                        <TablePage captureCanvas={captureCanvas} selectedIssueType={selectedIssueType} setSelectedIssueType={setSelectedIssueType} filteredIssues={filteredIssues} handleButtonClick={handleButtonClick}/>
+                        <TablePage captureCanvas={captureCanvas} selectedIssueType={selectedIssueType} setSelectedIssueType={setSelectedIssueType} filteredIssues={filteredIssues} handleButtonClick={handleButtonClick} infoObject={infoObject} processId={processId}/>
                     </div>
 
                     <Divider style={{marginBottom:"50px", opacity:0}} />

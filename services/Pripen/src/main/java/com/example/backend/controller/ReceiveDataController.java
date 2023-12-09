@@ -2,11 +2,14 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.ApiResponseDTO;
 import com.example.backend.dto.ReceivedDataDTO;
+import com.example.backend.model.Analysis.Analysis;
+import com.example.backend.repository.Analysis.AnalysisRepository;
 import com.example.backend.service.Analysis.DataProcessingService;
 import com.example.backend.service.Analysis.Report.PdfService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.coyote.Response;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -31,10 +34,12 @@ public class ReceiveDataController {
     private ConcurrentMap<String, Boolean> processStatus = new ConcurrentHashMap<>();
     private final DataProcessingService dataProcessingService;
     private final PdfService pdfService;
+    private final AnalysisRepository analysisRepository;
 
-    public ReceiveDataController(DataProcessingService dataProcessingService, PdfService pdfService) {
+    public ReceiveDataController(DataProcessingService dataProcessingService, PdfService pdfService, AnalysisRepository analysisRepository) {
         this.dataProcessingService = dataProcessingService;
         this.pdfService = pdfService;
+        this.analysisRepository = analysisRepository;
     }
 
     @PostMapping("/start")
@@ -58,33 +63,52 @@ public class ReceiveDataController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/download")
-    public ResponseEntity<?> downloadReport(
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadReport(
             @RequestParam("files") List<MultipartFile> files,
             @RequestParam("userName") String userName,
-            @RequestParam("companyName") String companyName) throws IOException {
+            @RequestParam("companyName") String companyName,
+            @RequestParam("process_id") String processId ) throws IOException {
 
 
         System.out.println("hihihi im on!");
 
+        // 만일 db에 process_id에 대한 "process_reporturi가 빈 스트링이 아니라면 return 이미 있다는 의미의 응답 반환.
+
+        // 이미 처리된 process_id인지 확인
+        Optional<Analysis> analysis = analysisRepository.findByProcessIdAndProcessReportUriIsNotNull(processId);
+        if (analysis.isPresent()) {
+            // process_reporturi가 비어 있지 않은 경우
+            return ResponseEntity.badRequest().body("Report already exists for this process ID.");
+        }
 
         System.out.println(userName);
         System.out.println(companyName);
+        System.out.println(processId);
 
-        String pdfFilePath = pdfService.createPdf(files, userName, companyName);
-        FileSystemResource file = new FileSystemResource(pdfFilePath);
+        String pdfFilePath = pdfService.createAndUploadPdf(files, userName, companyName);
 
-        String filename = file.getFilename();
+        // db에 pdfFilePath uri 저장 column 명은 "process_reporturi"
 
-        // 클라이언트가 파일을 다운로드 할 수 있도록 헤더를 설정
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+        pdfService.saveReportUri(processId, pdfFilePath);
 
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(file);
+        // 성공 응답 반환
+        return ResponseEntity.ok("Report uploaded successfully.");
     }
+
+    @GetMapping("/download")
+    public ResponseEntity<?> downloadReport{
+
+        // step1 props로 받은 process_id로부터 db의 "process_reporturi"값을 찾음.
+
+        // step2 "process_reporturi"는 s3 경로임. 이 경로를 통해 s3로 부터 다운로드함.
+
+        // step3 클라이언트에게 제공
+
+        // report 다운로드 s3
+        return ResponseEntity.ok("hihi");
+    }
+
     @GetMapping("/check-response/{processId}")
     public SseEmitter checkResponse(@PathVariable String processId) throws Exception {
         UUID parsedProcessId;
@@ -96,10 +120,10 @@ public class ReceiveDataController {
         SseEmitter emitter = new SseEmitter();
 
         // real-mode
-        CompletableFuture<Void> future = dataProcessingService.processData(parsedProcessId, emitter);
+        //CompletableFuture<Void> future = dataProcessingService.processData(parsedProcessId, emitter);
 
         // test-mode
-        //CompletableFuture<Void> future = dataProcessingService.processData_test(parsedProcessId, emitter);
+        CompletableFuture<Void> future = dataProcessingService.processData_test(parsedProcessId, emitter);
 
         return emitter;
     }

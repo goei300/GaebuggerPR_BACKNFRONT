@@ -39,4 +39,7 @@ public class Analysis {
     @Column(name = "process_actor")
     private String process_actor;
 
+    @Column(name = "process_reporturi")
+    private String process_reporturi;
+
 }

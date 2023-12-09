@@ -247,4 +247,5 @@ public class UserController {
         Company createdCompany = companyService.createCompany(newCompany);
         return ResponseEntity.ok(createdCompany);
     }
+
 }

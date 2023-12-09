@@ -1,0 +1,13 @@
+---
+applications:
+  - name: my-java-app
+    memory: 1G
+    path: build/libs/my-app-0.0.1-SNAPSHOT.jar
+    buildpacks:
+      - java_buildpack
+    env:
+      REPORT_STORAGE_PATH: /app/ReportStorage
+    services:
+      - my-database-service
+    health-check-type: port
+    health-check-http-endpoint: /health

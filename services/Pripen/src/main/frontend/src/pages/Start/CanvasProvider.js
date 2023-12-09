@@ -41,48 +41,40 @@ export const CanvasProvider = ({ children }) => {
   };
 
   // FormData에 담긴 모든 이미지를 백엔드에 전송하고, 받은 PDF를 다운로드하는 함수
-  const uploadAllImagesAndDownloadPdf = async (userName,companyName) => {
+  const uploadAllImagesAndPdf = async (userName,companyName,processId) => {
     const formData = await appendAllCanvasToFormData(canvases);
     
     // userName과 companyName을 formData에 추가
     formData.append("userName", userName);  // 사용자 이름에
     formData.append("companyName", companyName);  // 회사 이름
-    //axois.post('https://backapi.pri-pen.com/api/download', formData,{
-    //   responseType: 'blob',  // 중요: PDF 파일을 Blob 형태로 받기 위함
-    //   headers: {
-    //     'Content-Type': 'multipart/form-data'
-    //   }
-    // })
+    formData.append("process_Id", processId);
 
-    //https://backapi.pri-pen.com/api/download
-    //http://localhost:8080/api/download
-    axios.post('https://backapi.pri-pen.com/api/download', formData, {
-      responseType: 'blob',  // 중요: PDF 파일을 Blob 형태로 받기 위함
+    //https://backapi.pri-pen.com/api/upload
+    //http://localhost:8080/api/upload
+    axios.post('http://localhost:8080/api/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       },
       withCredentials: true  // 쿠키를 포함시키기 위해 true로 설정
     })
     .then(response => {
-      // Blob 데이터를 URL로 변환
-      const fileURL = window.URL.createObjectURL(new Blob([response.data]));
-      // 링크 생성
-      const fileLink = document.createElement('a');
-      fileLink.href = fileURL;
-      fileLink.setAttribute('download', 'report.pdf');  // 다운로드 파일 이름 설정
-      document.body.appendChild(fileLink);
-      
-      // 링크 클릭하여 다운로드 시작
-      fileLink.click();
-
-      // 링크 제거
-      fileLink.remove();
+      console.log("upload worked!!");
     })
     .catch(error => {
       console.error('Error:', error);
     });
   };
-
+// FormData에 담긴 모든 이미지를 백엔드에 전송하고, 받은 PDF를 다운로드하는 함수
+const downloadReportPdf = async (processId) => {
+  const formData = "foo"  // "process_id" 라는 key를 prop으로 받은 processId로 설정하고 싶음.
+  axios.post('http://localhost:8080/api/download', formData, {
+    responseType: 'blob',  // 중요: PDF 파일을 Blob 형태로 받기 위함
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+    withCredentials: true  // 쿠키를 포함시키기 위해 true로 설정
+  })
+}
   // const downloadImage = (canvas, filename) => {
   //   if (!canvas) return;
   //   const image = canvas.toDataURL('image/png');
@@ -101,7 +93,8 @@ export const CanvasProvider = ({ children }) => {
   const contextValue = {
     canvases,
     captureCanvas,
-    downloadAllImages : uploadAllImagesAndDownloadPdf // 모든 이미지를 다운로드하는 함수
+    downloadAllImages : uploadAllImagesAndPdf // 모든 이미지를 다운로드하는 함수
+    
   };
 
   return (
