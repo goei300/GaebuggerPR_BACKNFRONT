@@ -12,8 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Embeddable
 public class AnalysisIssuesGuidelinesId implements Serializable {
-    private String issue_guideline_id;
+    private int issue_guideline_id;
     private int issue_id;
     private String process_id;
-
 }

@@ -23,7 +23,7 @@ public class AnalysisIssuesGuidelines {
     })
     private AnalysisIssues analysisIssues;
 
-    @Column(name = "issue_reason_content")
-    private String issue_reason_content;
+    @Column(name = "issue_guideline_content")
+    private String issue_guideline_content;
 
 }

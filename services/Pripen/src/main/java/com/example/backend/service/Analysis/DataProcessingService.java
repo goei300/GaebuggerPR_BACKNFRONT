@@ -3,7 +3,8 @@ package com.example.backend.service.Analysis;
 // ... (import statements remain the same)
 
 
-import com.example.backend.repository.Analysis.AnalysisRepository;
+import com.example.backend.model.Analysis.*;
+import com.example.backend.repository.Analysis.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
@@ -14,7 +15,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.example.backend.dto.ApiResponseDTO;
-import com.example.backend.model.Analysis.ProcessingStatus;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -31,11 +31,25 @@ public class DataProcessingService {
     private final ConcurrentHashMap<UUID, ProcessingStatus> statusMap = new ConcurrentHashMap<>();
 
     private final AnalysisRepository analysisRepository;
+    private final AnalysisIssuesRepository analysisIssuesRepository;
+    private final AnalysisIssuesGuidelinesRepository analysisIssuesGuidelinesRepository;
+    private final AnalysisIssuesReasonsRepository analysisIssuesReasonsRepository;
+
+    private final AnalysisParagraphsRepository analysisParagraphsRepository;
 
     public DataProcessingService (
-            AnalysisRepository analysisRepository
-    ){
+            AnalysisRepository analysisRepository,
+            AnalysisIssuesRepository analysisIssuesRepository,
+            AnalysisIssuesGuidelinesRepository analysisIssuesGuidelinesRepository,
+            AnalysisIssuesReasonsRepository analysisIssuesReasonsRepository,
+            AnalysisParagraphsRepository analysisParagraphsRepository
+    )
+    {
         this.analysisRepository=analysisRepository;
+        this.analysisIssuesRepository = analysisIssuesRepository;
+        this.analysisIssuesGuidelinesRepository =analysisIssuesGuidelinesRepository;
+        this.analysisIssuesReasonsRepository = analysisIssuesReasonsRepository;
+        this.analysisParagraphsRepository = analysisParagraphsRepository;
     }
 
     public UUID initializeProcessingStatus(List<Integer> checkedItems, MultipartFile file) {
@@ -57,7 +71,7 @@ public class DataProcessingService {
     private final WebClient webClient_test = WebClient.create("http://localhost:8080/api");
     @Async
     @Transactional
-    public CompletableFuture<Void> processData(UUID processId, SseEmitter emitter) throws Exception {
+    public CompletableFuture<Void> processData(UUID processId, SseEmitter emitter,String actor) throws Exception {
         //synchronized (lock) {
             ProcessingStatus status = statusMap.get(processId);
 
@@ -110,7 +124,7 @@ public class DataProcessingService {
 
 
     @Transactional
-    public CompletableFuture<Void> processData_test(UUID processId, SseEmitter emitter) throws Exception {
+    public CompletableFuture<Void> processData_test(UUID processId, SseEmitter emitter,String actor) throws Exception {
         ProcessingStatus status = statusMap.get(processId);
 
         status.setProcessingStarted(true);
@@ -132,11 +146,10 @@ public class DataProcessingService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        handleApiResponse(responseDTO, status, emitter);
+        handleApiResponse(responseDTO, status, emitter, actor);
         emitter.send(SseEmitter.event().name("message").data("{\"completed\":true}"));
         emitter.complete();
 
-        //db 저장 로직
 
         System.out.println("process done!!");
         status.setProcessingComplete(true);
@@ -144,7 +157,7 @@ public class DataProcessingService {
     }
 
 
-    private void handleApiResponse(ApiResponseDTO responseDTO, ProcessingStatus status, SseEmitter emitter) throws Exception {
+    private void handleApiResponse(ApiResponseDTO responseDTO, ProcessingStatus status, SseEmitter emitter, String actor) throws Exception {
         System.out.println("handleApiResponse is on!!");
 
         int omissionParagraphScore = responseDTO.getProcess_Issues().stream()
@@ -175,7 +188,9 @@ public class DataProcessingService {
 
         // 이슈 정렬
         responseDTO.sortIssues();
+
         // db 저장 로직 구현
+        saveAnalysisDB(responseDTO,actor);
 
         // 중복 이슈 제거
         responseDTO.getProcess_Issues().forEach(issue -> {
@@ -192,19 +207,88 @@ public class DataProcessingService {
         String responseJson = objectMapper.writeValueAsString(responseDTO);
         emitter.send(SseEmitter.event().name("data").data(responseJson));
     }
-
-    public void saveAnalysis(ApiResponseDTO responseDTO) {
+    public void saveAnalysisDB(ApiResponseDTO responseDTO, String actor){
+        saveAnalysis(responseDTO, actor);
+        saveAnalysisIssues(responseDTO);
+        saveAnalysisIssuesGuidelines(responseDTO);
+        saveAnalysisIssuesReasons(responseDTO);
+        saveAnalysisParagraphs(responseDTO);
+    }
+    public void saveAnalysis(ApiResponseDTO responseDTO,String actor) {
         Analysis analysis = new Analysis();
         // DTO 필드에서 엔터티 필드로 데이터 복사
-        analysis.setProcessOriginal(responseDTO.getProcess_Original());
-        analysis.setProcessLawViolate(responseDTO.getProcess_Law_Violate());
-        analysis.setProcessLawDanger(responseDTO.getProcess_Law_Danger());
-        analysis.setProcessGuideViolate(responseDTO.getProcess_Guide_Violate());
-        analysis.setProcessOmissionParagraph(responseDTO.getProcess_Omission_Paragraph());
-        analysis.setProcessScore(responseDTO.getProcess_Score());
-
+        analysis.setProcess_original(responseDTO.getProcess_Original());
+        analysis.setProcess_law_violate(responseDTO.getProcess_Law_Violate());
+        analysis.setProcess_law_danger(responseDTO.getProcess_Law_Danger());
+        analysis.setProcess_guide_violate(responseDTO.getProcess_Guide_Violate());
+        analysis.setProcess_omission_paragraph(responseDTO.getProcess_Omission_Paragraph());
+        analysis.setProcess_score(responseDTO.getProcess_Score());
+        analysis.setProcess_actor(actor);
         analysisRepository.save(analysis);
     }
+    public void saveAnalysisIssues(ApiResponseDTO responseDTO) {
+        for (ApiResponseDTO.Issue issue : responseDTO.getProcess_Issues()) {
+            AnalysisIssues analysisIssue = new AnalysisIssues();
+            AnalysisIssuesId id = new AnalysisIssuesId(issue.getIssue_id(), responseDTO.getProcess_Id());
+
+            analysisIssue.setId(id);
+            analysisIssue.setIssue_paragraph_id(issue.getIssue_paragraph_id());
+            analysisIssue.setIssue_type(issue.getIssue_type());
+            analysisIssue.setIssue_score(issue.getIssue_score());
+            analysisIssue.setIssue_content(issue.getIssue_content());
+            analysisIssue.setIssue_startIndex(issue.getIssue_startIndex());
+            analysisIssue.setIssue_endIndex(issue.getIssue_endIndex());
+            analysisIssue.setIssue_case(issue.getIssue_case());
+
+            // issue_explanation_status와 issue_explanation_content 필드
+
+            analysisIssuesRepository.save(analysisIssue);
+        }
+    }
+    public void saveAnalysisIssuesGuidelines(ApiResponseDTO responseDTO) {
+        for (ApiResponseDTO.Issue issue : responseDTO.getProcess_Issues()) {
+            int idx = 1;  // 인덱스를 1부터 시작
+            for (String guidelineContent : issue.getIssue_guideline()) {
+                AnalysisIssuesGuidelinesId id = new AnalysisIssuesGuidelinesId(idx, issue.getIssue_id(), responseDTO.getProcess_Id());
+                AnalysisIssuesGuidelines analysisIssuesGuideline = new AnalysisIssuesGuidelines();
+                analysisIssuesGuideline.setId(id);
+                analysisIssuesGuideline.setIssue_guideline_content(guidelineContent);
+
+                analysisIssuesGuidelinesRepository.save(analysisIssuesGuideline);
+                idx++;
+            }
+        }
+    }
+    public void saveAnalysisIssuesReasons(ApiResponseDTO responseDTO) {
+        for (ApiResponseDTO.Issue issue : responseDTO.getProcess_Issues()) {
+            int idx = 1;  // 이유의 인덱스를 1부터 시작
+            for (String reasonContent : issue.getIssue_reason()) {
+                AnalysisIssuesReasonsId id = new AnalysisIssuesReasonsId(idx, issue.getIssue_id(), responseDTO.getProcess_Id());
+                AnalysisIssuesReasons analysisIssuesReason = new AnalysisIssuesReasons();
+                analysisIssuesReason.setId(id);
+                analysisIssuesReason.setIssue_reason_content(reasonContent);
+
+                // analysisIssues 필드 설정이 필요하다면 여기에 추가
+
+                analysisIssuesReasonsRepository.save(analysisIssuesReason);
+                idx++;
+            }
+        }
+    }
+    public void saveAnalysisParagraphs(ApiResponseDTO responseDTO) {
+        for (ApiResponseDTO.Paragraph paragraph : responseDTO.getProcess_Paragraph()) {
+            AnalysisParagraphsId id = new AnalysisParagraphsId(paragraph.getParagraph_id(), responseDTO.getProcess_Id());
+            AnalysisParagraphs analysisParagraph = new AnalysisParagraphs();
+            analysisParagraph.setId(id);
+            analysisParagraph.setParagraph_content(paragraph.getParagraph_content());
+            analysisParagraph.setParagraph_startIndex(paragraph.getParagraph_startIndex());
+            analysisParagraph.setParagraph_endIndex(paragraph.getParagraph_endIndex());
+
+            analysisParagraphsRepository.save(analysisParagraph);
+        }
+    }
+
+
     public ProcessingStatus getStatus(UUID processId) {
         return statusMap.get(processId);
     }

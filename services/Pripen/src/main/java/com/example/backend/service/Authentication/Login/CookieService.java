@@ -1,6 +1,7 @@
 package com.example.backend.service.Authentication.Login;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +15,16 @@ public class CookieService {
         cookie.setPath("/"); // 쿠키를 전송할 요청 경로
         cookie.setMaxAge(maxAge); // 쿠키의 만료 시간 설정
         response.addCookie(cookie); // 응답에 쿠키 추가
+    }
+    public String getCookieValue(HttpServletRequest request, String cookieName) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookieName.equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null; // 쿠키가 없는 경우
     }
 }

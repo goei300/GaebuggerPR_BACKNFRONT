@@ -6,9 +6,12 @@ import com.example.backend.model.Analysis.Analysis;
 import com.example.backend.repository.Analysis.AnalysisRepository;
 import com.example.backend.service.Analysis.DataProcessingService;
 import com.example.backend.service.Analysis.Report.PdfService;
+import com.example.backend.service.Authentication.Login.CookieService;
+import com.example.backend.service.Authentication.Login.JWTService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.Response;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
@@ -36,10 +39,16 @@ public class ReceiveDataController {
     private final PdfService pdfService;
     private final AnalysisRepository analysisRepository;
 
-    public ReceiveDataController(DataProcessingService dataProcessingService, PdfService pdfService, AnalysisRepository analysisRepository) {
+    private final JWTService jwtService;
+
+    private final CookieService cookieService;
+
+    public ReceiveDataController(DataProcessingService dataProcessingService, PdfService pdfService, AnalysisRepository analysisRepository,JWTService jwtService, CookieService cookieService) {
         this.dataProcessingService = dataProcessingService;
         this.pdfService = pdfService;
         this.analysisRepository = analysisRepository;
+        this.jwtService = jwtService;
+        this.cookieService = cookieService;
     }
 
     @PostMapping("/start")
@@ -110,8 +119,13 @@ public class ReceiveDataController {
     }
 
     @GetMapping("/check-response/{processId}")
-    public SseEmitter checkResponse(@PathVariable String processId) throws Exception {
+    public SseEmitter checkResponse(@PathVariable String processId, HttpServletRequest request) throws Exception {
         UUID parsedProcessId;
+
+        String accessToken = cookieService.getCookieValue(request, "accessToken");
+
+        String actor = jwtService.getUserEmailFromJWT(accessToken); // 요청 받은 클라이언트의 accesstoken값을 통해 email을 가져옴.
+
         try {
             parsedProcessId = UUID.fromString(processId);
         } catch (IllegalArgumentException e) {
@@ -120,10 +134,10 @@ public class ReceiveDataController {
         SseEmitter emitter = new SseEmitter();
 
         // real-mode
-        //CompletableFuture<Void> future = dataProcessingService.processData(parsedProcessId, emitter);
+        //CompletableFuture<Void> future = dataProcessingService.processData(parsedProcessId, emitter,actor);
 
         // test-mode
-        CompletableFuture<Void> future = dataProcessingService.processData_test(parsedProcessId, emitter);
+        CompletableFuture<Void> future = dataProcessingService.processData_test(parsedProcessId, emitter, actor);
 
         return emitter;
     }
