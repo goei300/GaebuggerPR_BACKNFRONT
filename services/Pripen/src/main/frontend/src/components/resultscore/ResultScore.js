@@ -14,7 +14,7 @@ const ResultScore = ({ data, pieData, total}) => {
             captureCanvas('section2', 4);
             setCaptureDone(true);
         }
-    }, [isDisplayed, captureCanvas]); 
+    }, [isDisplayed]); 
 
     return (
         <div id="section2" className="resultScore" style={{margin:'0', padding:'0', display:'flex', flexDirection:'row', justifyContent:'center', alignContent:'center', alignItems:'center'}}>
