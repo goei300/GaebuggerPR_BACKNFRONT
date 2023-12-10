@@ -165,20 +165,10 @@ public class UserController {
             Optional<RefreshToken> refreshTokenOptional = refreshTokenRepository.findByToken(refreshToken);
             refreshTokenOptional.ifPresent(refreshTokenRepository::delete);
 
-            // accessToken 없애기
-            Cookie accessTokenCookie = new Cookie("accessToken", null); // accessToken null로 설정
-            accessTokenCookie.setPath("/");
-            accessTokenCookie.setHttpOnly(true);
-            accessTokenCookie.setMaxAge(0); // 쿠키 만료시간 0으로 설정해서 즉시 만료
-            response.addCookie(accessTokenCookie);
-
-            // 쿠키를 만료시키기 위한 'Set-Cookie' 헤더를 추가
-            Cookie refreshTokenCookie = new Cookie("refreshToken", null); // refreshToken 쿠키를 null로 설정
-            refreshTokenCookie.setPath("/");
-            refreshTokenCookie.setHttpOnly(true);
-            refreshTokenCookie.setMaxAge(0);
-            response.addCookie(refreshTokenCookie);
-
+            // accessToken 쿠키 설정
+            cookieService.setCookie(response, "accessToken");
+            // refreshToken 쿠키 설정
+            cookieService.setCookie(response, "refreshToken");
         });
         System.out.println("delete your token from redis");
         return ResponseEntity.ok().build(); // 성공적인 응답

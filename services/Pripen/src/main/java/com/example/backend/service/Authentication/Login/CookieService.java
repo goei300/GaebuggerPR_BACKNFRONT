@@ -17,6 +17,15 @@ public class CookieService {
         // 응답 헤더에 쿠키 추가
         response.addHeader("Set-Cookie", cookieString);
     }
+    public void setCookie(HttpServletResponse response, String name) {
+
+        // 쿠키 문자열을 생성하고 SameSite=None; Secure 추가
+        String cookieString = String.format("%s=%s; Path=/; Max-Age=0; SameSite=None; Secure",
+                name, 0);
+
+        // 응답 헤더에 쿠키 추가
+        response.addHeader("Set-Cookie", cookieString);
+    }
 
     public String getCookieValue(HttpServletRequest request, String cookieName) {
         Cookie[] cookies = request.getCookies();

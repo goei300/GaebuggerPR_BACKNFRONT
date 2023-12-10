@@ -47,7 +47,7 @@ export const CanvasProvider = ({ children }) => {
     // userName과 companyName을 formData에 추가
     formData.append("userName", userName);  // 사용자 이름에
     formData.append("companyName", companyName);  // 회사 이름
-    formData.append("processId", "8d0d047e-bbff-466a-a275-b533a1bdb170");
+    formData.append("processId", processId);
 
     //https://backapi.pri-pen.com/api/upload
     //http://localhost:8080/api/upload
