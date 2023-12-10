@@ -47,7 +47,7 @@ export const CanvasProvider = ({ children }) => {
     // userName과 companyName을 formData에 추가
     formData.append("userName", userName);  // 사용자 이름에
     formData.append("companyName", companyName);  // 회사 이름
-    formData.append("process_Id", processId);
+    formData.append("processId", "8d0d047e-bbff-466a-a275-b533a1bdb170");
 
     //https://backapi.pri-pen.com/api/upload
     //http://localhost:8080/api/upload
@@ -58,47 +58,45 @@ export const CanvasProvider = ({ children }) => {
       withCredentials: true  // 쿠키를 포함시키기 위해 true로 설정
     })
     .then(response => {
+      alert('업로드 잘됨'); // 오류 메시지 표시
       console.log("upload worked!!");
     })
     .catch(error => {
       console.error('Error:', error);
     });
   };
+
+  // https://backapi.pri-pen.com/api/download?process_id=${processId}
 // FormData에 담긴 모든 이미지를 백엔드에 전송하고, 받은 PDF를 다운로드하는 함수
 const downloadReportPdf = async (processId) => {
   try {
-    // https://backapi.pri-pen.com/api/download?process_id=${processId}
     const response = await axios.get(`http://localhost:8080/api/download?process_id=${processId}`, {
       responseType: 'blob', // PDF 파일을 Blob 형태로 받기 위함
       withCredentials: true // 쿠키를 포함시키기 위해 true로 설정
     });
 
-    // PDF 파일 다운로드 처리
-    const url = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'report.pdf'); // 다운로드 파일 이름 설정
-    document.body.appendChild(link);
-    link.click();
+    if (response.data.type === "application/json") {
+      // JSON 응답인 경우 (예: "좀만 기다려주세요" 메시지)
+      const reader = new FileReader();
+      reader.onload = function() {
+        const message = JSON.parse(reader.result).message;
+        alert(message); // 메시지 표시
+      };
+      reader.readAsText(response.data);
+    } else {
+      // PDF 파일 다운로드 처리
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'report.pdf'); // 파일 이름 설정
+      document.body.appendChild(link);
+      link.click();
+    }
   } catch (error) {
     console.error('Error during download:', error);
+    alert('다운로드 중 오류가 발생했습니다.'); // 오류 메시지 표시
   }
 };
-  // const downloadImage = (canvas, filename) => {
-  //   if (!canvas) return;
-  //   const image = canvas.toDataURL('image/png');
-  //   const downloadLink = document.createElement('a');
-  //   downloadLink.href = image;
-  //   downloadLink.download = `${filename}.png`;
-  //   downloadLink.click();
-  // };
-
-  // const downloadAllImages = () => {
-  //   Object.entries(canvases).forEach(([key, canvas]) => {
-  //     downloadImage(canvas, key); // 각 캔버스에 대한 다운로드
-  //   });
-  // };
-
   const contextValue = {
     canvases,
     captureCanvas,

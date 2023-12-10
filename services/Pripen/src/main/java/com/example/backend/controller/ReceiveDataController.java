@@ -78,8 +78,7 @@ public class ReceiveDataController {
             @RequestParam("files") List<MultipartFile> files,
             @RequestParam("userName") String userName,
             @RequestParam("companyName") String companyName,
-            @RequestParam("process_id") String processId ) throws IOException {
-
+            @RequestParam("processId") String processId ) throws IOException {
 
         System.out.println("hihihi im on!");
 
@@ -91,6 +90,7 @@ public class ReceiveDataController {
             // process_reporturi가 비어 있지 않은 경우
             return ResponseEntity.badRequest().body("Report already exists for this process ID.");
         }
+        pdfService.saveReportUri(processId, "uploading");
 
         System.out.println(userName);
         System.out.println(companyName);
@@ -111,7 +111,7 @@ public class ReceiveDataController {
         try {
             String uri = analysisRepository.findProcessReportUriByProcessId(processId);
             if (uri == null || uri.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.OK).body("좀만 기다려주세요!");
+                return ResponseEntity.status(HttpStatus.OK).body("보고서 생성중입니다. 잠시만 기다려주세요!");
             }
 
             // S3에서 PDF 다운로드

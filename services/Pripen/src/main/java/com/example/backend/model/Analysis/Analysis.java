@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Analysis {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "process_id")
-    private String process_id; // 기본 키
+    private String processId; // 기본 키
 
     @Column(name = "process_original")
     private String process_original;
@@ -40,6 +40,6 @@ public class Analysis {
     private String process_actor;
 
     @Column(name = "process_reporturi")
-    private String process_reporturi;
+    private String processReportUri;
 
 }

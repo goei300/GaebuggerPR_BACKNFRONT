@@ -15,7 +15,7 @@ import {
 import { useCanvas } from "../../CanvasProvider";
 function Guideline_detail({ prevStep,processId, responseData,infoObject}){
     // 임의의 데이터    
-    const { captureCanvas, downloadAllImages } = useCanvas();
+    const { captureCanvas, downloadReportPdf } = useCanvas();
     const [selectedIssueList, setSelectedIssueList] = useState(null);
     const [selectedIssue, setSelectedIssue] = useState(null);
     const [selectedButtonIssue, setSelectedButtonIssue] = useState(null);
@@ -53,7 +53,7 @@ function Guideline_detail({ prevStep,processId, responseData,infoObject}){
     }
       // 이미지를 업로드하고 PDF를 다운로드하는 함수
     const handleDownloadClick = () => {
-        downloadAllImages(infoObject.name, infoObject.companyName);
+        downloadReportPdf("8d0d047e-bbff-466a-a275-b533a1bdb170");
     };
     const handleButtonClick = (issue) => {
         setSelectedButtonIssue(null);

@@ -16,6 +16,7 @@ import React, {useEffect, useState} from "react";
 import { styled } from '@mui/system';
 import '../../assets/fonts/fonts.css';
 import BestPractice from "../bestpractice/BestPractice";
+import { useCanvas } from "../../pages/Start/CanvasProvider";
 
 const StyledTablePagination = styled(TablePagination)(({page,count,rowsPerPage}) => ({
     display: 'flex',
@@ -68,9 +69,10 @@ const StyledTablePagination = styled(TablePagination)(({page,count,rowsPerPage})
 
     
 
-const TablePage = ({ captureCanvas, selectedIssueType,setSelectedIssueType,filteredIssues, handleButtonClick,processId}) => {
+const TablePage = ({ captureCanvas, selectedIssueType,setSelectedIssueType,filteredIssues, handleButtonClick,infoObject, processId}) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const { downloadAllImages } = useCanvas();
     // 현재 페이징 상태 저장
     const [showCheckColumn, setShowCheckColumn] = useState(true);
     const [originalPage, setOriginalPage] = useState(page);
@@ -97,9 +99,12 @@ const TablePage = ({ captureCanvas, selectedIssueType,setSelectedIssueType,filte
                 setRowsPerPage(originalRowsPerPage);
                 setShowCheckColumn(true);
 
+
+            },500);
+            setTimeout(()=>{
                 // 자동 업로드
                 downloadAllImages(infoObject.name, infoObject.companyName, processId);
-            },500);
+            },700);
         },200);
     }, []);
 

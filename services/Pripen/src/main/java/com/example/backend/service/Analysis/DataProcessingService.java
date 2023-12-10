@@ -217,6 +217,7 @@ public class DataProcessingService {
     public void saveAnalysis(ApiResponseDTO responseDTO,String actor) {
         Analysis analysis = new Analysis();
         // DTO 필드에서 엔터티 필드로 데이터 복사
+        analysis.setProcessId(responseDTO.getProcess_Id());
         analysis.setProcess_original(responseDTO.getProcess_Original());
         analysis.setProcess_law_violate(responseDTO.getProcess_Law_Violate());
         analysis.setProcess_law_danger(responseDTO.getProcess_Law_Danger());

@@ -65,6 +65,8 @@ public class PdfServiceImpl implements PdfService {
         this.s3Client = s3Client;
     }
     public String createAndUploadPdf(List<MultipartFile> files,String userName, String companyName) throws IOException {
+
+
         String tempStoragePath = System.getenv("REPORT_STORAGE_PATH");
         if (tempStoragePath == null) {
             // 개발 환경에서 사용할 기본 경로
@@ -111,7 +113,7 @@ public class PdfServiceImpl implements PdfService {
         String NanceValue = UUID.randomUUID().toString();  // 넌스값 (임의의 랜덤값)
         String objectKey = "ReportStorage/" + NanceValue; // S3 오브젝트 키
         String s3Uri = uploadFileToS3(finalPdfFilePath, bucketName, objectKey);
-        return finalPdfFilePath;
+        return s3Uri;
     }
 
 
@@ -230,7 +232,7 @@ public class PdfServiceImpl implements PdfService {
     public void saveReportUri(String processId, String pdfFilePath) {
         Analysis analysis = analysisRepository.findById(processId)
                 .orElseThrow(() -> new RuntimeException("Analysis not found"));
-        analysis.setProcess_reporturi(pdfFilePath);
+        analysis.setProcessReportUri(pdfFilePath);
         analysisRepository.save(analysis);
     }
     public String uploadFileToS3(String finalPdfFilePath, String bucketName, String objectKey) {
