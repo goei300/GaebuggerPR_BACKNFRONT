@@ -144,10 +144,10 @@ public class ReceiveDataController {
         SseEmitter emitter = new SseEmitter();
 
         // real-mode
-        //CompletableFuture<Void> future = dataProcessingService.processData(parsedProcessId, emitter,actor);
+        CompletableFuture<Void> future = dataProcessingService.processData(parsedProcessId, emitter,actor);
 
         // test-mode
-        CompletableFuture<Void> future = dataProcessingService.processData_test(parsedProcessId, emitter, actor);
+        //CompletableFuture<Void> future = dataProcessingService.processData_test(parsedProcessId, emitter, actor);
 
         return emitter;
     }

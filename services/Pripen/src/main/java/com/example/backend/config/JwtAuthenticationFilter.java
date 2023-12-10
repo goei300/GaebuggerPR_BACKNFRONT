@@ -39,6 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         else {
             // JWT 검증 로직
             String jwt = extractJwtFromCookie(request);
+            System.out.println("your jwt is " + jwt);
             if (jwt != null && jwtService.validateToken(jwt)) {
                 String userEmail = jwtService.getUserEmailFromJWT(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);

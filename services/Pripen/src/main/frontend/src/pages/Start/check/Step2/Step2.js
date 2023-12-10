@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DropdownComponent from '../../../../components/select/select';
 import { Box, Typography, Divider, Container,Paper, Button  } from '@mui/material';
 import CustomizedSteppers from '../../../../components/StepIndicator/StepIndicator';
@@ -8,6 +9,7 @@ import './Step2.css';
 import axiosInstance from '../../../../api/axiosInstance';
 function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId,infoObject,file  }) {
     console.log("infoObject is:",infoObject);
+    const navigate = useNavigate();
     const StyledPaper = styled(Paper)({
         padding: '30px',
         boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)', // 부드러운 그림자
@@ -102,7 +104,7 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
     
                                             // http://localhost:8080/api/start
         try {
-            const response = await axios.post('http://localhost:8080/api/start', formData
+            const response = await axios.post('https://backapi.pri-pen.com/api/start', formData
             , {
                 withCredentials: true
             });
@@ -122,7 +124,8 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
         
                 if (statusCode === 403) {
                     // 인증 실패 처리: 로그인 페이지로 리다이렉트
-                    window.location.href = '/login';
+                    console.log("403 error is on!!");
+                    navigate('/login');
                 } else {
                     // 그 외 에러 처리: 에러 메시지 팝업
                     alert(`Error (${statusCode}): ${message}`);
@@ -138,7 +141,6 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
             <CustomizedSteppers activeStep={1} />
             <div className="instruction" style={{ height: '200px' }}>해당하는 기재사항을 체크해주세요</div> {/* 20 px 여백을 실제로 추가 */}
             <StyledPaper elevation={3} style={{margin:"20px"}}>
-
                 <div style={{display:"flex", justifyContent:"flex-end", flexDirection:"column", textAlign:"end"}}>
                     <h3 style={{fontFamily:"NotoSansKR-Bold", color:"Black"}}>
                     <span style={{ fontWeight: "bold", fontSize: "1.4em",color:"black" }}>*</span>

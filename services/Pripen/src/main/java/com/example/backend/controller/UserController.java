@@ -80,10 +80,10 @@ public class UserController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             String accessToken = jwtService.generateJWT(loginUser.getEmail());
-            //RefreshToken refreshTokenObject = refreshTokenService.createRefreshToken(loginUser.getEmail());
+            RefreshToken refreshTokenObject = refreshTokenService.createRefreshToken(loginUser.getEmail());
             System.out.println("accessToken is " + accessToken);
             cookieService.addCookie(response, "accessToken", accessToken, (int) jwtService.getAccessTokenValidityInSeconds());
-            //cookieService.addCookie(response, "refreshToken", refreshTokenObject.getToken(), (int) refreshTokenService.getRefreshTokenValidityInSeconds());
+            cookieService.addCookie(response, "refreshToken", refreshTokenObject.getToken(), (int) refreshTokenService.getRefreshTokenValidityInSeconds());
 
             return ResponseEntity.ok(Collections.singletonMap("status", "success"));
         } catch (BadCredentialsException e) {
@@ -165,12 +165,20 @@ public class UserController {
             Optional<RefreshToken> refreshTokenOptional = refreshTokenRepository.findByToken(refreshToken);
             refreshTokenOptional.ifPresent(refreshTokenRepository::delete);
 
+            // accessToken 없애기
+            Cookie accessTokenCookie = new Cookie("accessToken", null); // accessToken null로 설정
+            accessTokenCookie.setPath("/");
+            accessTokenCookie.setHttpOnly(true);
+            accessTokenCookie.setMaxAge(0); // 쿠키 만료시간 0으로 설정해서 즉시 만료
+            response.addCookie(accessTokenCookie);
+
             // 쿠키를 만료시키기 위한 'Set-Cookie' 헤더를 추가
-            Cookie cookie = new Cookie("refreshToken", null); // refreshToken 쿠키를 null로 설정
-            cookie.setPath("/");
-            cookie.setHttpOnly(true);
-            cookie.setMaxAge(0); // 쿠키의 만료 시간을 0으로 설정하여 즉시 만료
-            response.addCookie(cookie);
+            Cookie refreshTokenCookie = new Cookie("refreshToken", null); // refreshToken 쿠키를 null로 설정
+            refreshTokenCookie.setPath("/");
+            refreshTokenCookie.setHttpOnly(true);
+            refreshTokenCookie.setMaxAge(0);
+            response.addCookie(refreshTokenCookie);
+
         });
         System.out.println("delete your token from redis");
         return ResponseEntity.ok().build(); // 성공적인 응답

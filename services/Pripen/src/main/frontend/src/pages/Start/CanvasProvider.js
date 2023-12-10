@@ -51,7 +51,7 @@ export const CanvasProvider = ({ children }) => {
 
     //https://backapi.pri-pen.com/api/upload
     //http://localhost:8080/api/upload
-    axios.post('http://localhost:8080/api/upload', formData, {
+    axios.post('https://backapi.pri-pen.com/api/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       },
@@ -67,10 +67,11 @@ export const CanvasProvider = ({ children }) => {
   };
 
   // https://backapi.pri-pen.com/api/download?process_id=${processId}
+  // http://localhost:8080/api/download?process_id=${processId}
 // FormData에 담긴 모든 이미지를 백엔드에 전송하고, 받은 PDF를 다운로드하는 함수
 const downloadReportPdf = async (processId) => {
   try {
-    const response = await axios.get(`http://localhost:8080/api/download?process_id=${processId}`, {
+    const response = await axios.get(`https://backapi.pri-pen.com/api/download?process_id=${processId}`, {
       responseType: 'blob', // PDF 파일을 Blob 형태로 받기 위함
       withCredentials: true // 쿠키를 포함시키기 위해 true로 설정
     });

@@ -1,7 +1,10 @@
 ---
 applications:
-- name: my-react-app
+- name: your-app-name
   memory: 256M
   buildpacks:
     - staticfile_buildpack
-  path: ./build
+  path: build/
+  env:
+    FORCE_HTTPS: true
+

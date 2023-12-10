@@ -44,7 +44,7 @@ const FaqContent = () => {
           title: '개인정보 처리방침 진단을 어떻게 수행하나요?',
           contents: [
             { subtitle: 'LLM 기반 진단', content: '프라이펜 자체의 룰셋, 텍스트 분류 알고리즘과 OpenAi의 GPT 모델을 통해 진단 아키텍쳐를 제작하였고 이를 통해 동작합니다.' },
-
+              
           ]
         },
         { 

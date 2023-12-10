@@ -9,13 +9,15 @@ import org.springframework.stereotype.Service;
 public class CookieService {
 
     public void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
-        Cookie cookie = new Cookie(name, value);
-        cookie.setHttpOnly(true); // JavaScript를 통한 접근 방지
-        cookie.setSecure(true); // HTTPS를 사용하는 경우에만 true로 설정
-        cookie.setPath("/"); // 쿠키를 전송할 요청 경로
-        cookie.setMaxAge(maxAge); // 쿠키의 만료 시간 설정
-        response.addCookie(cookie); // 응답에 쿠키 추가
+        // 쿠키 생성
+        // 쿠키 문자열을 생성하고 SameSite=None; Secure 추가
+        String cookieString = String.format("%s=%s; Path=/; Max-Age=%d; SameSite=None; Secure",
+                name, value, maxAge);
+
+        // 응답 헤더에 쿠키 추가
+        response.addHeader("Set-Cookie", cookieString);
     }
+
     public String getCookieValue(HttpServletRequest request, String cookieName) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
