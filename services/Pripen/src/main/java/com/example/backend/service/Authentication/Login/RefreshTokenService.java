@@ -54,7 +54,6 @@ public class RefreshTokenService {
         return refreshToken.getEmail();
     }
 
-
     public void saveRefreshToken(RefreshToken refreshToken){
         refreshTokenRepository.save(refreshToken);
     }

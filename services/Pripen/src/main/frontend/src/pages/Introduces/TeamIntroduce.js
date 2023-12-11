@@ -53,17 +53,17 @@ const TeamIntroduce = () => {
             school: "중앙대학교 산업보안학과",
             photo: "/assets/images/rnr/송창욱.jpg"
         },
-        {
-            id: 6,
-            name: "정민규",
-            role: [
-                "챗봇 기능 개발",
-                "Vector DB 구축"
-            ],
-            school: "선린인터넷고등학교 정보보호과",
-            photo: "/assets/images/rnr/정민규.jpg"
-        },
-    ];
+        // {
+            //id: 6,
+            //name: "정민규",
+            //role: [
+                //"챗봇 기능 개발",
+              //  "Vector DB 구축"
+            //],
+            //school: "선린인터넷고등학교 정보보호과",
+          //  photo: "/assets/images/rnr/정민규.jpg"
+        //}, 
+    ]; 
     
 
     return(
@@ -74,8 +74,8 @@ const TeamIntroduce = () => {
             </div> */}
 
             <div className="Team-Content" style={{fontFamily:'NotoSansKR-Regular', fontSize:'18px'}}>
-                <img src='/images/외부-전달용-간단-ver-002.png' style={{wdith:'100%', height:'100%'}} />
-                
+                {/* <img src='/images/외부-전달용-간단-ver-002.png' style={{wdith:'100%', height:'100%'}} /> */}
+                <img src='/images/키사-회의-main-003.png' style={{width:'100%', height:'100%'}} /> 
 
                 <Typography style={{fontFamily:'NotoSansKR-Bold',fontSize:'2rem', margin:'50px'}}> 팀원 소개 </Typography>
                 {/* 팀원 R&R 쓸 예정. 한명마다의 박스를 만들어서 역할, 학교, 이름 이런걸 쓸 예정 */}

@@ -76,7 +76,10 @@ const downloadReportPdf = async (processId) => {
       withCredentials: true // 쿠키를 포함시키기 위해 true로 설정
     });
 
-    if (response.data.type === "application/json") {
+
+      // 응답 헤더를 통해 Content-Type 확인
+    const contentType = response.headers['content-type'];
+    if (contentType === "application/json") {
       // JSON 응답인 경우 (예: "좀만 기다려주세요" 메시지)
       const reader = new FileReader();
       reader.onload = function() {

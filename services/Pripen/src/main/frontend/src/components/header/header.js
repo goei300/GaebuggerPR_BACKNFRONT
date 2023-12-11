@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import '../../assets/fonts/fonts.css';
 import './header.css';
-import logoImage from '../../assets/images/pripen_logo.svg';
+//import logoImage from '../../assets/images/pripen_logo.svg';
+import logoImage from '../../assets/images/HosP.png';
 import {useAuth} from '../../contexts/AuthContext';
 import { Button } from '@mui/material';
 import { useEffect } from 'react';
@@ -43,7 +44,8 @@ const Header = ({ active }) => {
             <div className="logo_menu">
                 <div className="logo">
                     <Link to="/">
-                        <img src={logoImage} alt="LOGO" style={{width:"130%", marginTop:"-10px"}} />
+                        {/*<img src={logoImage} alt="LOGO" style={{width:"130%", marginTop:"-10px"}} /> */}
+                        <img src={logoImage} alt="LOGO" style={{width:"100%", marginTop:"0px"}} />
                     </Link>
                 </div>
             </div>
@@ -60,11 +62,12 @@ const Header = ({ active }) => {
                         onMouseEnter={() => setShowServicesDropdown(true)}
                         onMouseLeave={() => setShowServicesDropdown(false)}
                     >
-                        <Link to="/introduce" className={active === "introduce" ? "active-link" : ""}>회사 소개</Link>
+                        <Link to="/introduce" className={active === "introduce" ? "active-link" : ""}>소개</Link>
                         <CustomDropdown 
                             isOpen={showServicesDropdown}
                             items={[
-                                { label: 'Pripen', link: '/introduce' },
+                                { label: 'HosP', link: '/introduce' },
+                                // { label: 'Pripen', link: '/introduce' },
                                 { label: 'Gaebugger', link: '/introduce' }
                             ]}
                         />

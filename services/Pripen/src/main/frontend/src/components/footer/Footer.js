@@ -20,7 +20,7 @@ const Footer = () => {
           <span className="span">|</span>
           <b className="span">{` `}</b>
           <span>
-            서울시 금천구 서부샛길 606 대성디폴리스지식산업센터 27층 어딘가
+            서울시 금천구 서부샛길 606 대성디폴리스지식산업센터 27층 
           </span>
         </p>
         <p className="p">

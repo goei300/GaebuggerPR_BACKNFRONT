@@ -30,7 +30,7 @@ public class EmailPostService {
 
         System.out.println("email" + email);
         mail.setTo(email);
-        mail.setSubject("프라이팬 인증 코드");
+        mail.setSubject("HosP 인증 코드");
         mail.setText("귀하의 인증 코드는 " + verificationCode + "입니다."); // 메일 본문 설정
         System.out.println("before send message");
         mailSender.send(mail);

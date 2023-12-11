@@ -8,11 +8,11 @@ const OptionIntro = ({handleOptionChange, selectedOption}) => {
             <div className="OptionChoice" style={{ fontFamily: "NotoSansKR-Bold", color: "#e0e0e0", marginLeft: "30px", display: "flex", flexDirection: "row", justifyContent: "flex-start", fontSize: "22px" }}>
                 <p
                     className="teamIntroduction"
-                    onClick={() => handleOptionChange("Pripen")}
+                    onClick={() => handleOptionChange("HosP")}
                     style={{
                         marginTop: "0px",
                         marginBottom: "0px",
-                        color: selectedOption === 'Pripen' ? 'black' : '#e0e0e0',
+                        color: selectedOption === 'HosP' ? 'black' : '#e0e0e0',
                         fontSize:'2.0rem'
                     }}
                 >

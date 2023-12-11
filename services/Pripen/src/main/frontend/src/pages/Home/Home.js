@@ -54,7 +54,7 @@ function Home() {
     return (
         <div className="home-container">
             <Helmet>
-                <title>프라이팬 | 파일 하나로 개인정보 처리방침 점검</title>
+                <title>호스피 | 메디컬 프라이버시 솔루션</title>
             </Helmet>
 
             <Header active="contact"/>
@@ -63,17 +63,17 @@ function Home() {
                     <div className="introduce-content">
                         <AnimatedSection
                             className="introduction"
-                            title={<><span>개인정보 처리방침을 위한</span><br /><span>진단 솔루션, 프라이펜</span></>}
-                            content="프라이펜으로 손쉽게 진단해보세요."
+                            title={<><span>병원이 편리해지는</span><br /><span>솔루션, 호스피</span></>}
+                            content="호스피로 손쉽게 진단해보세요."
                         />
                     </div>
                 </div>
                 <div className="what"style={{width:"100%",textAlign:"center"}}>
                     <div className="what-title" style={{fontFamily:"NotoSansKR-Bold",fontSize:"42px",margin:"50px 0 200px"}}>
-                        <span style={{marginBottom:'30px'}}>개인정보 처리방침 진단</span>
+                        <span style={{marginBottom:'30px'}}>의료 개인정보 처리방침 진단</span>
                         <br/>
                         <span>오직 </span>
-                        <span style={{fontWeight:"bold",    color:"#007bff"}}>프라이펜</span>
+                        <span style={{fontWeight:"bold",    color:"#007bff"}}>호스피</span>
                         <span>에서만!</span> 
                     </div>
                     <div className="what-content" style={{fontFamily:'NotoSansKR-SemiBold'}}>

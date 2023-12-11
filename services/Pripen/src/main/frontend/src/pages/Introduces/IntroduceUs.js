@@ -4,7 +4,7 @@ import TeamIntroduce from "./TeamIntroduce";
 import PripenIntroduce from "./PripenIntroduce";
 import OptionIntro from "../../components/OptionIntro/OptionIntro";
 const IntroduceUs = ({active}) => {
-    const [selectedOption, setSelectedOption] = useState("Pripen"); 
+    const [selectedOption, setSelectedOption] = useState("HosP"); 
     console.log("active is ", active);
 
     const handleOptionChange =(option) =>{
@@ -18,7 +18,7 @@ const IntroduceUs = ({active}) => {
     return (
         <div className="Introduce-Section">
             <OptionIntro handleOptionChange={handleOptionChange} selectedOption={selectedOption} />
-            {selectedOption === "Pripen" && <PripenIntroduce />}
+            {selectedOption === "HosP" && <PripenIntroduce />}
             {selectedOption === "Gaebugger" && <TeamIntroduce />}
         </div>
     )

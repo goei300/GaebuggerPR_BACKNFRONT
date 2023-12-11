@@ -134,7 +134,7 @@ const ChatBotBubbleButton = () => {
         <div style={contentContainerStyle}>
           <img src={PriPenSvg} alt="ChatBot 버튼" style={iconStyle} />
           <span style={spanStyle}>
-            <span style={{ fontSize:"20px",fontFamily:"NotoSansKR-Bold" }}>&nbsp;&nbsp;&nbsp;&nbsp;프라이펜 비서</span>
+            <span style={{ fontSize:"20px",fontFamily:"NotoSansKR-Bold" }}>&nbsp;&nbsp;&nbsp;&nbsp;호스피 비서</span>
             <br />
             <span style={{fontFamily:"NotoSansKR-SemiBold", color:"darkgrey"}}>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;개인정보와 관련된 모든 걸 물어보세요. 

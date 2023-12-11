@@ -20,9 +20,12 @@ const ResultBoxSection = ({ serverData }) => {
                 if (entry.isIntersecting) {
                     setTimeout(() => {
                         setIsVisible(true);
-                        setTimeout(()=> {
-                            captureCanvas('section1', 4);
-                        },400);                      
+                        if(!captureDone){
+                            setTimeout(()=> {
+                                captureCanvas('section1', 4);
+                                setCaptureDone(true);
+                            },400);          
+                        }            
                     }, 250);  
                 }
             },
