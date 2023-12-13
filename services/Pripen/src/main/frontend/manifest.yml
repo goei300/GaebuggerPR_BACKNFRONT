@@ -1,7 +1,7 @@
 ---
 applications:
-- name: your-app-name
-  memory: 256M
+- name: hosp
+  memory: 4G
   buildpacks:
     - staticfile_buildpack
   path: build/

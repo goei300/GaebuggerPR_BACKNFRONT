@@ -42,12 +42,12 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
         { id: 2, text: '개인정보 처리목적', type: 'text', default: '필수기재' },
         { id: 3, text: '개인정보의 처리 및 보유 기간 작성', type: 'text', default: '필수기재' },
         { id: 4, text: '처리하는 개인정보의 항목', type: 'text', default: '필수기재' },
-        { id: 5, text: '만 14세 미만 아동의 개인정보 처리에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 5, text: '만 14세 미만 아동의 개인정보 처리에 관한 사항', type: 'text', default: '기재 불필요' },   // type: 'checkbox', options: ['기재', '기재안함']
         { id: 6, text: '개인정보의 제3자 제공에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
         { id: 7, text: '개인정보 처리업무의 위탁에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
         { id: 8, text: '개인정보의 국외 이전에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
         { id: 9, text: '개인정보의 파기 절차 및 방법에 관한 사항', type: 'text', default: '필수기재' },
-        { id: 10, text: '미이용자의 개인정보 파기 등에 관한 조치', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 10, text: '미이용자의 개인정보 파기 등에 관한 조치', type: 'text', default: '기재 불필요'},   // type: 'checkbox', options: ['기재', '기재안함']
         { id: 11, text: '정보주체와 법정대리인의 권리·의무 및 행사방법에 관한 사항', type: 'text', default: '필수기재' },
         { id: 12, text: '개인정보의 안전성 확보조치에 관한 사항', type: 'text', default: '필수기재' },
         { id: 13, text: '개인정보를 자동으로 수집하는 장치의 설치·운영 및 그 거부에 관한 사항',type: 'checkbox', options: ['기재', '기재안함'] },
@@ -55,7 +55,7 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
         { id: 15, text: '추가적인 이용·제공 관련 판단 기준', type: 'checkbox',options: ['기재', '기재안함'] },
         { id: 16, text: '가명정보 처리에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
         { id: 17, text: '개인정보 보호책임자에 관한 사항', type: 'text', default: '필수기재' },
-        { id: 18, text: '국내대리인 지정에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
+        { id: 18, text: '국내대리인 지정에 관한 사항', type: 'text', default: '기재 불필요' },    //  type: 'checkbox', options: ['기재', '기재안함']
         { id: 19, text: '개인정보의 열람청구를 접수·처리하는 부서', type: 'checkbox', options: ['기재','기재안함'] },
         { id: 20, text: '정보주체의 권익침해에 대한 구제방법', type: 'checkbox', options: ['기재', '기재안함'] },
         { id: 21, text: '영상정보처리기기 운영·관리에 관한 사항', type: 'checkbox', options: ['기재', '기재안함'] },
@@ -83,7 +83,7 @@ function Step2({ nextStep, prevStep, setCheckedItems, checkedItems, setProcessId
         // };
         
         // 체크박스가 아닌 항목의 id와 '기재'로 선택된 체크박스 항목의 id를 합쳐서 새로운 배열을 생성합니다.
-        const nonCheckboxIds = items.filter(item => item.type !== 'checkbox').map(item => item.id - 1);
+        const nonCheckboxIds = items.filter(item => item.type !== 'checkbox' && item.default === '필수기재').map(item => item.id - 1);
         const checkedIds = Object.keys(checkedItems)
             .filter(key => checkedItems[key] === '기재')
             .map(key => parseInt(key) - 1);

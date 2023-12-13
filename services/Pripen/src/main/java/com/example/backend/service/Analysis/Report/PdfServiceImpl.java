@@ -22,6 +22,7 @@ import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.property.AreaBreakType;
+import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import io.lettuce.core.SslOptions;
@@ -125,7 +126,7 @@ public class PdfServiceImpl implements PdfService {
         PdfFont koreanFont = PdfFontFactory.createFont(fontPath, PdfEncodings.IDENTITY_H, true);
 
         // 텍스트에 한글 폰트 적용
-        Paragraph title = new Paragraph("프라이펜 개인정보 처리방침 진단 레포트").setFont(koreanFont).setFontSize(24).setBold();
+        Paragraph title = new Paragraph("호스피 개인정보 처리방침 진단 레포트").setFont(koreanFont).setFontSize(24).setBold();
 
         document.add(title);
 
@@ -179,7 +180,7 @@ public class PdfServiceImpl implements PdfService {
                 canvas.stroke();
 
                 // 워터마크 추가
-                Paragraph watermark = new Paragraph("@Copyright by Pripen")
+                Paragraph watermark = new Paragraph("@Copyright by HosP")
                         .setFont(koreanFont)
                         .setFontSize(7)
                         .setFontColor(ColorConstants.GRAY);
@@ -219,8 +220,11 @@ public class PdfServiceImpl implements PdfService {
             MultipartFile file = files.get(i);
             byte[] bytes = file.getBytes();
             ImageData imageData = ImageDataFactory.create(bytes);
-            Image image = new Image(imageData).setAutoScale(true);
+            Image image = new Image(imageData)
+                    .setAutoScale(true)
+                    .setHorizontalAlignment(HorizontalAlignment.CENTER); // 중앙 정렬 설정
             document.add(image);
+
 
             // 첫 챕터의 두 번째 이미지 이후, 그리고 그 이후의 각 이미지 후에 새 페이지 시작
             if ((i == 1 && files.size() > 2) || (i >= 2 && i < files.size() - 1)) {
@@ -261,6 +265,8 @@ public class PdfServiceImpl implements PdfService {
                 .bucket(bucketName)
                 .key(objectKey)
                 .build();
+
+        // S3에서
         ResponseInputStream<GetObjectResponse> s3ObjectResponse = s3Client.getObject(getObjectRequest);
 
         // InputStream에서 데이터를 읽어 ByteArrayResource로 변환

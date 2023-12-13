@@ -90,6 +90,7 @@ public class ReceiveDataController {
             // process_reporturi가 비어 있지 않은 경우
             return ResponseEntity.badRequest().body("Report already exists for this process ID.");
         }
+
         pdfService.saveReportUri(processId, "uploading");
 
         System.out.println(userName);

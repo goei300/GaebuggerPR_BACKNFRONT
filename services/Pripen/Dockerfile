@@ -21,7 +21,8 @@ WORKDIR /app
 
 
 COPY fonts/ /app/fonts/
-
+COPY logo.png /app
+s
 # 레포트 파일 저장을 위한 디렉토리 생성
 RUN mkdir -p /app/ReportStorage
 

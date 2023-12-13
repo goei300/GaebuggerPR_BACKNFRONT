@@ -140,7 +140,7 @@ function Step1({ nextStep, infoObject, setInfoObject,setFile,file  }) {
                                         label="업종유형"
                                         style={{ width: '200px', fontSize:"small" }}
                                     >
-                                        <MenuItem value={"제조"} style={{fontSize: "small"}}>제조</MenuItem>
+                                        {/* <MenuItem value={"제조"} style={{fontSize: "small"}}>제조</MenuItem>
                                         <MenuItem value={"전기/가스/수도"} style={{fontSize: "small"}}>전기/가스/수도</MenuItem>
                                         <MenuItem value={"건설업"} style={{fontSize: "small"}}>건설업</MenuItem>
                                         <MenuItem value={"유통/물류/도소매"} style={{fontSize: "small"}}>유통/물류/도소매</MenuItem>
@@ -148,10 +148,10 @@ function Step1({ nextStep, infoObject, setInfoObject,setFile,file  }) {
                                         <MenuItem value={"정보/통신"} style={{fontSize: "small"}}>정보/통신</MenuItem>
                                         <MenuItem value={"금융/보험"} style={{fontSize: "small"}}>금융/보험</MenuItem>
                                         <MenuItem value={"부동산/임대"} style={{fontSize: "small"}}>부동산/임대</MenuItem>
-                                        <MenuItem value={"교육 서비스업"} style={{fontSize: "small"}}>교육 서비스업</MenuItem>
+                                        <MenuItem value={"교육 서비스업"} style={{fontSize: "small"}}>교육 서비스업</MenuItem> */}
                                         <MenuItem value={"보건/복지"} style={{fontSize: "small"}}>보건/복지</MenuItem>
-                                        <MenuItem value={"협회/단체"} style={{fontSize: "small"}}>협회/단체</MenuItem>
-                                        <MenuItem value={"기타"} style={{fontSize: "small"}}>기타</MenuItem>
+                                        {/* <MenuItem value={"협회/단체"} style={{fontSize: "small"}}>협회/단체</MenuItem>
+                                        <MenuItem value={"기타"} style={{fontSize: "small"}}>기타</MenuItem> */}
 
                                     </Select>
                                 </Box>

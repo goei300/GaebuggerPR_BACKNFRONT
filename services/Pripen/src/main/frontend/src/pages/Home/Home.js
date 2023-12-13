@@ -54,7 +54,7 @@ function Home() {
     return (
         <div className="home-container">
             <Helmet>
-                <title>호스피 | 메디컬 프라이버시 솔루션</title>
+                <title>호스피 | 메디컬 프라이버시의 유일한 평가 솔루션</title>
             </Helmet>
 
             <Header active="contact"/>

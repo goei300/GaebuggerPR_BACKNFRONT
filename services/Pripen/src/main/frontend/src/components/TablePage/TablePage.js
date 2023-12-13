@@ -87,26 +87,27 @@ const TablePage = ({ captureCanvas, selectedIssueType,setSelectedIssueType,filte
     };
     
     useEffect(() => {
-        // 전체 데이터 표시
-        setPage(0);
-        setRowsPerPage(filteredIssues.length);
-        setShowCheckColumn(false);
-        setTimeout(()=>{
-            captureCanvas('section5', 5);
-            setTimeout(()=>{
-                // 원래 페이징 상태로 복원
-                setPage(originalPage);
-                setRowsPerPage(originalRowsPerPage);
-                setShowCheckColumn(true);
-
-
-            },500);
-            setTimeout(()=>{
-                // 자동 업로드
-                downloadAllImages(infoObject.name, infoObject.companyName, processId);
-            },700);
-        },200);
+        const handleCaptureAndDownload = async () => {
+            // 전체 데이터 표시
+            setPage(0);
+            setRowsPerPage(filteredIssues.length);
+            setShowCheckColumn(false);
+    
+            // captureCanvas를 호출하고 완료될 때까지 기다립니다.
+            await captureCanvas('section5', 5);
+    
+            // 원래 페이징 상태로 복원
+            setPage(originalPage);
+            setRowsPerPage(originalRowsPerPage);
+            setShowCheckColumn(true);
+    
+            // 자동 업로드를 위해 downloadAllImages 호출
+            downloadAllImages(infoObject.name, infoObject.companyName, processId);
+        };
+    
+        handleCaptureAndDownload();
     }, []);
+    
 
     const reasons = filteredIssues.map(issue => issue.issue_reason);
     console.log("reasons is");
